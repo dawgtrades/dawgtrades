@@ -1,11 +1,13 @@
 package edu.uga.dawgtrades.model.impl;
 
+import edu.uga.dawgtrades.model.Category;
+
 /**
  * Implementation of Category
  * @author William C Spivey
  */
 
-public CategoryImpl
+public class CategoryImpl
     extends Persistent
     implements Category
 {

@@ -2,6 +2,11 @@ package edu.uga.dawgtrades.model.impl;
 
 import edu.uga.dawgtrades.model.Persistable;
 
+/**
+ * Implementation of Persistent
+ * @author Justin
+ *
+ */
 
 public abstract class Persistent
     implements Persistable

@@ -13,7 +13,6 @@ public RegisteredUser
     private long parentId;
 
     public RegisteredUser(String name, long parentId) {
-	this.userId = Id;
 	this.lastName = lname;
 	this.firstName = fname;
 	this.phone = phone;

@@ -1,5 +1,7 @@
 package edu.uga.dawgtrades.model.impl;
 
+import edu.uga.dawgtrades.model.Attribute;
+
 public class AttributeImpl implements Attribute {
     private long attributeType;
     private long itemId;
@@ -11,12 +13,13 @@ public class AttributeImpl implements Attribute {
 	this.itemId = itemId;
 	this.value = value;
     }
+    
     public AttributeImpl() {}
 
     public String getValue() {
 	return value;
     }
-    public void setValue() {
+    public void setValue(String value) {
 	this.value = value;
     }
     public long getItemId() {// db stuff??
@@ -26,9 +29,9 @@ public class AttributeImpl implements Attribute {
 	this.itemId = itemId;
     }
     public long getAttributeType() {// ???
-	return AttributeType;
+	return attributeType;
     }
     public void setAttributeType(long attributeId) {
-	this.AttributeType = attributeId;
+	this.attributeType = attributeId;
     }
 }

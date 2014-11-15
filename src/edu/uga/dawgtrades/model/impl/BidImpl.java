@@ -8,6 +8,12 @@ import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.Item;
 import edu.uga.dawgtrades.model.RegisteredUser;
 
+/**
+ * Implementation of Bid
+ * @author Justin
+ *
+ */
+
 public class BidImpl extends Persistent implements Bid {
 	
 	private long id;

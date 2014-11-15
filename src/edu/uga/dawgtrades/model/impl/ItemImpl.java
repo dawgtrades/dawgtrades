@@ -4,6 +4,12 @@ import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.Item;
 import edu.uga.dawgtrades.model.RegisteredUser;
 
+/**
+ * Implementation of Item
+ * @author Justin
+ *
+ */
+
 //NOT WORKING UNTIL USER IS WORKING
 
 public class ItemImpl extends Persistent implements Item {

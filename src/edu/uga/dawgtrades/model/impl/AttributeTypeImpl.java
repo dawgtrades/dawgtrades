@@ -1,5 +1,7 @@
 package edu.uga.dawgtrades.model.impl;
 
+import edu.uga.dawgtrades.model.AttributeType;
+
 /**
  * Implementation of AttributeType
  * @author William C Spivey
@@ -18,7 +20,7 @@ public class AttributeTypeImpl implements AttributeType {
     public String getName() {
 	return name;
     }
-    public setName(String name) {
+    public void setName(String name) {
 	this.name = name;
     }
     public long getCategoryId() {// need db stuff here

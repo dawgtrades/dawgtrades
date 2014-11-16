@@ -17,12 +17,12 @@ public interface Item
     /**
      * @return
      */
-    //String getIdentifier();
+    String getIdentifier();
     
     /**
      * @param identifier
      */
-    //void setIdentifier( String identifier );
+    void setIdentifier( String identifier );
     
     /**
      * Return the name of this Item.
@@ -49,6 +49,18 @@ public interface Item
     void setDescription( String description );
     
     // participates in associations with the other side having multiplicity of one
+    /**
+     * Return the identifier of the Category of this Item.
+     * @return the Item category's identifier
+     */
+    long getCategoryId();
+
+    /**
+     * Set the identifier of the Category of this Item.
+     * @param categoryId the new category's identifier
+     */
+    void setCategoryId( long categoryId );
+    
     /**
      * Return the identifier of the RegisteredUser who is the owner of this Item.
      * @return the Item owner's identifier

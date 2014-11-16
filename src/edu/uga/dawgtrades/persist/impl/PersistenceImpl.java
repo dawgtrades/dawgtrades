@@ -59,7 +59,7 @@ public class PersistenceImpl implements Persistence {
 	public void saveAttributeType(AttributeType attributeType) throws DTException {
 		attributeTypeManager.save(attributeType);
 	}
-	public Iterator<attributeType> restoreattributeType(AttributeType attributeType) throws DTException {
+	public AttributeType restoreattributeType(AttributeType attributeType) throws DTException {
 		return attributeTypeManager.restore(attributeType);
 	}
 	public void deleteAttributeType(AttributeType attributeType) throws DTException {
@@ -119,7 +119,7 @@ public class PersistenceImpl implements Persistence {
 	public void saveMembership(Membership membership) throws DTException {
 		membershipManager.save(membership);
 	}
-	public Iterator<Membership> restoreMembership(Membership membership) throws DTException {
+	public Membership restoreMembership(Membership membership) throws DTException {
 		return membershipManager.restore(membership);
 	}
 	public void deleteMembership(Membership membership) throws DTException {

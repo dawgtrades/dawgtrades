@@ -1,5 +1,6 @@
-package edu.uga.clubs.persistence.impl;
+package edu.uga.dawgtrades.persist.impl;
 
+//TODO: NOT TESTED
 
 /*********************************************************************************
  * @file    AssociationManagerImpl.java
@@ -21,23 +22,22 @@ public abstract class DbAccessConfig
     
     /** The database name
      */
-    static final String DB_NAME        = "clubs";
+    static final String DB_NAME        = "team9";
     
     /** The database server name for the connection pool
      */
-    static final String DB_SERVER_NAME = "localhost";
+    static final String DB_SERVER_NAME = "uml.cs.uga.edu";
 
     /** The JDBC connection string/URL.
      */
-    static final String DB_CONNECTION_URL = "jdbc:mysql://localhost:3306/clubs";
+    static final String DB_CONNECTION_URL = "jdbc:mysql://uml.cs.uga.edu:3306/team9";
 
     /** The database user name.
      */
-    static  String DB_CONNECTION_USERNAME = "demo";
+    static  String DB_CONNECTION_USERNAME = "team9";
 
     /** The password for the database user.
      */
-    static  String DB_CONNECTION_PWD = "demo";
+    static  String DB_CONNECTION_PWD = "oomethods";
 
 }
-

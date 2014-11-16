@@ -7,6 +7,12 @@ import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.Persistable;
 import edu.uga.dawgtrades.model.Item;
 
+/**
+ * Implementation of Auction
+ * @author Justin
+ *
+ */
+
 //NOT WORKING UNTIL USER IS WORKING
 
 public class AuctionImpl extends Persistent implements Auction {

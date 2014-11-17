@@ -4,7 +4,6 @@ import java.util.Date;
 
 import edu.uga.dawgtrades.model.Auction;
 import edu.uga.dawgtrades.model.DTException;
-import edu.uga.dawgtrades.model.Persistable;
 import edu.uga.dawgtrades.model.Item;
 
 /**

@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 
 import edu.uga.dawgtrades.model.Auction;
 import edu.uga.dawgtrades.model.DTException;
+import edu.uga.dawgtrades.model.Item;
 import edu.uga.dawgtrades.model.ObjectModel;
 
 /**
@@ -44,20 +45,17 @@ public class AuctionIterator implements Iterator<Auction> {
     	long id;
     	long itemId;
     	float minPrice;
-    	float sellingPrice;
     	Date expiration;
-    	boolean isClosed;
+    	Auction auction = null;
 
         if( more ) {
 
             try {
-            	//TODO: Must get item information also. Not sure on order
+            	
                 id = rs.getLong( 1 );
                 itemId = rs.getLong( 2 );
                 minPrice = rs.getFloat( 3 );
-                sellingPrice = rs.getFloat( 4 );
-                expiration = rs.getDate( 5 ); //TODO: See if have to convert sql to java here
-                isClosed = rs.getBoolean( 6 );
+                expiration = rs.getDate( 4 ); //TODO: See if have to convert sql to java here
 
                 more = rs.next();
             }
@@ -65,9 +63,16 @@ public class AuctionIterator implements Iterator<Auction> {
                 throw new NoSuchElementException( "AuctionIterator: No next Auctionobject; cause: " + e );
             }
             
-            //TODO: fix
-            Auction auction = objectModel.createAuction( itemId, email, firstName, lastName, address, phone );
-            auction.setId( id );
+            Item item = objectModel.createItem();
+            item.setId(itemId);
+            try {
+				auction = objectModel.createAuction(item, minPrice, expiration);
+				auction.setId(id);
+				auction.setItemId(itemId);
+			} 
+            catch (DTException e) {
+				e.printStackTrace();
+			}
 
             return auction;
         }

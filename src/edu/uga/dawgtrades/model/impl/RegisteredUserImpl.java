@@ -9,7 +9,6 @@ import edu.uga.dawgtrades.model.RegisteredUser;
  *
  */
 public class RegisteredUserImpl extends Persistent implements RegisteredUser {
-	private long userId;
 	private String name;
 	private String firstName;
 	private String lastName;
@@ -18,9 +17,10 @@ public class RegisteredUserImpl extends Persistent implements RegisteredUser {
 	private String email;
 	private String phone;
 	private boolean canText;
+	
 	// constructor for new objects
 	// ??? may want to pass membershipID
-	public RegisteredUserImpl () throws DTException {
+	public RegisteredUserImpl (String name, String firstName, String lastName, String passwd, boolean isAdmin, String email, String phone, boolean canText) throws DTException {
  	    this.name = name;
 	    this.firstname = firstName;
 	    this.lastname = lastName;

@@ -22,9 +22,9 @@ public class RegisteredUserImpl extends Persistent implements RegisteredUser {
 	// ??? may want to pass membershipID
 	public RegisteredUserImpl (String name, String firstName, String lastName, String passwd, boolean isAdmin, String email, String phone, boolean canText) throws DTException {
  	    this.name = name;
-	    this.firstname = firstName;
-	    this.lastname = lastName;
-		this.password = password;
+	    this.firstName = firstName;
+	    this.lastName = lastName;
+		this.password = passwd;
 		this.isAdmin = isAdmin;
 		this.email = email;
 		this.phone = phone;
@@ -39,7 +39,7 @@ public class RegisteredUserImpl extends Persistent implements RegisteredUser {
 	public String getFirstName() {
 		return firstName;
 	}
-	void setFirstName(String firstName) {
+	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 	public String getLastName() {
@@ -72,7 +72,7 @@ public class RegisteredUserImpl extends Persistent implements RegisteredUser {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public String boolean getCanText() {
+	public boolean getCanText() {
 		return canText;
 	}
 	public void setCanText(boolean canText) {

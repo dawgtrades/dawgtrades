@@ -546,7 +546,7 @@ public interface ObjectModel
     
     // hasType: Attribute (zero or more) to AttributeType (one)
     // (one direction needed only!)
-    /**
+    /** 
      * Return an AttributeType of an Attribute, traversing the <i>hasType</i> association.  The Attribute must be persistent.
      * 
      * @param attribute an Attribute whose AttributeType is requested; it must be persistent

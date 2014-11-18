@@ -11,11 +11,15 @@ public class CategoryImpl extends Persistent implements Category {
     private String name;
     private long parentId;
 
+    //proxy cons
     public CategoryImpl(String name, long parentId) {
+	super(-1);
 	this.name = name;
 	this.parentId = parentId;
     }
+    //new obj cons
     public CategoryImpl(String name, Category parent) throws DTException {
+	super(-1);
 	if(parent == null)
 	    throw new DTException("Parent category is null");
 	if(!parent.isPersistent())
@@ -23,7 +27,9 @@ public class CategoryImpl extends Persistent implements Category {
 	this.name = name;
 	this.parentId = parent.getId();
     }
-    public CategoryImpl() {}
+    public CategoryImpl() {
+	super(-1);
+    }
 
     public String getName() {
 	return name;
@@ -31,7 +37,7 @@ public class CategoryImpl extends Persistent implements Category {
     public void setName(String name) {
 	this.name = name;
     }
-    public long getParentId() {// this probably needs to be different
+    public long getParentId() {
 	return parentId;
     }
     public void setParentId(long parentId) {

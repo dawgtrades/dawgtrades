@@ -33,13 +33,8 @@ public class ObjectModelImpl implements ObjectModel {
 	return attrt;
     }
     @Override
-<<<<<<< HEAD
     public AttributeType createAttributeType(Category cat, String name) throws DTException {
-	AttributeType attrt = new AttributeType(cat, name);
-=======
-    public AttributeType createAttributeType(Category cat, String name) {
 	AttributeType attrt = new AttributeTypeImpl(cat, name);
->>>>>>> cc5a8e7ba7f7adb6b81c92319ea705083b6b25a4
 	return attrt;
     }
     @Override

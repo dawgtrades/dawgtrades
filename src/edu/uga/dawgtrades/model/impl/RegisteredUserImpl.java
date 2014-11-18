@@ -39,11 +39,7 @@ public class RegisteredUserImpl extends Persistent implements RegisteredUser {
 	public String getFirstName() {
 		return firstName;
 	}
-<<<<<<< HEAD
-        public void setFirstName(String firstName) {
-=======
 	public void setFirstName(String firstName) {
->>>>>>> cc5a8e7ba7f7adb6b81c92319ea705083b6b25a4
 		this.firstName = firstName;
 	}
 	public String getLastName() {

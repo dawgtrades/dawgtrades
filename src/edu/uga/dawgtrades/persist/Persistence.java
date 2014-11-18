@@ -57,5 +57,33 @@ public interface Persistence {
 	public Iterator<RegisteredUser> restoreRegisteredUser(RegisteredUser registeredUser) throws DTException;
 	public void deleteRegisteredUser(RegisteredUser registeredUser) throws DTException;
 	
-	//TODO: restoreEstablishedBy methods (don't understand yet)
+	//user
+	public Iterator<Item> restoreItemsOwned(RegisteredUser registeredUser) throws DTException;
+	
+	//item
+	public RegisteredUser restoreOwner(Item item) throws DTException;
+	public Category restoreCategoryOfItem(Item item) throws DTException;
+	public Iterator<Attribute> restoreAttributes(Item item) throws DTException;
+	public Auction restoreAuctionForItem(Item item) throws DTException;
+	
+	//category
+	public Iterator<Item> restoreItemsInCategory(Category category) throws DTException;
+	public Iterator<AttributeType> restoreAttributeTypes(Category category) throws DTException;
+	public Iterator<Category> restoreChildren(Category category) throws DTException;
+	public Category restoreParent(Category category) throws DTException;
+	
+	//attribute
+	public AttributeType restoreTypeOfAttribute(Attribute attribute) throws DTException;
+	public Item restoreItemWithAttribute(Attribute attribute) throws DTException;
+	
+	//attribute type
+	public Category restoreCategoryWithType(AttributeType attributeType) throws DTException;
+	
+	//auction
+	public Item restoreItemForAuction(Auction auction) throws DTException;
+	
+	
+	
+	
+	
 };

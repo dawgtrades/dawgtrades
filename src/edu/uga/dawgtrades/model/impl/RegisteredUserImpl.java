@@ -51,7 +51,7 @@ public class RegisteredUserImpl extends Persistent implements RegisteredUser {
 	public String getPassword() {
 		return password;
 	}
-		public void setPassword(String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 	public boolean getIsAdmin() {

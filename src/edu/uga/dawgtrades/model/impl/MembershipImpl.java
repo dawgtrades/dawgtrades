@@ -1,5 +1,7 @@
 package edu.uga.dawgtrades.model.impl;
 
+import java.util.Date;
+
 import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.Membership;
 

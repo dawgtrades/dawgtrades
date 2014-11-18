@@ -1,4 +1,4 @@
-package edu.uga.dawgtrades.persistence.impl;
+package edu.uga.dawgtrades.persist.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,10 +9,18 @@ import java.util.Iterator;
 import com.mysql.jdbc.PreparedStatement;
 
 import edu.uga.dawgtrades.model.DTException;
-import edu.uga.dawgtrades.model.MembershipImpl;
+import edu.uga.dawgtrades.model.Membership;
+import edu.uga.dawgtrades.model.ObjectModel;
 
+/**
+ * MIGHT NEED TO CHANGE THIS A LOT LATER. MEMBERSHIP IS A SINGLETON. DON'T REALLY NEED
+ * COMPLEX METHODS SINCE THERE WILL ALWAYS ONLY BE ONE MEMBERSHIP. WE SHOULD KNOW ITS ID
+ * IS 1. 
+ * @author Vic
+ *
+ */
 
-class membershipManager
+class MembershipManager
 {
     private ObjectModel objectModel = null;
     private Connection  conn = null;
@@ -39,15 +47,15 @@ class membershipManager
             else
                 stmt = (PreparedStatement) conn.prepareStatement( updateMembershipSql );
 
-            if( membership.getPrice() != null )
-                stmt.setString( 1, membership.getPrice() );
-            else
-                throw new DTException( "MembershipManager.save: can't save a membership: price undefined" );
+            stmt.setFloat( 1, membership.getPrice() );
 				
-            if( membership.getDate() != null )
-                stmt.setString( 2, membership.getDate() );
+            if( membership.getDate() != null ) {
+                java.util.Date jDate = membership.getDate();
+                java.sql.Date sDate = new java.sql.Date( jDate.getTime() );
+                stmt.setDate( 4, sDate );
+            }
             else
-                throw new DTException( "MembershipManager.save: can't save a membership: date undefined");	
+                stmt.setNull(4, java.sql.Types.DATE);
 										
             inscnt = stmt.executeUpdate();
 
@@ -80,10 +88,10 @@ class membershipManager
         }
     }
 
-    public Iterator<membership> restore( membership modelMembership ) 
+    public Iterator<Membership> restore( Membership modelMembership ) 
             throws DTException
     {
-        String       selectMembershipSql = "select fee, fee_date 	from membership"; 
+        String       selectMembershipSql = "select fee, fee_date from membership"; 
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
         StringBuffer condition = new StringBuffer( 100 );
@@ -97,16 +105,16 @@ class membershipManager
             if( modelMembership.getId() >= 0 ) // id is unique, so it is sufficient to get a membership
                 query.append( " where membership_fee_id = " + modelMembership.getId() );
             else {
-                if( modelMembership.getPrice() != null ) {
-                    if( condition.length() > 0 )
-                        condition.append( " and" );
-                    condition.append( " fee = '" + modelMembership.getPrice() + "'" );
-                }
+                if( condition.length() > 0 )
+                    condition.append( " and" );
+                condition.append( " fee = '" + modelMembership.getPrice() + "'" );
 				
                 if( modelMembership.getDate() != null ) {
+                	java.util.Date jDate = modelMembership.getDate();
+                    java.sql.Date sDate = new java.sql.Date( jDate.getTime() );
                     if( condition.length() > 0 )
                         condition.append( " and" );
-                    condition.append( " fee_date = '" + modelMembership.getDate() + "'" );
+                    condition.append( " fee_date = '" + sDate + "'" );
                 }				               				
 					
                 if( condition.length() > 0 ) {

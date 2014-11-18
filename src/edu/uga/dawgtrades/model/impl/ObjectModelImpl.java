@@ -39,7 +39,7 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public Auction createAuction() {
-	Auction auc = new AuctionImpl(-1, null, null, null, null);
+	Auction auc = new AuctionImpl(-1, 0, 0, null, false);
 	auc.setId(-1);
 	return auc;
     }
@@ -50,7 +50,7 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public Bid createBid() {
-	Bid bid = new BidImpl(null, null, null, null, null);
+	Bid bid = new BidImpl(0, null, false, -1, -1);
 	bid.setId(-1);
 	return bid;
     }
@@ -72,7 +72,7 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public ExperienceReport createExperienceReport() {
-	ExperienceReport erep = new ExperienceReportImpl(null, null, null, -1, -1);
+	ExperienceReport erep = new ExperienceReportImpl(0, null, null, -1, -1);
 	erep.setId(-1);
 	return erep;
     }
@@ -94,7 +94,7 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public Membership createMembership() {
-	Membership member = MembershipImpl(null, null);
+	Membership member = MembershipImpl(0, null);
 	member.setId(-1);
 	return member;
     }
@@ -105,7 +105,7 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public RegisteredUser createRegisteredUser() {
-	RegisteredUser user = RegisteredUserImpl(null, null, null, null, null, null, null, null);
+	RegisteredUser user = RegisteredUserImpl(null, null, null, null, false, null, null, false);
 	user.setId(-1);
 	return user;
     }

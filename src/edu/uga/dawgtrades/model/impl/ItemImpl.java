@@ -15,14 +15,13 @@ import edu.uga.dawgtrades.model.RegisteredUser;
 
 public class ItemImpl extends Persistent implements Item {
 	
-	private long id;
 	private long ownerId;
 	private long categoryId;
 	private String identifier;
 	private String name;
 	private String description;
 	
-	public ItemImpl (long id, RegisteredUser owner, Category category, String identifier,
+	public ItemImpl (RegisteredUser owner, Category category, String identifier,
 			String name, String description) throws DTException {
 		super(-1);
 		if (owner == null)
@@ -33,7 +32,6 @@ public class ItemImpl extends Persistent implements Item {
 			throw new DTException("The category is null");
 		if (!category.isPersistent())
 			throw new DTException("The category is not persistent");
-		this.id = id;
 		this.ownerId = owner.getId();
 		this.categoryId = category.getId();
 		this.identifier = identifier;
@@ -42,9 +40,8 @@ public class ItemImpl extends Persistent implements Item {
 		
 	}
 	
-	public ItemImpl (long id, long ownerId, long categoryId, String identifier, String name, String description) {
+	public ItemImpl (long ownerId, long categoryId, String identifier, String name, String description) {
 		super (-1);
-		this.id = id;
 		this.ownerId = ownerId;
 		this.categoryId = categoryId;
 		this.identifier = identifier;
@@ -52,12 +49,6 @@ public class ItemImpl extends Persistent implements Item {
 		this.description = description;
 	}
 	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
 	public long getOwnerId() {
 		return ownerId;
 	}

@@ -16,30 +16,33 @@ import edu.uga.dawgtrades.model.RegisteredUser;
 
 public class BidImpl extends Persistent implements Bid {
 	
-	private long id;
 	private float amount;
 	private Date date;
 	private boolean isWinning;
 	private Auction auction;
 	private RegisteredUser registeredUser;
 	
-	public BidImpl (long id, float amount, Date date, boolean isWinning, Auction auction, RegisteredUser registeredUser) throws DTException {
+	public BidImpl (float amount, Date date, boolean isWinning, Auction auction, RegisteredUser registeredUser) throws DTException {
 		super(-1);
-		this.id = id;
+		/*
+		if(auction == null)
+		    throw new DTException("Auction is null");
+		if(registeredUser == null)
+		    throw new DTException("User is null");
+		if(!auction.isPersistent())
+		    throw new DTException("Auction is not persistent");
+		if(!registeredUser.isPersistent())
+		    throw new DTException("User is not persistent");
+		*/
 		this.amount = amount;
 		this.date = date;
 		this.isWinning = isWinning;
 		this.auction = auction;
 		this.registeredUser = registeredUser;
-		
 	}
+
+    // don't need a proxy cons I guess
 	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
 	public float getAmount() {
 		return amount;
 	}

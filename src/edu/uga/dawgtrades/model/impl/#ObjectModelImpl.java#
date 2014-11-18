@@ -65,6 +65,5 @@ public class ObjectModelImpl implements ObjectModel {
 	Category cat = new CategoryImpl(name, parent);
 	return cat;
     }
-    public ExperienceReport createExperienceReport() {
-	ExperienceReport erep = new ExperienceReportImpl(
+
 }

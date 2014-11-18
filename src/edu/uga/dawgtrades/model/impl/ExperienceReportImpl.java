@@ -16,33 +16,34 @@ import edu.uga.dawgtrades.model.RegisteredUser;
 //NOT WORKING UNTIL USER IS WORKING
 
 public class ExperienceReportImpl extends Persistent implements ExperienceReport {
-	private long userId;
-	private float rating;
+	private int rating;
 	private String report;
 	private Date date;
     private long reviewer;
     private long reviewed;
 	
 	// Report object is new
-	public ExperienceReportImpl (RegisteredUser user,float rating,
-	String report,Date date,long reviewer,long reviewed) throws DTException {
+	public ExperienceReportImpl (float rating, String report, Date date, RegisteredUser reviewer, RegisteredUser reviewed) throws DTException {
 		super(-1);
-		if (user == null)
-			throw new DTException("The user related to the ExperienceReport is null");
-		if (!user.isPersistent())
-			throw new DTException("The user related to the ExperienceReport is not persistent");
-		this.userId = user.getId();
+		if (rreviewer == null)
+			throw new DTException("Reviewer is null");
+		if(reviewed == null)
+		    throw new DTException("Reviewed is null");
+		if (!reviewer.isPersistent())
+			throw new DTException("Reviewer is not persistent");
+		if(!reviewed.isPersistent())
+		    throw new DTException("Reviewed is not persistent");
 		this.rating = rating;
 		this.report = report;
 		this.date = date;
-		this.reviewer = reviewer;
-		this.reviewed = reviewed;
+		this.reviewer = reviewer.getId();
+		this.reviewed = reviewed.getId();
 	}
 	
 	// Report object exists
-	public ExperienceReportImpl (long userId, float rating,
+	public ExperienceReportImpl (float rating,
 	String report,Date date,long reviewer,long reviewed) {
-		this.userId = userId;
+	    super(-1);
 		this.rating = rating;
 		this.report = report;
 		this.date = date;
@@ -67,17 +68,17 @@ public class ExperienceReportImpl extends Persistent implements ExperienceReport
 	public void setDate( Date date ) {
 		this.date = date;
 	}
-	public RegisteredUser getReviewer() {
+    public RegisteredUser getReviewer() {//NEEDS TO RETURN USER OBJ
 		return reviewer;
 	}
 	public void setReviewer( RegisteredUser reviewer ) {
-		this.reviewer = reviewer;
+	    this.reviewer = reviewer.getId();
 	}
-	public RegisteredUser getReviewed() {
+    public RegisteredUser getReviewed() {//ALSO NEEDS TO RETURN USER OBJ
 		return reviewed;
 	}
 	public void setReviewed( RegisteredUser reviewed ) {
-		this.reviewed = reviewed;
+	    this.reviewed = reviewed.getId();
 	}
 	public String toString() {
 		return "ExperienceReport[" + getId() + "]: Reviewer[" + getReviewer() + "] Reviewed[$" + getReviewed() + "] date[$" + getDate() + "] Report[" + getReport();

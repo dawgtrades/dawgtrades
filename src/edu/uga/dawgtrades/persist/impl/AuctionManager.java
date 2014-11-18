@@ -10,10 +10,10 @@ import com.mysql.jdbc.PreparedStatement;
 
 import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.Auction;
+import edu.uga.dawgtrades.model.Item;
 import edu.uga.dawgtrades.model.ObjectModel;
 
 /**
-* ******** NOT FINISHED AT ALL YET
 * Auction Manager
 * @author Justin
 *
@@ -47,34 +47,23 @@ public class AuctionManager {
                 stmt = (PreparedStatement) conn.prepareStatement( updateAuctionSql );
             
             if( auction.getItemId() >= 0)
-            	stm.setLong(1, auction.getItemId());
+            	stmt.setLong(1, auction.getItemId());
             else
             	throw new DTException( "AuctionManager.save: can't save a Auction: item id undefined" );
             
             stmt.setBoolean( 2, auction.getIsClosed() );
 
-            if( auction.getSellingPrice() != null )
-                stmt.setString( 2, auction.getDescription() );
-            else
-                throw new DTException( "AuctionManager.save: can't save a Auction: description undefined" );
+            stmt.setFloat( 3, auction.getSellingPrice() );
             
-            if(auction.getIdentifier() != null )
-            	stmt.setString(3, auction.getIdentifier());
+            if( auction.getExpiration() != null ) {
+                java.util.Date jDate = auction.getExpiration();
+                java.sql.Date sDate = new java.sql.Date( jDate.getTime() );
+                stmt.setDate( 4, sDate );
+            }
             else
-            	throw new DTException("AuctionManager.save: can't save a Auction: identifier undefined");
-            
-            if( auction.getCategoryId() > 0 ) {
-            	stmt.setLong( 4,  auction.getCategoryId() );
-            }
-            else {
-            	throw new DTException( "AuctionManager.save: can't save a Auction: category undefined" );
-            }
-            if ( auction.getOwnerId() > 0) {
-            stmt.setLong( 5, auction.getOwnerId() );
-            }
-            else {
-            	throw new DTException( "AuctionManager.save: can't save a Auction: owner undefined" );
-            }
+                stmt.setNull(4, java.sql.Types.DATE);
+           
+            stmt.setFloat(5, auction.getMinPrice());
 
             if( auction.isPersistent() )
                 stmt.setLong( 6, auction.getId() );
@@ -113,7 +102,7 @@ public class AuctionManager {
         public Iterator<Auction> restore( Auction modelAuction )
                 throws DTException
         {
-            String       selectAuctionSql = "select name, description, identifier, category_id, owner_id";
+            String       selectAuctionSql = "select item_id, status, high_bid, expiration_dt, min_price";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
@@ -126,27 +115,26 @@ public class AuctionManager {
             if( modelAuction != null ) {
                 if( modelAuction.getId() >= 0 ) // id is unique, so it is sufficient to get a Auction
                     query.append( " where id = " + modelAuction.getId() );
-                else if( modelAuction.getName() != null ) // userName is unique, so it is sufficient to get a Auction
-                    query.append( " where name = '" + modelAuction.getName() + "'" );
                 else {
-                    if( modelAuction.getDescription() != null )
-                        condition.append( " description = '" + modelAuction.getDescription() + "'" );
-                    if( modelAuction.getIdentifier() != null ) {
-                    	if( condition.length() > 0 )
-                            condition.append( " and" );
-                        condition.append( " identifier = '" + modelAuction.getDescription() + "'" );
-                    }
-                    if( modelAuction.getCategoryId() > 0 ) {
-                        if( condition.length() > 0 )
-                            condition.append( " and" );
-                        condition.append( " categoryId = '" + modelAuction.getCategoryId() + "'" );
-                    }
+                    if( modelAuction.getItemId() > 0 )
+                        condition.append( " item_id = '" + modelAuction.getItemId() + "'" );
+                    if( condition.length() > 0 )
+                        condition.append( " and" );
+                    condition.append( " status = '" + modelAuction.getIsClosed() + "'" );
+                    
+                    if( condition.length() > 0 )
+                         condition.append( " and" );
+                    condition.append( " high_price = '" + modelAuction.getSellingPrice() + "'" );
 
-                    if( modelAuction.getOwnerId() > 0 ) {
+                    if( modelAuction.getExpiration() != null ) {
                         if( condition.length() > 0 )
                             condition.append( " and" );
-                        condition.append( " ownerId = '" + modelAuction.getOwnerId() + "'" );
+                        condition.append( " expiration_dt = '" + modelAuction.getExpiration() + "'" );
                     }
+                    
+                    if( condition.length() > 0 )
+                        condition.append( " and" );
+                   condition.append( " min_price = '" + modelAuction.getMinPrice() + "'" );
 
                     if( condition.length() > 0 ) {
                         query.append(  " where " );
@@ -177,7 +165,7 @@ public class AuctionManager {
         public void delete( Auction auction )
                 throws DTException
         {
-            String               deleteAuctionSql = "delete from auction where id = ?";
+            String               deleteAuctionSql = "delete from auction where auction_id = ?";
             PreparedStatement    stmt = null;
             int                  numUpdated;
 
@@ -202,5 +190,73 @@ public class AuctionManager {
             catch( SQLException e ) {
                 throw new DTException( "AuctionManager.delete: failed to delete this Auction: " + e.getMessage() );
             }
-        }                               
+        }
+        
+      public Item restoreItemForAuction(Auction auction) throws DTException {
+  		  String       selectItemSql = "select i.item_id, i.category_id, i.owner_id, i.name, i.identifier, i.description from item i, auction a where i.item_id = a.item_id";
+          Statement    stmt = null;
+          StringBuffer query = new StringBuffer( 100 );
+          StringBuffer condition = new StringBuffer( 100 );
+
+          condition.setLength( 0 );
+
+          // form the query based on the given Item object instance
+          query.append( selectItemSql );
+
+          if( auction != null ) {
+              if( auction.getId() >= 0 ) // id is unique, so it is sufficient to get a auction
+                  query.append( " and a.auction_id = " + auction.getId() );
+              else {
+                  if( auction.getItemId() >= 0 )
+                      condition.append( " a.item_id = '" + auction.getItemId() + "'" );
+
+                  if( condition.length() == 0 )
+                      condition.append( " a.status = '" + auction.getIsClosed() + "'" );
+                  else
+                      condition.append( " AND a.status = '" + auction.getIsClosed() + "'" );
+
+                  if( condition.length() == 0 )
+                      condition.append( " a.high_bid = '" + auction.getSellingPrice() + "'" );
+                  else
+                      condition.append( " AND a.high_bid = '" + auction.getSellingPrice() + "'" );
+
+                  if( auction.getExpiration() != null && condition.length() == 0 )
+                      condition.append( " a.expiration_dt = '" + auction.getExpiration() + "'" );
+                  else
+                      condition.append( " AND a.expiration_dt = '" + auction.getExpiration() + "'" );
+
+                  if( auction.getMinPrice() >= 0 && condition.length() == 0 )
+                      condition.append( " a.min_price = '" + auction.getMinPrice() + "'" );
+                  else
+                      condition.append( " AND a.min_price= '" + auction.getMinPrice() + "'" );
+
+                  if( condition.length() > 0 ) {
+                      query.append( condition );
+                  }
+              }
+          }
+
+          try {
+
+              stmt = conn.createStatement();
+
+              // retrieve the persistent Auction object
+              //
+              if( stmt.execute( query.toString() ) ) { // statement returned a result
+                  ResultSet r = stmt.getResultSet();
+                  Iterator<Item> itemIter = new ItemIterator( r, objectModel );
+                  if( itemIter != null && itemIter.hasNext() ) {
+                      return itemIter.next();
+                  }
+                  else
+                      return null;
+              }
+          }
+          catch( Exception e ) {      // just in case...
+              throw new DTException( "AuctionManager.restoreItemForAuction: Could not restore persistent Auction object; Root cause: " + e );
+          }
+
+          throw new DTException( "AuctionManager.restoreItemForAuction: Could not restore persistent Auction object" );
+  	
+      }
 }

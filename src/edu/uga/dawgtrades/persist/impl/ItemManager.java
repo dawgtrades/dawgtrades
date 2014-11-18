@@ -128,10 +128,12 @@ public class ItemManager {
             if( modelItem != null ) {
                 if( modelItem.getId() >= 0 ) // id is unique, so it is sufficient to get a Item
                     query.append( " where id = " + modelItem.getId() );
-                else if( modelItem.getName() != null ) // userName is unique, so it is sufficient to get a item
-                    query.append( " where name = '" + modelItem.getName() + "'" );
                 else {
+                	if( modelItem.getName() != null )
+                		condition.append( " name = '" + modelItem.getName() + "'" );
                     if( modelItem.getDescription() != null )
+                    	if( condition.length() > 0 )
+                            condition.append( " and" );
                         condition.append( " description = '" + modelItem.getDescription() + "'" );
                     if( modelItem.getIdentifier() != null ) {
                     	if( condition.length() > 0 )
@@ -448,7 +450,7 @@ public class ItemManager {
         public void delete( Item item )
                 throws DTException
         {
-            String               deleteItemSql = "delete from item where id = ?";
+            String               deleteItemSql = "delete from item where item_id = ?";
             PreparedStatement    stmt = null;
             int                  numUpdated;
 

@@ -109,7 +109,7 @@ public class ItemManager {
             catch( SQLException e ) {
                 e.printStackTrace();
                 throw new DTException( "ItemManager.save: failed to save a Item: " + e );
-            }
+            } 
         }
 
         public Iterator<Item> restore( Item modelItem )
@@ -436,8 +436,6 @@ public class ItemManager {
                     ResultSet r = stmt.getResultSet();
                     return new AttributeIterator(r, objectModel);
                 }
-                else
-                      return null;
                 
             }
             catch( Exception e ) {      // just in case...

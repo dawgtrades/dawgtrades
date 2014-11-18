@@ -17,21 +17,19 @@ import edu.uga.dawgtrades.model.Item;
 
 public class AuctionImpl extends Persistent implements Auction {
 	
-	private long id;
 	private long itemId;
 	private float minPrice;
 	private float sellingPrice;
 	private Date expiration;
 	private boolean isClosed;
 	
-	public AuctionImpl (long id, Item item, float minPrice, float sellingPrice, Date expiration, boolean isClosed) throws DTException {
+        public AuctionImpl (Item item, float minPrice, float sellingPrice, Date expiration, boolean isClosed) throws DTException {
 		super(-1);
 		if (item == null)
 			throw new DTException("The item related to the auction is null");
 		if (!item.isPersistent())
 			throw new DTException("The item related to the auction is not persistent");
-		this.id = id;
-		this.id = item.getId();
+		this.itemId = item.getId();
 		this.minPrice = minPrice;
 		this.sellingPrice = sellingPrice;
 		this.expiration = expiration;
@@ -39,21 +37,13 @@ public class AuctionImpl extends Persistent implements Auction {
 		
 	}
 	
-	public AuctionImpl (long id, long itemId, float minPrice, float sellingPrice, Date expiration, boolean isClosed) {
-		this.id = id;
+	public AuctionImpl (long itemId, float minPrice, float sellingPrice, Date expiration, boolean isClosed) {
+	        super(-1);
 		this.itemId = itemId;
 		this.minPrice = minPrice;
 		this.sellingPrice = sellingPrice;
 		this.expiration = expiration;
 		this.isClosed = isClosed;
-	}
-	
-	public long getId() {
-		return id;
-	}
-	
-	public void setId(long id) {
-		this.id = id;
 	}
 	
 	public long getItemId() {

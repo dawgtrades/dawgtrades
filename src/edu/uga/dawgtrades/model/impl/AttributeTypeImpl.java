@@ -11,11 +11,25 @@ public class AttributeTypeImpl implements AttributeType {
     private String name;
     private long categoryId;
 
-    public AttributeTypeImpl(String name, long categoryId) {
-	this.name = name;
+    //proxy cons
+    public AttributeTypeImpl(long categoryId, String name) {
+	super(-1);
 	this.categoryId = categoryId;
+	this.name = name;
     }
-    public AttributeTypeImpl() {}
+    //new obj cons
+    public AttributeTypeImpl(Category cat, String name) throws DTException{
+	super(-1);
+	if(cat == null)
+	    throw new DTException("Category is null");
+	if(!cat.isPersistent())
+	    throw new DTException("Category is not persistent");
+	this.categoryId = cat.getId();
+	this.name = name;
+    }
+    public AttributeTypeImpl() {
+	super(-1);
+    }
 
     public String getName() {
 	return name;

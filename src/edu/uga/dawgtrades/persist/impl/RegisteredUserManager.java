@@ -30,8 +30,8 @@ class registeredUserManager
     public void save( RegisteredUser user ) 
             throws DTException
     {
-        String               insertUserSql = "insert into registered_user ( last_name, first_name, phone, email, uname, upassword, status, is_admin, can_text, membership_fee_id ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";              
-        String               updateUserSql = "update registered_user  set last_name = ?, first_name = ?, phone = ?, email = ?, uname = ?, upassword = ?, status = ?, is_admin = ?, can_text = ?, , membership_fee_id = ? where id = ?";              
+        String               insertUserSql = "insert into registered_user ( last_name, first_name, phone, email, uname, upassword, is_admin, can_text, membership_fee_id ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";              
+        String               updateUserSql = "update registered_user  set last_name = ?, first_name = ?, phone = ?, email = ?, uname = ?, upassword = ?, is_admin = ?, can_text = ?, , membership_fee_id = ? where id = ?";              
         PreparedStatement    stmt;
         int                  inscnt;
         long                 userId;
@@ -73,20 +73,15 @@ class registeredUserManager
             else
                 throw new DTException( "RegisteredUserManager.save: can't save a user: password undefined" );           
 						
-			if( user.getStatus() != null )
-                stmt.setString( 7,  user.getStatus() );
-            else
-                stmt.setNull(7, java.sql.Types.boolean);
-
 			if( user.getIsAdmin() != null )
-                stmt.setString( 8,  user.getIsAdmin() );
+                stmt.setString( 7,  user.getIsAdmin() );
             else
-                stmt.setNull(8, java.sql.Types.boolean);
+                stmt.setNull(7, java.sql.Types.TINYINT);
 				
 			if( user.getCanText() != null )
-                stmt.setString( 9,  user.getCanText() );
+                stmt.setString( 8,  user.getCanText() );
             else
-                stmt.setNull(9, java.sql.Types.boolean);
+                stmt.setNull(8, java.sql.Types.TINYINT);
 							
             inscnt = stmt.executeUpdate();
 
@@ -119,10 +114,10 @@ class registeredUserManager
         }
     }
 
-    public Iterator<registeredUser> restore( user modeluser ) 
+    public Iterator<registeredUser> restore( user modelUser ) 
             throws DTException
     {
-        String       selectUserSql = "select 	last_name, first_name, phone, email, status, uname, upassword, is_admin, can_text, membership_fee_id from registered_user"; 
+        String       selectUserSql = "select 	last_name, first_name, phone, email, uname, upassword, is_admin, can_text, membership_fee_id from registered_user"; 
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
         StringBuffer condition = new StringBuffer( 100 );
@@ -134,43 +129,49 @@ class registeredUserManager
         
         if( modelUser != null ) {
             if( modelUser.getId() >= 0 ) // id is unique, so it is sufficient to get a user
-                query.append( " where id = " + modelUser.getId() );
-            else if( modelUser.getUserName() != null ) // userName is unique, so it is sufficient to get a user
-                query.append( " where username = '" + modeluser.getUserName() + "'" );
+                query.append( " where user_id = " + modelUser.getId() );
+            else if( modelUser.getName() != null ) // userName is unique, so it is sufficient to get a user
+                query.append( " where uname = '" + modelUser.getName() + "'" );
             else {
-                if( modeluser.getPassword() != null )
-                    condition.append( " password = '" + modeluser.getPassword() + "'" );
-
-                if( modeluser.getEmail() != null ) {
+                if( modelUser.getLastName() != null ) {
                     if( condition.length() > 0 )
                         condition.append( " and" );
-                    condition.append( " email = '" + modeluser.getEmail() + "'" );
+                    condition.append( " last_name = '" + modelUser.getLastName() + "'" );
                 }
-
-                if( modeluser.getFirstName() != null ) {
+				
+                if( modelUser.getFirstName() != null ) {
                     if( condition.length() > 0 )
                         condition.append( " and" );
-                    condition.append( " firstName = '" + modeluser.getFirstName() + "'" );
+                    condition.append( " first_name = '" + modelUser.getFirstName() + "'" );
+                }				
+				
+                if( modelUser.getPhone() != null ) {
+                    if( condition.length() > 0 )
+                        condition.append( " and" );
+                    condition.append( " phone = '" + modelUser.getPhone() + "'" );
                 }
-
-                if( modeluser.getLastName() != null ) {
+				
+                if( modelUser.getEmail() != null ) {
                     if( condition.length() > 0 )
                         condition.append( " and" );
-                    condition.append( " lastName = '" + modeluser.getLastName() + "'" );
-                }
-
-                if( modeluser.getAddress() != null ) {
+                    condition.append( " email = '" + modelUser.getEmail() + "'" );
+                }       
+				
+                if( modelUser.getPassword() != null )
+                    condition.append( " upassword = '" + modelUser.getPassword() + "'" );
+					
+                if( modelUser.getIsAdmin() != null ) {
                     if( condition.length() > 0 )
                         condition.append( " and" );
-                    condition.append( " address = '" + modeluser.getAddress() + "'" );
-                }        
-
-                if( modeluser.getPhone() != null ) {
+                    condition.append( " is_admin = '" + modelUser.getIsAdmin() + "'" );
+                }					
+					
+                if( modelUser.getCanText() != null ) {
                     if( condition.length() > 0 )
                         condition.append( " and" );
-                    condition.append( " phone = '" + modeluser.getPhone() + "'" );
-                }
-
+                    condition.append( " can_text = '" + modelUser.getCanText() + "'" );
+                }					
+					
                 if( condition.length() > 0 ) {
                     query.append(  " where " );
                     query.append( condition );
@@ -197,14 +198,13 @@ class registeredUserManager
         throw new DTException( "userManager.restore: Could not restore persistent user object" );
     }
     
-    public Iterator<User> restoreEstablishedBy( User user ) 
-            throws DTException
+    //public Iterator<User> restoreEstablishedBy( User user ) 
+    //        throws DTException
+    public Iterator<Item> restoreItemsOwned(RegisteredUser registeredUser) throws DTException;
     {
         String       selectUserSql = 
-		"select 
-		c.id, c.name, c.address, c.established, c.founderid 
-		from registered_user p, club c 
-		where c.founderid = p.id"; 
+		"select i.item_id, i.name, i.category_id, i.identifier, i.description, i.owner_id from registered_user u, item i 
+		where u.user_id = i.owner_id"; 
 		
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
@@ -217,37 +217,41 @@ class registeredUserManager
         
         if( user != null ) {
             if( user.getId() >= 0 ) // id is unique, so it is sufficient to get a user
-                query.append( " and p.id = " + user.getId() );
-            else if( user.getUserName() != null ) // userName is unique, so it is sufficient to get a user
-                query.append( " and p.username = '" + user.getUserName() + "'" );
+                query.append( " and u.user_id = " + user.getId() );
+            else if( user.getName() != null ) // userName is unique, so it is sufficient to get a user
+                query.append( " and u.name = '" + user.getName() + "'" );
             else {
-                if( user.getPassword() != null )
-                    condition.append( " p.password = '" + user.getPassword() + "'" );
-
-                if( user.getEmail() != null && condition.length() == 0 )
-                    condition.append( " p.email = '" + user.getEmail() + "'" );
-                else
-                    condition.append( " AND p.email = '" + user.getEmail() + "'" );
-
-                if( user.getFirstName() != null && condition.length() == 0 )
-                    condition.append( " p.firstname = '" + user.getFirstName() + "'" );
-                else
-                    condition.append( " AND p.firstname = '" + user.getFirstName() + "'" );
-
+			
                 if( user.getLastName() != null && condition.length() == 0 )
-                    condition.append( " p.lastname = '" + user.getLastName() + "'" );
+                    condition.append( " u.last_name = '" + user.getLastName() + "'" );
                 else
-                    condition.append( " AND p.lastname = '" + user.getLastName() + "'" );
-
-                if( user.getAddress() != null && condition.length() == 0 )
-                    condition.append( " p.address = '" + user.getAddress() + "'" );
+                    condition.append( " AND u.last_name = '" + user.getLastName() + "'" 										
+                if( user.getFirstName() != null && condition.length() == 0 )
+                    condition.append( " u.first_name = '" + user.getFirstName() + "'" );
                 else
-                    condition.append( " AND p.address = '" + user.getAddress() + "'" );         
+                    condition.append( " AND u.first_name = '" + user.getFirstName() + "'" );
 
                 if( user.getPhone() != null && condition.length() == 0 )
-                    condition.append( " p.phone = '" + user.getPhone() + "'" );
+                    condition.append( " u.phone = '" + user.getPhone() + "'" );
                 else
-                    condition.append( " AND p.phone = '" + user.getPhone() + "'" );
+                    condition.append( " AND u.phone = '" + user.getPhone() + "'" );					
+					
+                if( user.getEmail() != null && condition.length() == 0 )
+                    condition.append( " u.email = '" + user.getEmail() + "'" );
+                else
+                    condition.append( " AND u.email = '" + user.getEmail() + "'" );
+					
+                if( user.getPassword() != null )
+                    condition.append( " u.password = '" + user.getPassword() + "'" );
+
+                if( user.getIsAdmin() != null && condition.length() == 0 )
+                    condition.append( " u.is_admin = '" + user.getIsAdmin() + "'" );
+                else
+                    condition.append( " AND u.is_admin = '" + user.getIsAdmin() + "'" );   					
+                if( user.getCanText() != null && condition.length() == 0 )
+                    condition.append( " u.can_text = '" + user.getCanText() + "'" );
+                else
+                    condition.append( " AND u.can_text = '" + user.getCanText() + "'" );         
                 
                 if( condition.length() > 0 ) {
                     query.append( condition );
@@ -276,7 +280,7 @@ class registeredUserManager
     public void delete( User user ) 
             throws DTException
     {
-        String               deleteUserSql = "delete from registered_user where id = ?";              
+        String               deleteUserSql = "delete from registered_user where user_id = ?";              
         PreparedStatement    stmt = null;
         int                  inscnt;
         

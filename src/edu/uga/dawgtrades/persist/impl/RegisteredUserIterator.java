@@ -15,7 +15,7 @@ import java.sql.ResultSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import edu.uga.dawgtrades.DTException;
+import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.ObjectModel;
 import edu.uga.dawgtrades.model.RegisteredUser;
 
@@ -47,42 +47,50 @@ public class RegisteredUserIterator
         return more; 
     }
 
-    public Person next() 
+    public RegisteredUser next() 
     {
-        long   id;
-        String userName;
-        String password;
-        String email;
-        String firstName;
-        String lastName;
-        String address;
-        String phone;
+    	long id;
+    	String name;
+    	String firstName;
+    	String lastName;
+    	String password;
+    	boolean isAdmin;
+    	String email;
+    	String phone;
+    	boolean canText;
 
         if( more ) {
 
             try {
                 id = rs.getLong( 1 );
-                userName = rs.getString( 2 );
-                password = rs.getString( 3 );
-                email = rs.getString( 4 );
-                firstName = rs.getString( 5 );
-                lastName = rs.getString( 6 );
-                address = rs.getString( 7 );
+                name = rs.getString( 2 );
+                firstName = rs.getString( 3 );
+                lastName = rs.getString( 4 );
+                password = rs.getString( 5 );
+                isAdmin = rs.getBoolean( 6 );
+                email = rs.getString( 7 );
                 phone = rs.getString( 8 );
-
+                canText = rs.getBoolean( 9 );
+                
                 more = rs.next();
             }
             catch( Exception e ) {	// just in case...
-                throw new NoSuchElementException( "PersonIterator: No next Person object; root cause: " + e );
+                throw new NoSuchElementException( "RegisteredUserIterator: No next User object; root cause: " + e );
             }
             
-            Person person = objectModel.createPerson( userName, password, email, firstName, lastName, address, phone );
-            person.setId( id );
+            RegisteredUser user = null;
+			try {
+				user = objectModel.createRegisteredUser(name, firstName, lastName, password, isAdmin, email, phone, canText);
+			} catch (DTException e) {
+				
+				e.printStackTrace();
+			}
+            user.setId( id );
             
-            return person;
+            return user;
         }
         else {
-            throw new NoSuchElementException( "PersonIterator: No next Person object" );
+            throw new NoSuchElementException( "UserIterator: No next User object" );
         }
     }
 

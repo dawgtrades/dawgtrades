@@ -1,7 +1,8 @@
 package edu.uga.dawgtrades.model.impl;
 
+import java.util.Date;
+
 import edu.uga.dawgtrades.model.*;
-import edu.uga.dawgtrades.DTException;
 import edu.uga.dawgtrades.persist.Persistence;
 
 public class ObjectModelImpl implements ObjectModel {
@@ -11,7 +12,7 @@ public class ObjectModelImpl implements ObjectModel {
 	this.pers = null;
     }
     public ObjectModelImpl(Persistence pers) {
-	this.pers = persistence;
+	this.pers = pers;
     }
 
     @Override
@@ -27,13 +28,18 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public AttributeType createAttributeType() {
-	AttributeType attrt = new AttributeType(-1, null);
+	AttributeType attrt = new AttributeTypeImpl(-1, null);
 	attrt.setId(-1);
 	return attrt;
     }
     @Override
+<<<<<<< HEAD
     public AttributeType createAttributeType(Category cat, String name) throws DTException {
 	AttributeType attrt = new AttributeType(cat, name);
+=======
+    public AttributeType createAttributeType(Category cat, String name) {
+	AttributeType attrt = new AttributeTypeImpl(cat, name);
+>>>>>>> cc5a8e7ba7f7adb6b81c92319ea705083b6b25a4
 	return attrt;
     }
     @Override

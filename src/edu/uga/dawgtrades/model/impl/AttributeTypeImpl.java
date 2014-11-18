@@ -1,13 +1,15 @@
 package edu.uga.dawgtrades.model.impl;
 
 import edu.uga.dawgtrades.model.AttributeType;
+import edu.uga.dawgtrades.model.Category;
+import edu.uga.dawgtrades.model.DTException;
 
 /**
  * Implementation of AttributeType
  * @author William C Spivey
  */
 
-public class AttributeTypeImpl implements AttributeType {
+public class AttributeTypeImpl extends Persistent implements AttributeType {
     private String name;
     private long categoryId;
 

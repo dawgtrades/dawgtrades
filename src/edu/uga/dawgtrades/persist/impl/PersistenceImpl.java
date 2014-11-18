@@ -136,7 +136,56 @@ public class PersistenceImpl implements Persistence {
 		registeredUserManager.delete(registeredUser);
 	}
 	
-	//TODO: restoreEstablishedBy methods (don't understand yet)
+	//user
+	public Iterator<Item> restoreItemsOwned(RegisteredUser registeredUser) throws DTException {
+		registeredUserManager.restoreItemsOwned(registeredUser);
+	}
+		
+	//item
+	public RegisteredUser restoreOwner(Item item) throws DTException {
+		itemManager.restoreOwner(item);
+	}
+	public Category restoreCategoryOfItem(Item item) throws DTException {
+		itemManager.restoreCategoryOfItem(item);
+	}
+	public Iterator<Attribute> restoreAttributes(Item item) throws DTException {
+		itemManager.restoreAttributes(item);
+	}
+	public Auction restoreAuctionForItem(Item item) throws DTException {
+		itemManager.restoreAuctionForItem(item);
+	}
+		
+	//category
+	public Iterator<Item> restoreItemsInCategory(Category category) throws DTException {
+		categoryManager.restoreItemsInCategory(category);
+	}
+	public Iterator<AttributeType> restoreAttributeTypes(Category category) throws DTException {
+		categoryManager.restoreItemsInCategory(category);
+	}
+	public Iterator<Category> restoreChildren(Category category) throws DTException {
+		categoryManager.restoreItemsInCategory(category);
+	}
+	public Category restoreParent(Category category) throws DTException {
+		categoryManager.restoreItemsInCategory(category);
+	}
+		
+	//attribute
+	public AttributeType restoreTypeOfAttribute(Attribute attribute) throws DTException {
+		attributeManager.restoreTypeOfAttribute(attribute);
+	}
+	public Item restoreItemWithAttribute(Attribute attribute) throws DTException {
+		attributeManager.restoreTypeOfAttribute(attribute);
+	}
+		
+	//attribute type
+	public Category restoreCategoryWithType(AttributeType attributeType) throws DTException {
+		attributeTypeManager.restoreCategoryWithType(attributeType);
+	}
+		
+	//auction
+	public Item restoreItemForAuction(Auction auction) throws DTException {
+		auctionManager.restoreItemForAuction(auction);
+	}
 
 	
 }

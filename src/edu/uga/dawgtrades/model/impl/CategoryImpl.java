@@ -1,7 +1,7 @@
 package edu.uga.dawgtrades.model.impl;
 
 import edu.uga.dawgtrades.model.*;
-import edu.uga.dawgtrades.DTException;
+
 /**
  * Implementation of Category
  * @author William C Spivey

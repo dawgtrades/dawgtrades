@@ -5,9 +5,11 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import edu.uga.dawgtrades.model.Category;
 import edu.uga.dawgtrades.model.Item;
 import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.ObjectModel;
+import edu.uga.dawgtrades.model.RegisteredUser;
 
 /**
  * Iterator for Items. 
@@ -47,11 +49,11 @@ public class ItemIterator implements Iterator<Item> {
     	String identifier;
     	String name;
     	String description;
+    	Item item = null;
 
         if( more ) {
 
             try {
-            	//TODO: Must get user information also. Not sure on order
                 id = rs.getLong( 1 );
                 ownerId = rs.getLong( 2 );
                 categoryId = rs.getLong( 3 );
@@ -65,9 +67,20 @@ public class ItemIterator implements Iterator<Item> {
                 throw new NoSuchElementException( "ItemIterator: No next Itemobject; cause: " + e );
             }
             
-            //TODO: fix
-            Item item = objectModel.createItem(  );
-            item.setId( id );
+            RegisteredUser owner = objectModel.createRegisteredUser(); //Not 100% sure about this
+            owner.setId(ownerId);
+            Category category = objectModel.createCategory();
+            category.setId(categoryId);
+            try {
+				item = objectModel.createItem(category, owner, identifier, name, description);
+				item.setId( id );
+				item.setOwnerId(ownerId);
+				item.setCategoryId(categoryId);
+            } 
+            catch (DTException e) {
+				e.printStackTrace();
+			}
+            
 
             return item;
         }

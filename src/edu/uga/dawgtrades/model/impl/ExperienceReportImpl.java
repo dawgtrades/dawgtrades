@@ -19,13 +19,13 @@ public class ExperienceReportImpl extends Persistent implements ExperienceReport
 	private int rating;
 	private String report;
 	private Date date;
-    private long reviewer;
-    private long reviewed;
+    private RegisteredUser reviewer;
+    private RegisteredUser reviewed;
 	
 	// Report object is new
-	public ExperienceReportImpl (float rating, String report, Date date, RegisteredUser reviewer, RegisteredUser reviewed) throws DTException {
+	public ExperienceReportImpl (int rating, String report, Date date, RegisteredUser reviewer, RegisteredUser reviewed) throws DTException {
 		super(-1);
-		if (rreviewer == null)
+		if (reviewer == null)
 			throw new DTException("Reviewer is null");
 		if(reviewed == null)
 		    throw new DTException("Reviewed is null");
@@ -36,12 +36,12 @@ public class ExperienceReportImpl extends Persistent implements ExperienceReport
 		this.rating = rating;
 		this.report = report;
 		this.date = date;
-		this.reviewer = reviewer.getId();
-		this.reviewed = reviewed.getId();
+		this.reviewer = reviewer;
+		this.reviewed = reviewed;
 	}
 	
-	// Report object exists
-	public ExperienceReportImpl (float rating,
+	/** Report object exists, DON"T THINK WE NEED THIS
+	public ExperienceReportImpl (int rating,
 	String report,Date date,long reviewer,long reviewed) {
 	    super(-1);
 		this.rating = rating;
@@ -50,6 +50,7 @@ public class ExperienceReportImpl extends Persistent implements ExperienceReport
 		this.reviewer = reviewer;
 		this.reviewed = reviewed;
 	}
+	**/
 	public int getRating() {
 		return rating;
 	}
@@ -72,13 +73,13 @@ public class ExperienceReportImpl extends Persistent implements ExperienceReport
 		return reviewer;
 	}
 	public void setReviewer( RegisteredUser reviewer ) {
-	    this.reviewer = reviewer.getId();
+	    this.reviewer = reviewer;
 	}
     public RegisteredUser getReviewed() {//ALSO NEEDS TO RETURN USER OBJ
 		return reviewed;
 	}
 	public void setReviewed( RegisteredUser reviewed ) {
-	    this.reviewed = reviewed.getId();
+	    this.reviewed = reviewed;
 	}
 	public String toString() {
 		return "ExperienceReport[" + getId() + "]: Reviewer[" + getReviewer() + "] Reviewed[$" + getReviewed() + "] date[$" + getDate() + "] Report[" + getReport();

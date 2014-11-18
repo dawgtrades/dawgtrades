@@ -10,13 +10,14 @@ import java.util.Iterator;
 import com.mysql.jdbc.PreparedStatement;
 
 import edu.uga.dawgtrades.model.DTException;
-import edu.uga.dawgtrades.model.RegisteredUserImpl;
+import edu.uga.dawgtrades.model.ObjectModel;
+import edu.uga.dawgtrades.model.RegisteredUser;
 
 //import edu.uga.clubs.model.Club;
 //import edu.uga.clubs.model.ObjectModel;
 
 
-class registeredUserManager
+class RegisteredUserManager
 {
     private ObjectModel objectModel = null;
     private Connection  conn = null;
@@ -56,12 +57,12 @@ class registeredUserManager
             if( user.getPhone() != null )
                 stmt.setString( 3,  user.getPhone() );
             else
-                throw new DtException( "RegisteredUserManager.save: can't save a user: phone undefined" );
+                throw new DTException( "RegisteredUserManager.save: can't save a user: phone undefined" );
 				
             if( user.getEmail() != null )
                 stmt.setString( 4,  user.getEmail() );
             else
-                throw new DtException( "RegisteredUserManager.save: can't save a user: email undefined" );
+                throw new DTException( "RegisteredUserManager.save: can't save a user: email undefined" );
 				
             if( user.getName() != null ) // user is unique, so it is sufficient to get a user
                 stmt.setString( 5, user.getName() );
@@ -73,11 +74,12 @@ class registeredUserManager
             else
                 throw new DTException( "RegisteredUserManager.save: can't save a user: password undefined" );           
 						
+
 			if( user.getIsAdmin() != null )
                 stmt.setString( 7,  user.getIsAdmin() );
             else
                 stmt.setNull(7, java.sql.Types.TINYINT);
-				
+
 			if( user.getCanText() != null )
                 stmt.setString( 8,  user.getCanText() );
             else
@@ -114,7 +116,7 @@ class registeredUserManager
         }
     }
 
-    public Iterator<registeredUser> restore( user modelUser ) 
+    public Iterator<RegisteredUser> restore( RegisteredUser modelUser ) 
             throws DTException
     {
         String       selectUserSql = "select 	last_name, first_name, phone, email, uname, upassword, is_admin, can_text, membership_fee_id from registered_user"; 

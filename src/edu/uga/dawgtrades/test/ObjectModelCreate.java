@@ -20,8 +20,11 @@ import edu.uga.dawgtrades.persist.impl.DbUtils;
 import edu.uga.dawgtrades.persist.impl.PersistenceImpl;
 
 
-// Testing the creation of the entity classes
-// and associations for DawgTrades
+/** Testing the creation of the entity classes and associations for DawgTrades
+ * 
+ * @author Justin
+ *
+ */
 public class ObjectModelCreate
 {
     public static void main(String[] args) throws DTException

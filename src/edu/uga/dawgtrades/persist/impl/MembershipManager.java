@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.Iterator;
 
 import com.mysql.jdbc.PreparedStatement;
@@ -11,6 +12,7 @@ import com.mysql.jdbc.PreparedStatement;
 import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.Membership;
 import edu.uga.dawgtrades.model.ObjectModel;
+import edu.uga.dawgtrades.model.impl.MembershipImpl;
 
 /**
  * MIGHT NEED TO CHANGE THIS A LOT LATER. MEMBERSHIP IS A SINGLETON. DON'T REALLY NEED
@@ -52,10 +54,10 @@ class MembershipManager
             if( membership.getDate() != null ) {
                 java.util.Date jDate = membership.getDate();
                 java.sql.Date sDate = new java.sql.Date( jDate.getTime() );
-                stmt.setDate( 4, sDate );
+                stmt.setDate( 2, sDate );
             }
             else
-                stmt.setNull(4, java.sql.Types.DATE);
+                stmt.setNull(2, java.sql.Types.DATE);
 										
             inscnt = stmt.executeUpdate();
 
@@ -88,42 +90,16 @@ class MembershipManager
         }
     }
 
-    public Iterator<Membership> restore( Membership modelMembership ) 
+    public Membership restore( Membership modelMembership ) 
             throws DTException
     {
-        String       selectMembershipSql = "select fee, fee_date from membership"; 
+        String       selectMembershipSql = "select fee, fee_date from membership where membership_fee_id"; 
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
-        StringBuffer condition = new StringBuffer( 100 );
-
-        condition.setLength( 0 );
         
         // form the query based on the given membership object instance
         query.append( selectMembershipSql );
-        
-        if( modelMembership != null ) {
-            if( modelMembership.getId() >= 0 ) // id is unique, so it is sufficient to get a membership
-                query.append( " where membership_fee_id = " + modelMembership.getId() );
-            else {
-                if( condition.length() > 0 )
-                    condition.append( " and" );
-                condition.append( " fee = '" + modelMembership.getPrice() + "'" );
-				
-                if( modelMembership.getDate() != null ) {
-                	java.util.Date jDate = modelMembership.getDate();
-                    java.sql.Date sDate = new java.sql.Date( jDate.getTime() );
-                    if( condition.length() > 0 )
-                        condition.append( " and" );
-                    condition.append( " fee_date = '" + sDate + "'" );
-                }				               				
-					
-                if( condition.length() > 0 ) {
-                    query.append(  " where " );
-                    query.append( condition );
-                }
-            }
-        }
-        
+       
         try {
 
             stmt = conn.createStatement();
@@ -131,8 +107,13 @@ class MembershipManager
             // retrieve the persistent membership object
             //
             if( stmt.execute( query.toString() ) ) { // statement returned a result
-                ResultSet r = stmt.getResultSet();
-                return new MembershipIterator( r, objectModel );
+                ResultSet rs = stmt.getResultSet();
+                
+                float price = rs.getFloat( 1 );
+                Date date = rs.getDate( 2 );
+                Membership membership = new MembershipImpl(price, date);
+                membership.setId(1);
+                return membership;
             }
         }
         catch( Exception e ) {      // just in case...

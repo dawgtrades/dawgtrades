@@ -90,7 +90,7 @@ class MembershipManager
         }
     }
 
-    public Membership restore( Membership modelMembership ) 
+    public Membership restore() 
             throws DTException
     {
         String       selectMembershipSql = "select fee, fee_date from membership where membership_fee_id"; 

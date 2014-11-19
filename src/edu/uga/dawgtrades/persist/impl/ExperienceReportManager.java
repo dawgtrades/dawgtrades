@@ -13,7 +13,7 @@ import edu.uga.dawgtrades.model.ExperienceReport;
 import edu.uga.dawgtrades.model.ObjectModel;
 
 
-class ExperienceReportManager
+public class ExperienceReportManager
 {
     private ObjectModel objectModel = null;
     private Connection  conn = null;

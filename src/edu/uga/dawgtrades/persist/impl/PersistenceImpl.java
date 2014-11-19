@@ -12,6 +12,7 @@ import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.ExperienceReport;
 import edu.uga.dawgtrades.model.Item;
 import edu.uga.dawgtrades.model.Membership;
+import edu.uga.dawgtrades.model.ObjectModel;
 import edu.uga.dawgtrades.model.RegisteredUser;
 import edu.uga.dawgtrades.persist.Persistence;
 
@@ -23,8 +24,8 @@ import edu.uga.dawgtrades.persist.Persistence;
 
 public class PersistenceImpl implements Persistence {
 	
-	private AttributeManager attributeManager = null;
-    private AttributeTypeManager attributeTypeManager = null;
+	//private AttributeManager attributeManager = null;
+    //private AttributeTypeManager attributeTypeManager = null;
     private AuctionManager auctionManager = null;
     private BidManager bidManager = null;
     private CategoryManager categoryManager = null;
@@ -35,8 +36,8 @@ public class PersistenceImpl implements Persistence {
 
     public PersistenceImpl( Connection conn, ObjectModel objectModel )
     {
-        attributeManager = new AttributeManager( conn, objectModel );
-        attributeTypeManager = new AttributeTypeManager( conn, objectModel );
+        //attributeManager = new AttributeManager( conn, objectModel );
+        //attributeTypeManager = new AttributeTypeManager( conn, objectModel );
         auctionManager = new AuctionManager( conn, objectModel );
         bidManager = new BidManager( conn, objectModel );
         categoryManager = new CategoryManager( conn, objectModel );
@@ -45,7 +46,7 @@ public class PersistenceImpl implements Persistence {
         membershipManager = new MembershipManager( conn, objectModel );
         registeredUserManager = new RegisteredUserManager( conn, objectModel );
     }
-
+    /**
     public void saveAttribute(Attribute attribute) throws DTException {
     	attributeManager.save(attribute);
     }
@@ -65,7 +66,7 @@ public class PersistenceImpl implements Persistence {
 	public void deleteAttributeType(AttributeType attributeType) throws DTException {
 		attributeTypeManager.delete(attributeType);
 	}
-	
+	**/
 	public void saveAuction(Auction auction) throws DTException {
 		auctionManager.save(auction);
 	}
@@ -119,8 +120,8 @@ public class PersistenceImpl implements Persistence {
 	public void saveMembership(Membership membership) throws DTException {
 		membershipManager.save(membership);
 	}
-	public Membership restoreMembership(Membership membership) throws DTException {
-		return membershipManager.restore(membership);
+	public Membership restoreMembership() throws DTException {
+		return membershipManager.restore();
 	}
 	public void deleteMembership(Membership membership) throws DTException {
 		membershipManager.delete(membership);
@@ -138,38 +139,38 @@ public class PersistenceImpl implements Persistence {
 	
 	//user
 	public Iterator<Item> restoreItemsOwned(RegisteredUser registeredUser) throws DTException {
-		registeredUserManager.restoreItemsOwned(registeredUser);
+		return registeredUserManager.restoreItemsOwned(registeredUser);
 	}
 		
 	//item
 	public RegisteredUser restoreOwner(Item item) throws DTException {
-		itemManager.restoreOwner(item);
+		return itemManager.restoreOwner(item);
 	}
 	public Category restoreCategoryOfItem(Item item) throws DTException {
-		itemManager.restoreCategoryOfItem(item);
+		return itemManager.restoreCategoryOfItem(item);
 	}
 	public Iterator<Attribute> restoreAttributes(Item item) throws DTException {
-		itemManager.restoreAttributes(item);
+		return itemManager.restoreAttributes(item);
 	}
 	public Auction restoreAuctionForItem(Item item) throws DTException {
-		itemManager.restoreAuctionForItem(item);
+		return itemManager.restoreAuctionForItem(item);
 	}
 		
 	//category
 	public Iterator<Item> restoreItemsInCategory(Category category) throws DTException {
-		categoryManager.restoreItemsInCategory(category);
+		return categoryManager.restoreItemsInCategory(category);
 	}
 	public Iterator<AttributeType> restoreAttributeTypes(Category category) throws DTException {
-		categoryManager.restoreItemsInCategory(category);
+		return categoryManager.restoreAttributeTypes(category);
 	}
 	public Iterator<Category> restoreChildren(Category category) throws DTException {
-		categoryManager.restoreItemsInCategory(category);
+		return categoryManager.restoreChildren(category);
 	}
 	public Category restoreParent(Category category) throws DTException {
-		categoryManager.restoreItemsInCategory(category);
+		return categoryManager.restoreParent(category);
 	}
 		
-	//attribute
+	/**attribute
 	public AttributeType restoreTypeOfAttribute(Attribute attribute) throws DTException {
 		attributeManager.restoreTypeOfAttribute(attribute);
 	}
@@ -181,10 +182,10 @@ public class PersistenceImpl implements Persistence {
 	public Category restoreCategoryWithType(AttributeType attributeType) throws DTException {
 		attributeTypeManager.restoreCategoryWithType(attributeType);
 	}
-		
+	**/	
 	//auction
 	public Item restoreItemForAuction(Auction auction) throws DTException {
-		auctionManager.restoreItemForAuction(auction);
+		return auctionManager.restoreItemForAuction(auction);
 	}
 
 	

@@ -187,9 +187,6 @@ public class ObjectModelImpl implements ObjectModel {
     public Iterator<Item> findItem(Item modelItem) throws DTException {
 	return pers.restoreItem(modelItem);
     }
-    public Membership findMembership(Membership modelMembership) throws DTException {//needs to be different?
-	return pers.restoreMembership(modelMembership);
-    }
     public Iterator<RegisteredUser> findRegisteredUser(RegisteredUser modelRegisteredUser) throws DTException {
 	return pers.restoreRegisteredUser(modelRegisteredUser);
     }
@@ -276,27 +273,24 @@ public class ObjectModelImpl implements ObjectModel {
 	@Override
 	public Membership findMembership() throws DTException {
 		
-		return pers.
+		return pers.restoreMembership();
 	}
 	@Override
 	public void storeMembership(Membership membership) throws DTException {
-		// TODO Auto-generated method stub
+		pers.saveMembership(membership);
 		
 	}
 	@Override
 	public Category getParent(Category category) throws DTException {
-		// TODO Auto-generated method stub
-		return null;
+		return pers.restoreParent(category);
 	}
 	@Override
 	public Iterator<Category> getChild(Category category) throws DTException {
-		// TODO Auto-generated method stub
-		return null;
+		return pers.restoreChildren(category);
 	}
 	@Override
 	public Category getCategory(AttributeType attributeType) throws DTException {
-		// TODO Auto-generated method stub
-		return null;
+		return pers.restoreCategoryWithType(attributeType);
 	}
 
 }

@@ -15,6 +15,7 @@ import edu.uga.dawgtrades.model.Membership;
 import edu.uga.dawgtrades.model.ObjectModel;
 import edu.uga.dawgtrades.model.RegisteredUser;
 import edu.uga.dawgtrades.persist.Persistence;
+import edu.uga.dawgtrades.persist.impl.ExperienceReportManager;
 
 /**
  * Implementation of persistent interface

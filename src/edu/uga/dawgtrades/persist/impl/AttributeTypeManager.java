@@ -15,9 +15,9 @@ import edu.uga.dawgtrades.model.Item;
 import edu.uga.dawgtrades.model.ObjectModel;
 import edu.uga.dawgtrades.model.RegisteredUser;
 /**
- * UNTESTED
+ * 
  * Attribute Type Manager
- * @author Mark Hoefer
+ * @author Mark Hoefer/Justin Rector
  *
  */
 public class AttributeTypeManager {
@@ -132,45 +132,70 @@ public class AttributeTypeManager {
             }
         }
         catch( Exception e ) {      // just in case...
-            throw new DTException( "userManager.restore: Could not restore persistent user object; Root cause: " + e );
+            throw new DTException( "attributeTypeManager.restore: Could not restore persistent attributeType object; Root cause: " + e );
         }
         
         // if we get to this point, it's an error
-        throw new DTException( "userManager.restore: Could not restore persistent user object" );
+        throw new DTException( "attributeTypeManager.restore: Could not restore persistent attributeType object" );
     }
     
-    public Category restoreCategoryWithType(AttributeType attributeType){
-        String selectAttributeTypeSql = "select categoryId, name from attributeType where name = ?";
-        Statement stmt = null;
-        stmt = (PreparedStatement) conn.prepareStatement( selectAttributeTypeSql );
-        if( attributeType.getName() != null ) {
-            stmt.setString( 1, attributeType.getName() );
-        } else {
-            throw new DTException( "AttributeTypeManager.restoreCategoryWithType: can't restoreCategoryWithType: attributeType.getName() undefined" );
+    public Category restoreCategoryWithType(AttributeType attributeType) throws DTException{
+    	String       selectItemSql = "select c.category_id, c.category_name, c.parent_id from attribute_type a, category c where a.category_id = c.category_id";
+        Statement    stmt = null;
+        StringBuffer query = new StringBuffer( 100 );
+        StringBuffer condition = new StringBuffer( 100 );
+
+        condition.setLength( 0 );
+
+        // form the query based on the given Item object instance
+        query.append( selectItemSql );
+
+        if( attributeType != null ) {
+            if( attributeType.getId() >= 0 ) // id is unique, so it is sufficient to get a attributeType
+                query.append( " and a.attributeType_id = " + attributeType.getId() );
+            else {
+                if( attributeType.getCategoryId() >= 0 )
+                    condition.append( " a.category_id = '" + attributeType.getCategoryId() + "'" );
+
+                if( condition.length() == 0 )
+                    condition.append( " a.attribute_type_name = '" + attributeType.getName() + "'" );
+                else
+                    condition.append( " AND a.attribute_type_name = '" + attributeType.getName() + "'" );
+
+                if( condition.length() > 0 ) {
+                    query.append( condition );
+                }
+            }
         }
+
         try {
+
             stmt = conn.createStatement();
-            // retrieve the persistent Category object
+
+            // retrieve the persistent attributeType object
             //
-            if( stmt.execute() ) { // statement returned a result
+            if( stmt.execute( query.toString() ) ) { // statement returned a result
                 ResultSet r = stmt.getResultSet();
-                if( r.hasNext() ) {
-                    return r.next();
+                Iterator<Category> categoryIter = new CategoryIterator( r, objectModel );
+                if( categoryIter != null && categoryIter.hasNext() ) {
+                    return categoryIter.next();
                 }
                 else
                     return null;
             }
         }
-        catch( Exception e ) { // just in case...
-            throw new DTException( "AttributeTypeManager.restoreCategoryWithType: Could not restore persistent AttributeType objects; Root cause: " + e );
+        catch( Exception e ) {      // just in case...
+            throw new DTException( "attributeTypeManager.restoreItemForattributeType: Could not restore persistent attributeType object; Root cause: " + e );
         }
-        throw new DTException( "AttributeTypeManager.restoreCategoryWithType: Could not restore persistent AttributeType objects" );
+
+        throw new DTException( "attributeTypeManager.restoreItemForattributeType: Could not restore persistent attributeType object" );
+	
     }
     
     public void delete( AttributeType attributeType )
     throws DTException
     {
-        String deleteAttributeTypeSql = "delete from attribute_type where name = ?";
+        String deleteAttributeTypeSql = "delete from attribute_type where attribute_type_name = ?";
         PreparedStatement stmt = null;
         int inscnt;
         // form the query based on the given User object instance

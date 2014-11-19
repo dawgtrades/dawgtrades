@@ -15,6 +15,7 @@ import edu.uga.dawgtrades.model.Membership;
 import edu.uga.dawgtrades.model.ObjectModel;
 import edu.uga.dawgtrades.model.RegisteredUser;
 import edu.uga.dawgtrades.persist.Persistence;
+import edu.uga.dawgtrades.persist.impl.ExperienceReportManager;
 
 /**
  * Implementation of persistent interface
@@ -25,7 +26,7 @@ import edu.uga.dawgtrades.persist.Persistence;
 public class PersistenceImpl implements Persistence {
 	
 	//private AttributeManager attributeManager = null;
-    //private AttributeTypeManager attributeTypeManager = null;
+    private AttributeTypeManager attributeTypeManager = null;
     private AuctionManager auctionManager = null;
     private BidManager bidManager = null;
     private CategoryManager categoryManager = null;
@@ -37,7 +38,7 @@ public class PersistenceImpl implements Persistence {
     public PersistenceImpl( Connection conn, ObjectModel objectModel )
     {
         //attributeManager = new AttributeManager( conn, objectModel );
-        //attributeTypeManager = new AttributeTypeManager( conn, objectModel );
+        attributeTypeManager = new AttributeTypeManager( conn, objectModel );
         auctionManager = new AuctionManager( conn, objectModel );
         bidManager = new BidManager( conn, objectModel );
         categoryManager = new CategoryManager( conn, objectModel );
@@ -46,7 +47,7 @@ public class PersistenceImpl implements Persistence {
         membershipManager = new MembershipManager( conn, objectModel );
         registeredUserManager = new RegisteredUserManager( conn, objectModel );
     }
-    /**
+    
     public void saveAttribute(Attribute attribute) throws DTException {
     	attributeManager.save(attribute);
     }
@@ -60,13 +61,13 @@ public class PersistenceImpl implements Persistence {
 	public void saveAttributeType(AttributeType attributeType) throws DTException {
 		attributeTypeManager.save(attributeType);
 	}
-	public AttributeType restoreattributeType(AttributeType attributeType) throws DTException {
+	public Iterator<AttributeType> restoreAttributeType(AttributeType attributeType) throws DTException {
 		return attributeTypeManager.restore(attributeType);
 	}
 	public void deleteAttributeType(AttributeType attributeType) throws DTException {
 		attributeTypeManager.delete(attributeType);
 	}
-	**/
+	
 	public void saveAuction(Auction auction) throws DTException {
 		auctionManager.save(auction);
 	}
@@ -170,7 +171,7 @@ public class PersistenceImpl implements Persistence {
 		return categoryManager.restoreParent(category);
 	}
 		
-	/**attribute
+	
 	public AttributeType restoreTypeOfAttribute(Attribute attribute) throws DTException {
 		attributeManager.restoreTypeOfAttribute(attribute);
 	}
@@ -182,7 +183,7 @@ public class PersistenceImpl implements Persistence {
 	public Category restoreCategoryWithType(AttributeType attributeType) throws DTException {
 		attributeTypeManager.restoreCategoryWithType(attributeType);
 	}
-	**/	
+	
 	//auction
 	public Item restoreItemForAuction(Auction auction) throws DTException {
 		return auctionManager.restoreItemForAuction(auction);

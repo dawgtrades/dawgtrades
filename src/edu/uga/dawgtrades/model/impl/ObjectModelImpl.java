@@ -187,7 +187,13 @@ public class ObjectModelImpl implements ObjectModel {
     public Iterator<Item> findItem(Item modelItem) throws DTException {
 	return pers.restoreItem(modelItem);
     }
-    public Iterator<RegisteredUser> findRegisteredUser(RegisteredUser modelRegisteredUser) throws DTException {
+    public Persistence getPers() {
+		return pers;
+	}
+	public void setPers(Persistence pers) {
+		this.pers = pers;
+	}
+	public Iterator<RegisteredUser> findRegisteredUser(RegisteredUser modelRegisteredUser) throws DTException {
 	return pers.restoreRegisteredUser(modelRegisteredUser);
     }
     public Iterator<Attribute> getAttribute(Item item) throws DTException {
@@ -292,5 +298,15 @@ public class ObjectModelImpl implements ObjectModel {
 	public Category getCategory(AttributeType attributeType) throws DTException {
 		return pers.restoreCategoryWithType(attributeType);
 	}
+	@Override
+	public void setPersistence(Persistence pers) throws DTException {
+		this.pers = pers;
+		
+	}
+	@Override
+	public Persistence getPersistence() throws DTException {
+		return pers;
+	}
+
 
 }

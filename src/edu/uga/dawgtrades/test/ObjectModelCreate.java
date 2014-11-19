@@ -8,6 +8,7 @@ import edu.uga.dawgtrades.model.AttributeType;
 import edu.uga.dawgtrades.model.Auction;
 import edu.uga.dawgtrades.model.Bid;
 import edu.uga.dawgtrades.model.Category;
+import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.ExperienceReport;
 import edu.uga.dawgtrades.model.Item;
 import edu.uga.dawgtrades.model.Membership;
@@ -23,7 +24,7 @@ import edu.uga.dawgtrades.persist.impl.PersistenceImpl;
 // and associations for DawgTrades
 public class ObjectModelCreate
 {
-    public static void main(String[] args)
+    public static void main(String[] args) throws DTException
     {
          Connection conn = null;
          ObjectModel objectModel = null;
@@ -65,75 +66,82 @@ public class ObjectModelCreate
          // obtain a reference to Persistence module and connect it to the ObjectModel        
          persistence = new PersistenceImpl( conn, objectModel ); 
          // connect the ObjectModel module to the Persistence module
-         objectModel.setPersistence( persistence );   
+         objectModel.setPersistence( persistence);  
 
          try {
              
-             // create a few people
-             joe = objectModel.createPerson( "joe", "joepass", "joe@mail.com", "Joe", "Doe", 
-					     "133 Maple St., Big Town, AZ. 87888", "333-4456" );
-             objectModel.storePerson( joe );
+             //users
+             batman = objectModel.createRegisteredUser("bman", "Bruce", "Wayne", "batmobile", true, "bman@yahoo.com", "678-938-2342", true);
+             objectModel.storeRegisteredUser(batman);
 
-             mary = objectModel.createPerson( "mary", "marypass", "mary@mail.com", "Mary", "Swift", 
-					      "14 Oak Dr., Small Town, TX. 77888", "444-9876" );
-             objectModel.storePerson( mary );
-
-             bob = objectModel.createPerson( "bob", "bobpass", "bob@mail.com", "Robert", "Wilson", 
-					     "33 Cedar Cr., Middle Town, NV. 81888", "567-7788" );
-	     objectModel.storePerson( bob );
-
-             julie = objectModel.createPerson( "julie", "juliepass", "julie@mail.com", "Julie", "Hart", 
-					       "99 Magnolia St., Splash Town, NY. 21888", "364-7592" );
-	     objectModel.storePerson( julie );
-
-             heather = objectModel.createPerson( "heather", "heatherpass", "julie@mail.com", "Heather", "Brooks", 
-						 "1 Pine Ave., Boom Town, GA. 30688", "339-9923" );
-	     objectModel.storePerson( heather );
+             superman = objectModel.createRegisteredUser("sman", "Clark", "Kent", "kryptonite", false, "sman@gmail.com", "706-234-1212", false);
+             objectModel.storeRegisteredUser(superman);
              
-
-             bridge = objectModel.createClub( "Bridge", "33 Leaf St., Blossom, OR. 88888", new Date(), joe );
-	     objectModel.storeClub( bridge );
+             //membership
+             mship = objectModel.createMembership(15, new Date());
+             objectModel.storeMembership(mship);
              
-             chess = objectModel.createClub( "Chess", "734 Pine Straw Dr., Bloom, KY. 48878", new Date(), mary );
-             objectModel.storeClub( chess );
+             //categories
+             electronics = objectModel.createCategory(null, "Electronics");
+             objectModel.storeCategory(electronics);
+             computers = objectModel.createCategory(electronics, "Computers");
+             objectModel.storeCategory(computers);
+             televisions = objectModel.createCategory(electronics, "Televisions");
+             objectModel.storeCategory(televisions);
              
-             tennis = objectModel.createClub( "Tennis", "333 Wide St., Flower, RI. 17345", new Date(), mary );
-             objectModel.storeClub( tennis );
+             //items
+             computer = objectModel.createItem(computers, batman, "PC5407", "Apple Macbook", "Used for two years");
+             objectModel.storeItem(computer);
+             tv = objectModel.createItem(televisions, superman, "TV649", "Samsung TV", "Brand new in box");
+             objectModel.storeItem(tv);
              
-             running = objectModel.createClub( "Running", "445 Pace St., Quicker, Wy. 77546", new Date(), bob );
-             objectModel.storeClub( running );
+             //attribute types
+             screenSize = objectModel.createAttributeType(computers, "Screen Size");
+             objectModel.storeAttributeType(screenSize);
+             screenSize = objectModel.createAttributeType(televisions, "Screen Size");
+             objectModel.storeAttributeType(screenSize);
+             resolution = objectModel.createAttributeType(computers, "Resolution");
+             objectModel.storeAttributeType(resolution);
+             resolution = objectModel.createAttributeType(televisions, "Resolution");
+             objectModel.storeAttributeType(resolution);
              
-
-             membership = objectModel.createMembership( joe, bridge, new Date() );
-             objectModel.storeMembership( membership );
+             //attributes
+             small = objectModel.createAttribute(screenSize, computer, "small");
+             objectModel.storeAttribute(small);
+             large = objectModel.createAttribute(screenSize, tv, "large");
+             objectModel.storeAttribute(large);
+             SD = objectModel.createAttribute(resolution, tv, "SD");
+             objectModel.storeAttribute(SD);
+             HD = objectModel.createAttribute(resolution, computer, "HD");
+             objectModel.storeAttribute(HD);
              
-             membership = objectModel.createMembership( bob, bridge, new Date() );
-             objectModel.storeMembership( membership );
+             //auctions
+             computerAuction = objectModel.createAuction(computer, 400, new Date());
+             objectModel.storeAuction(computerAuction);
+             tvAuction = objectModel.createAuction(tv, 350, new Date());
+             objectModel.storeAuction(tvAuction);
              
-             membership = objectModel.createMembership( heather, bridge, new Date() );
-             objectModel.storeMembership( membership );
+             //bids
+             bid1 = objectModel.createBid(computerAuction, batman, 400);
+             objectModel.storeBid(bid1);
+             bid2 = objectModel.createBid(computerAuction, superman, 450);
+             objectModel.storeBid(bid2);
+             bid3 = objectModel.createBid(tvAuction, superman, 350);
+             objectModel.storeBid(bid3);
+             bid4 = objectModel.createBid(tvAuction, batman, 500);
+             objectModel.storeBid(bid4);
              
-             membership = objectModel.createMembership( mary, chess, new Date() );
-             objectModel.storeMembership( membership );
+             //reports
+             report1 = objectModel.createExperienceReport(batman, superman, 5, "5/5 would buy again", new Date());
+             report2 = objectModel.createExperienceReport(superman, batman, 1, "Never sold me the item", new Date());
              
-             membership = objectModel.createMembership( mary, tennis, new Date() );
-             objectModel.storeMembership( membership );
-             
-             membership = objectModel.createMembership( julie, tennis, new Date() );
-             objectModel.storeMembership( membership );
-             
-             membership = objectModel.createMembership( bob, tennis, new Date() );
-             objectModel.storeMembership( membership );
-             
-             membership = objectModel.createMembership( joe, chess, new Date() );
-             objectModel.storeMembership( membership );
              
              System.out.println( "Entity objects created and saved in the persistence module" );
              
          }
-         catch( ClubsException ce) {
-             System.err.println( "Exception: " + ce );
-             ce.printStackTrace();
+         catch( DTException de) {
+             System.err.println( "Exception: " + de );
+             de.printStackTrace();
          }
          catch( Exception e ) {
              e.printStackTrace();

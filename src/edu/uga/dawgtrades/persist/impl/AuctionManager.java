@@ -102,7 +102,7 @@ public class AuctionManager {
         public Iterator<Auction> restore( Auction modelAuction )
                 throws DTException
         {
-            String       selectAuctionSql = "select item_id, status, high_bid, expiration_dt, min_price";
+            String       selectAuctionSql = "select item_id, status, high_bid, expiration_dt, min_price from auction";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );

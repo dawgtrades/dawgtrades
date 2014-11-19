@@ -51,7 +51,12 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public Bid createBid() {
-	Bid bid = new BidImpl(0, null, false, null, null);
+	Bid bid = null;
+	try {
+		bid = new BidImpl(0, null, false, null, null);
+	} catch (DTException e) {
+		e.printStackTrace();
+	}
 	bid.setId(-1);
 	return bid;
     }
@@ -73,7 +78,13 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public ExperienceReport createExperienceReport() {
-	ExperienceReport erep = new ExperienceReportImpl(0, null, null, null, null);
+	ExperienceReport erep = null;
+	try {
+		erep = new ExperienceReportImpl(0, null, null, null, null);
+	} catch (DTException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	erep.setId(-1);
 	return erep;
     }
@@ -95,7 +106,13 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public Membership createMembership() {
-	Membership member = new MembershipImpl(0, null);
+	Membership member = null;
+	try {
+		member = new MembershipImpl(0, null);
+	} catch (DTException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	member.setId(-1);
 	return member;
     }
@@ -106,7 +123,13 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public RegisteredUser createRegisteredUser() {
-	RegisteredUser user = new RegisteredUserImpl(null, null, null, null, false, null, null, false);
+	RegisteredUser user = null;
+	try {
+		user = new RegisteredUserImpl(null, null, null, null, false, null, null, false);
+	} catch (DTException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	user.setId(-1);
 	return user;
     }
@@ -161,15 +184,119 @@ public class ObjectModelImpl implements ObjectModel {
     public Iterator<ExperienceReport> findExperienceReport(ExperienceReport modelExperienceReport) throws DTException {
 	return pers.restoreExperienceReport(modelExperienceReport);
     }
-    public Iterator<Item> findItem(Item modelItem) {
+    public Iterator<Item> findItem(Item modelItem) throws DTException {
 	return pers.restoreItem(modelItem);
     }
-    public Membership findMembership(Membership modelMembership) {//needs to be different?
+    public Membership findMembership(Membership modelMembership) throws DTException {//needs to be different?
 	return pers.restoreMembership(modelMembership);
     }
     public Iterator<RegisteredUser> findRegisteredUser(RegisteredUser modelRegisteredUser) throws DTException {
 	return pers.restoreRegisteredUser(modelRegisteredUser);
     }
     public Iterator<Attribute> getAttribute(Item item) throws DTException {
+    	return pers.restoreAttributes(item);
+    }
+    
+    public java.util.Iterator<AttributeType> getAttributeType( Category category ) throws DTException {
+    	return pers.restoreAttributeTypes(category);
+    }
+    
+    public Category getCategory( Item item ) throws DTException {
+    	return pers.restoreCategoryOfItem(item);
+    }
+    
+    public java.util.Iterator<Item> getItem( Category category ) throws DTException {
+    	return pers.restoreItemsInCategory(category);
+    }
+    
+    public Item getItem( Attribute attribute ) throws DTException {
+    	return pers.restoreItemWithAttribute(attribute);
+    }
+    
+    public RegisteredUser getRegisteredUser( Item item ) throws DTException {
+    	return pers.restoreOwner(item);
+    }
+    
+    public java.util.Iterator<Item> getItem( RegisteredUser registeredUser ) throws DTException {
+    	return pers.restoreItemsOwned(registeredUser);
+    }
+    
+    public Item getItem( Auction auction ) throws DTException {
+    	return pers.restoreItemForAuction(auction);
+    }
+    
+    public Auction getAuction( Item item ) throws DTException {
+    	return pers.restoreAuctionForItem(item);
+    }
+    
+    public AttributeType getAttributeType( Attribute attribute ) throws DTException {
+    	return pers.restoreTypeOfAttribute(attribute);
+    }
+	@Override
+	public void storeCategory(Category category) throws DTException {
+		pers.saveCategory(category);
+		
+	}
+	@Override
+	public void storeAttributeType(AttributeType attributeType)
+			throws DTException {
+		pers.saveAttributeType(attributeType);
+		
+	}
+	@Override
+	public void storeItem(Item item) throws DTException {
+		pers.saveItem(item);
+		
+	}
+	@Override
+	public void storeAttribute(Attribute attribute) throws DTException {
+		pers.saveAttribute(attribute);
+		
+	}
+	@Override
+	public void storeAuction(Auction auction) throws DTException {
+		pers.saveAuction(auction);
+	}
+	@Override
+	public void storeRegisteredUser(RegisteredUser registeredUser)
+			throws DTException {
+		pers.saveRegisteredUser(registeredUser);
+	}
+	@Override
+	public void storeBid(Bid bid) throws DTException {
+		pers.saveBid(bid);
+		
+	}
+	@Override
+	public void storeExperienceReport(ExperienceReport experienceReport)
+			throws DTException {
+		pers.saveExperienceReport(experienceReport);
+		
+	}
+	@Override
+	public Membership findMembership() throws DTException {
+		
+		return pers.
+	}
+	@Override
+	public void storeMembership(Membership membership) throws DTException {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public Category getParent(Category category) throws DTException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Iterator<Category> getChild(Category category) throws DTException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Category getCategory(AttributeType attributeType) throws DTException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

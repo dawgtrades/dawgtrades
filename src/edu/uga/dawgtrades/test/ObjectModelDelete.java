@@ -50,7 +50,7 @@ public class ObjectModelDelete
          try {
              
 	         // Delete the RegisteredUser object
-             // First: find the RegisteredUser club
+             // First: find the Registered User
              RegisteredUser registeredUser = null;
              RegisteredUser modelUser = objectModel.createRegisteredUser();
              modelUser.setName( "FirstUser" );
@@ -66,7 +66,43 @@ public class ObjectModelDelete
              }
              else
                  System.out.println( "Failed to retrieve the registered User object" );
+			
+	         // Delete the item object
+             // First: find the item
+             Item item = null;
+             item modelItem = objectModel.createItem();
+             modelItem.setName( "FirstUser" );
+             userIter = objectModel.findRegisteredUser( modelUser );
+             while( userIter.hasNext() ) {
+                 registeredUser = userIter.next();
+                 System.out.println( item );
+             }
+             // Second: delete the item
+             if( item != null ) {
+                 objectModel.deleteItem( item );
+                 System.out.println( "Deleted the item" );
+             }
+             else
+                 System.out.println( "Failed to retrieve the registered item object" );
 				 
+	         // Delete the category object
+             // First: find the category
+             Category category = null;
+             Category modelCategory = objectModel.createCategory();
+             modelCategory.setName( "FirstUser" );
+             categoryIter = objectModel.findCategory( modelCategory );
+             while( categoryIter.hasNext() ) {
+                 category = categoryIter.next();
+                 System.out.println( category );
+             }
+             // Second: delete the category
+             if( category != null ) {
+                 objectModel.deleteCategory( category );
+                 System.out.println( "Deleted the category" );
+             }
+             else
+                 System.out.println( "Failed to retrieve the category object" );
+			
           }   
          catch( DTException ce ) {
              System.err.println( "DTException: " + ce );

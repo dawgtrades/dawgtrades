@@ -1,18 +1,22 @@
-package edu.uga.clubs.test;
+package edu.uga.dawgtrades.test;
 
 import java.sql.Connection;
 import java.util.Date;
-import java.util.Iterator;
 
-import edu.uga.clubs.ClubsException;
-import edu.uga.clubs.model.Club;
-import edu.uga.clubs.model.Membership;
-import edu.uga.clubs.model.ObjectModel;
-import edu.uga.clubs.model.Person;
-import edu.uga.clubs.model.impl.ObjectModelImpl;
-import edu.uga.clubs.persistence.Persistence;
-import edu.uga.clubs.persistence.impl.DbUtils;
-import edu.uga.clubs.persistence.impl.PersistenceImpl;
+import edu.uga.dawgtrades.model.Attribute;
+import edu.uga.dawgtrades.model.AttributeType;
+import edu.uga.dawgtrades.model.Auction;
+import edu.uga.dawgtrades.model.Bid;
+import edu.uga.dawgtrades.model.Category;
+import edu.uga.dawgtrades.model.ExperienceReport;
+import edu.uga.dawgtrades.model.Item;
+import edu.uga.dawgtrades.model.Membership;
+import edu.uga.dawgtrades.model.ObjectModel;
+import edu.uga.dawgtrades.model.RegisteredUser;
+import edu.uga.dawgtrades.model.impl.ObjectModelImpl;
+import edu.uga.dawgtrades.persist.Persistence;
+import edu.uga.dawgtrades.persist.impl.DbUtils;
+import edu.uga.dawgtrades.persist.impl.PersistenceImpl;
 
 
 // A simple class to read (restore) entity objects from the persistent
@@ -30,7 +34,7 @@ public class ObjectModelRead
              conn = DbUtils.connect();
          } 
          catch (Exception seq) {
-             System.err.println( "ObjectModelDelete: Unable to obtain a database connection" );
+             System.err.println( "ObjectModelRead: Unable to obtain a database connection" );
          }
          
          // obtain a reference to the ObjectModel module      
@@ -44,13 +48,14 @@ public class ObjectModelRead
                   
          try {
              
-	     // Retrieve all existing Club objects and list their founders and members
-             System.out.println( "Club objects:" );
-             Iterator<Club> clubIter = objectModel.findClub( null );
-             while( clubIter.hasNext() ) {
-                 Club c = clubIter.next();
-                 System.out.println( c );
-                 Person founder = objectModel.findEstablishedBy( c );
+	     // Retrieve all existing user objects
+             System.out.println( "user objects:" );
+             Iterator<RegisteredUser> userIter = objectModel.findRegisteredUser( null );
+             while( userIter.hasNext() ) {
+ 
+				 RegisteredUser registeredUser = userIter.next();
+                 System.out.println( registeredUser );
+                 Person founder = objectModel.findEstablishedBy( registeredUser );
                  System.out.println( "   Founded by: " + founder );
                  System.out.println( "   Members: " );
                  Iterator<Membership> membershipIter = objectModel.findMembership( c );

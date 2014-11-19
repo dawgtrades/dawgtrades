@@ -187,6 +187,6 @@ public class PersistenceImpl implements Persistence {
 	public Item restoreItemForAuction(Auction auction) throws DTException {
 		return auctionManager.restoreItemForAuction(auction);
 	}
-
+	
 	
 }

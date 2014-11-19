@@ -1,6 +1,7 @@
 package edu.uga.dawgtrades.model.impl;
 
 import java.util.Date;
+import java.util.Iterator;
 
 import edu.uga.dawgtrades.model.*;
 import edu.uga.dawgtrades.persist.Persistence;
@@ -39,7 +40,7 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public Auction createAuction() {
-	Auction auc = new AuctionImpl(-1, null, null, null, null);
+	Auction auc = new AuctionImpl(-1, 0, 0, null, false);
 	auc.setId(-1);
 	return auc;
     }
@@ -50,7 +51,7 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public Bid createBid() {
-	Bid bid = new BidImpl(null, null, null, null, null);
+	Bid bid = new BidImpl(0, null, false, null, null);
 	bid.setId(-1);
 	return bid;
     }
@@ -72,7 +73,7 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public ExperienceReport createExperienceReport() {
-	ExperienceReport erep = new ExperienceReportImpl(null, null, null, -1, -1);
+	ExperienceReport erep = new ExperienceReportImpl(0, null, null, null, null);
 	erep.setId(-1);
 	return erep;
     }
@@ -83,91 +84,91 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public Item createItem() {
-	Item item = new item(-1, -1, null, null, null);
+	Item item = new ItemImpl(-1, -1, null, null, null);
 	item.setId(-1);
 	return item;
     }
     @Override
     public Item createItem(Category category, RegisteredUser user, String identifier, String name, String description) throws DTException {
-	Item item = new item(user, category, identifier, name, description);
+	Item item = new ItemImpl(user, category, identifier, name, description);
 	return item;
     }
     @Override
     public Membership createMembership() {
-	Membership member = MembershipImpl(null, null);
+	Membership member = new MembershipImpl(0, null);
 	member.setId(-1);
 	return member;
     }
     @Override
     public Membership createMembership(float price, Date date) throws DTException {
-	Membership member = MembershipImpl(price, date);
+	Membership member = new MembershipImpl(price, date);
 	return member;
     }
     @Override
     public RegisteredUser createRegisteredUser() {
-	RegisteredUser user = RegisteredUserImpl(null, null, null, null, null, null, null, null);
+	RegisteredUser user = new RegisteredUserImpl(null, null, null, null, false, null, null, false);
 	user.setId(-1);
 	return user;
     }
     @Override
     public RegisteredUser createRegisteredUser(String name, String firstName, String lastName, String password, boolean isAdmin, String email, String phone, boolean canText) throws DTException {
-	RegisteredUser user = RegisteredUserImpl(name, firstName, lastName, password, isAdmin, email, phone, canText);
+	RegisteredUser user = new RegisteredUserImpl(name, firstName, lastName, password, isAdmin, email, phone, canText);
 	return user;
     }
 
     @Override
     public void deleteAttribute(Attribute attribute) throws DTException {
-	persistence.deleteAttribute(attribute);
+	pers.deleteAttribute(attribute);
     }
     @Override
     public void deleteAttributeType(AttributeType attributeType) throws DTException {
-	persistence.deleteAttributeType(attributeType);
+	pers.deleteAttributeType(attributeType);
     }
     @Override
     public void deleteAuction(Auction auction) throws DTException {
-	persistence.deleteAuction(auction);
+	pers.deleteAuction(auction);
     }
     @Override
     public void deleteBid(Bid bid) throws DTException {
-	persistence.deleteBid(bid);
+	pers.deleteBid(bid);
     }
     @Override
     public void deleteCategory(Category category) throws DTException {
-	persistence.deleteCategory(category);
+	pers.deleteCategory(category);
     }
     @Override
     public void deleteExperienceReport(ExperienceReport experienceReport) throws DTException {
-	persistence.deleteExperienceReport(experienceReport);
+	pers.deleteExperienceReport(experienceReport);
     }
     @Override
     public void deleteItem(Item item) throws DTException {
-	persistence.deleteItem(item);
+	pers.deleteItem(item);
     }
     @Override
     public void deleteRegisteredUser(RegisteredUser registeredUser) throws DTException {
-	persistence.deleteRegisteredUser(registeredUser);
+	pers.deleteRegisteredUser(registeredUser);
     }
 
     public Iterator<Auction> findAuction(Auction modelAuction) throws DTException {
-	return persistence.restoreAuction(modelAuction);
+	return pers.restoreAuction(modelAuction);
     }
     public Iterator<Bid> findBid(Bid modelBid) throws DTException {
-	return persistence.restoreBid(modelBid);
+	return pers.restoreBid(modelBid);
     }
     public Iterator<Category> findCategory(Category modelCategory) throws DTException {
-	return persistence.restoreCategory(modelCategory);
+	return pers.restoreCategory(modelCategory);
     }
     public Iterator<ExperienceReport> findExperienceReport(ExperienceReport modelExperienceReport) throws DTException {
-	return persistence.restoreExperienceReport(modelExperienceReport);
+	return pers.restoreExperienceReport(modelExperienceReport);
     }
     public Iterator<Item> findItem(Item modelItem) {
-	return persistence.restoreItem(modelItem);
+	return pers.restoreItem(modelItem);
     }
-    public Membership findMembership() {//needs to be different?
-	return persistence.restoreMembership();
+    public Membership findMembership(Membership modelMembership) {//needs to be different?
+	return pers.restoreMembership(modelMembership);
     }
     public Iterator<RegisteredUser> findRegisteredUser(RegisteredUser modelRegisteredUser) throws DTException {
-	return persistence.restoreRegisteredUser(modelRegisteredUser);
+	return pers.restoreRegisteredUser(modelRegisteredUser);
     }
     public Iterator<Attribute> getAttribute(Item item) throws DTException {
 

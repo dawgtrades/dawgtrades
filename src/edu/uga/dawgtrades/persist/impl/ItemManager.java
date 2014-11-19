@@ -109,13 +109,13 @@ public class ItemManager {
             catch( SQLException e ) {
                 e.printStackTrace();
                 throw new DTException( "ItemManager.save: failed to save a Item: " + e );
-            }
+            } 
         }
 
         public Iterator<Item> restore( Item modelItem )
                 throws DTException
         {
-            String       selectItemSql = "select name, description, identifier, category_id, owner_id";
+            String       selectItemSql = "select name, description, identifier, category_id, owner_id from item";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
@@ -436,8 +436,6 @@ public class ItemManager {
                     ResultSet r = stmt.getResultSet();
                     return new AttributeIterator(r, objectModel);
                 }
-                else
-                      return null;
                 
             }
             catch( Exception e ) {      // just in case...

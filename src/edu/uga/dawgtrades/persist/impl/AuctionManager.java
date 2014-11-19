@@ -129,6 +129,7 @@ public class AuctionManager {
                     if( modelAuction.getExpiration() != null ) {
                         if( condition.length() > 0 )
                             condition.append( " and" );
+                        //MAY NEED TO FIX DATE CONVERSION
                         condition.append( " expiration_dt = '" + modelAuction.getExpiration() + "'" );
                     }
                     

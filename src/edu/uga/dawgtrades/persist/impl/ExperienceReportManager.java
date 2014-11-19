@@ -1,4 +1,4 @@
-package edu.uga.dawgtrades.persistence.impl;
+package edu.uga.dawgtrades.persist.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,10 +9,11 @@ import java.util.Iterator;
 import com.mysql.jdbc.PreparedStatement;
 
 import edu.uga.dawgtrades.model.DTException;
-import edu.uga.dawgtrades.model.ExperienceReportImpl;
+import edu.uga.dawgtrades.model.ExperienceReport;
+import edu.uga.dawgtrades.model.ObjectModel;
 
 
-class experienceReportManager
+class ExperienceReportManager
 {
     private ObjectModel objectModel = null;
     private Connection  conn = null;
@@ -40,28 +41,29 @@ class experienceReportManager
                 stmt = (PreparedStatement) conn.prepareStatement( updateReportSql );
 
             if( report.getReviewer() != null )
-                stmt.setString( 1, report.getReviewer() );
+                stmt.setLong( 1, report.getReviewer().getId() );
             else
                 throw new DTException( "ExperienceReportManager.save: can't save a report: reviewer undefined" );
 				
             if( report.getReviewed() != null )
-                stmt.setString( 2, report.getReviewed() );
+                stmt.setLong( 2, report.getReviewed().getId() );
             else
                 throw new DTException( "ExperienceReportManager.save: can't save a report: reviewed undefined");				
-            if( report.getRating() != null )
-                stmt.setString( 3, report.getRating() );
-            else
-                throw new DTException( "ExperienceReportManager.save: can't save a report: rating undefined" );
+            
+            stmt.setLong( 3, report.getRating() );
 
             if( report.getReport() != null )
                 stmt.setString( 4, report.getReport() );
             else
                 throw new DTException( "ExperienceReportManager.save: can't save a report: report undefined" );
 
-            if( report.getDate() != null )
-                stmt.setString( 5, report.getDate() );
+            if( report.getDate() != null ) {
+                java.util.Date jDate = report.getDate();
+                java.sql.Date sDate = new java.sql.Date( jDate.getTime() );
+                stmt.setDate( 5, sDate );
+            }
             else
-                throw new DTException( "ExperienceReportManager.save: can't save a report: date undefined" );				
+                stmt.setNull(5, java.sql.Types.DATE);
 							
             inscnt = stmt.executeUpdate();
 
@@ -94,7 +96,7 @@ class experienceReportManager
         }
     }
 
-    public Iterator<experienceReport> restore( report modelReport ) 
+    public Iterator<ExperienceReport> restore( ExperienceReport modelReport ) 
             throws DTException
     {
         String       selectReportSql = "select reviewer_id, reviewed_id, rating, report, rating_date from experience_report"; 
@@ -114,20 +116,20 @@ class experienceReportManager
                 if( modelReport.getReviewer() != null ) {
                     if( condition.length() > 0 )
                         condition.append( " and" );
-                    condition.append( " reviewer_id = '" + modelReport.getReviewer() + "'" );
+                    condition.append( " reviewer_id = '" + modelReport.getReviewer().getId() + "'" );
                 }
 				
                 if( modelReport.getReviewed() != null ) {
                     if( condition.length() > 0 )
                         condition.append( " and" );
-                    condition.append( " reviewed_id = '" + modelReport.getReviewed() + "'" );
+                    condition.append( " reviewed_id = '" + modelReport.getReviewed().getId() + "'" );
                 }				
 				
-                if( modelReport.getRating() != null ) {
-                    if( condition.length() > 0 )
-                        condition.append( " and" );
-                    condition.append( " rating = '" + modelReport.getRating() + "'" );
-                }
+     
+                if( condition.length() > 0 )
+                    condition.append( " and" );
+                condition.append( " rating = '" + modelReport.getRating() + "'" );
+                
 				
                 if( modelReport.getReport() != null ) {
                     if( condition.length() > 0 )
@@ -135,6 +137,7 @@ class experienceReportManager
                     condition.append( " report = '" + modelReport.getReport() + "'" );
                 }       
 				
+                //MAY NEED TO FIX DATE CONVERSION
                 if( modelReport.getDate() != null )
                     condition.append( " rating_date = '" + modelReport.getDate() + "'" );                				
 					

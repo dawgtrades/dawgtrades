@@ -50,7 +50,7 @@ public interface Persistence {
 	public void deleteItem(Item item) throws DTException;
 	
 	public void saveMembership(Membership membership) throws DTException;
-	public Membership restoreMembership(Membership membership) throws DTException;
+	public Membership restoreMembership() throws DTException;
 	public void deleteMembership(Membership membership) throws DTException;
 	
 	public void saveRegisteredUser(RegisteredUser registeredUser) throws DTException;

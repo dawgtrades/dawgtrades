@@ -206,18 +206,18 @@ public class CategoryManager {
                 //
                 if( stmt.execute( query.toString() ) ) { // statement returned a result
                     ResultSet r = stmt.getResultSet();
-                    Iterator<RegisteredUser> userIter = new RegisteredUserIterator( r, objectModel );
-                    if( userIter != null && userIter.hasNext() ) {
-                        return userIter.next();
+                    Iterator<Category> categoryIter = new CategoryIterator( r, objectModel );
+                    if( categoryIter != null && categoryIter.hasNext() ) {
+                        return categoryIter.next();
                     }
                     else
                         return null;
                 }
             }
             catch( Exception e ) {      // just in case...
-                throw new DTException( "CategoryManager.restoreOwner: Could not restore persistent User objects; Root cause: " + e );
+                throw new DTException( "CategoryManager.restoreOwner: Could not restore persistent category objects; Root cause: " + e );
             }
-            throw new DTException( "CategoryManager.restoreOwner: Could not restore persistent User objects" );
+            throw new DTException( "CategoryManager.restoreOwner: Could not restore persistent category objects" );
     	}
 
 		
@@ -242,8 +242,7 @@ public class CategoryManager {
                         condition.append( " c.category_name = '" + category.getName() + "'" );
                     else
                         condition.append( " AND c.category_name = '" + category.getName() + "'" );
-
-						
+	
                     if( category.getParentId() != null && condition.length() == 0 )
                         condition.append( " c.parent_id = '" + category.getParentId() + "'" );
                     else
@@ -276,20 +275,75 @@ public class CategoryManager {
 	
 	
 	    public Iterator<Category> restoreChildren(Category category) throws DTException  {
-		    String       selectChildrenSql = "select ... from .... where ....";
+		    String       selectChildrenSql = "select c.category_id, c.category_name, c.parent_id from category c";
 		    Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
-		}
+            condition.setLength( 0 );
+            // form the query based on the given Item object instance
+            query.append( selectChildrenSql );
+
+            if( category != null ) {
+                if( category.getId() >= 0 ) {
+				// id is unique, so get category
+                    query.append( " where c.category_id in (select category_id from category where parent_id= " + category.getId() + ")" );
+                }
+            }
+            try {
+                stmt = conn.createStatement();
+                // retrieve the persistent Item object
+                //
+                if( stmt.execute( query.toString() ) ) { // statement returned a result
+                    ResultSet r = stmt.getResultSet();
+                    Iterator<Category> categoryIter = new CategoryIterator( r, objectModel );
+                    if( categoryIter != null && categoryIter.hasNext() ) {
+                        return categoryIter.next();
+                    }
+                    else
+                        return null;
+                }
+            }
+            catch( Exception e ) {      // just in case...
+                throw new DTException( "CategoryManager.restoreChildren: Could not restore persistent category objects; Root cause: " + e );
+            }
+            throw new DTException( "CategoryManager.restoreChildren: Could not restore persistent Category objects" );
+    	}			
+			
 		
 	    public Category restoreParent(Category category) throws DTException {
-		    String       selectCategorySql = "select ... from .... where ....";
-            Statement    stmt = null;
+		
+		    String       selectChildrenSql = "select  c.category_id, c.category_name, c.parent_id from category c";	
+		    Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
+            condition.setLength( 0 );
+            // form the query based on the given Item object instance
+            query.append( selectChildrenSql );
 
-		
-		}
-
+            if( category != null ) {
+                if( category.getId() >= 0 ) {
+				// id is unique, so get category
+                    query.append( " where c.category_id in (select parent_id from category where category_id="+ category.getId() + ")" );
+                }
+            }
+            try {
+                stmt = conn.createStatement();
+                // retrieve the persistent Item object
+                //
+                if( stmt.execute( query.toString() ) ) { // statement returned a result
+                    ResultSet r = stmt.getResultSet();
+                    Iterator<Category> categoryIter = new CategoryIterator( r, objectModel );
+                    if( categoryIter != null && categoryIter.hasNext() ) {
+                        return categoryIter.next();
+                    }
+                    else
+                        return null;
+                }
+            }
+            catch( Exception e ) {      // just in case...
+                throw new DTException( "CategoryManager.restoreChildren: Could not restore persistent category objects; Root cause: " + e );
+            }
+            throw new DTException( "CategoryManager.restoreChildren: Could not restore persistent Category objects" );
+    	}	
 		
 }

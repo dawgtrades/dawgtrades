@@ -26,7 +26,7 @@ public interface Persistence {
 	public void deleteAttribute(Attribute attribute) throws DTException;
 	
 	public void saveAttributeType(AttributeType attributeType) throws DTException;
-	public AttributeType restoreAttributeType(AttributeType attributeType) throws DTException;
+	public Iterator<AttributeType> restoreAttributeType(AttributeType attributeType) throws DTException;
 	public void deleteAttributeType(AttributeType attributeType) throws DTException;
 	
 	public void saveAuction(Auction auction) throws DTException;

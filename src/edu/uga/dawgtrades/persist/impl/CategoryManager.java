@@ -10,6 +10,7 @@ import com.mysql.jdbc.Driver;
 import com.mysql.jdbc.PreparedStatement;
 
 import edu.uga.dawgtrades.model.Attribute;
+import edu.uga.dawgtrades.model.AttributeType;
 import edu.uga.dawgtrades.model.Auction;
 import edu.uga.dawgtrades.model.Category;
 import edu.uga.dawgtrades.model.DTException;
@@ -41,7 +42,7 @@ public class CategoryManager {
         String               updateCategorySql = "update category set category_name = ?, parent_id = ? where category_id = ?";
         PreparedStatement	 stmt = null;
         int                  numUpdated;
-        long                 itemId;
+        long                 categoryId;
        
         try {
 
@@ -55,8 +56,8 @@ public class CategoryManager {
             else
                 throw new DTException( "CategoryManager.save: can't save a Category: name undefined" );
 
-            if( category.getParentId() != null )
-                stmt.setString( 2, category.getParentId() );
+            if( category.getParentId() >=0 )
+                stmt.setLong( 2, category.getParentId() );
             else
                 throw new DTException( "CategoryManager.save: can't save a Category: parentId undefined" );
             
@@ -73,9 +74,9 @@ public class CategoryManager {
                         // we will use only the first row!
                         while( r.next() ) {
                             // retrieve the last insert auto_increment value
-                            itemId = r.getLong( 1 );
-                            if( itemId > 0 )
-                                item.setId( itemId ); // set this item's db id (proxy object)
+                            categoryId = r.getLong( 1 );
+                            if( categoryId > 0 )
+                                category.setId( categoryId ); // set this item's db id (proxy object)
                         }
                     }
                     }
@@ -94,7 +95,7 @@ public class CategoryManager {
         public Iterator<Category> restore( Category modelCategory )
                 throws DTException
         {
-            String       selectCategorySql = "select  category_name, parent_id from category";
+            String       selectCategorySql = "select category_name, parent_id from category";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
@@ -111,7 +112,7 @@ public class CategoryManager {
                 	if( modelCategory.getName() != null )
                 		condition.append( " category_name = '" + modelCategory.getName() + "'" );
 						
-                    if( modelCategory.getParentId() != null )
+                    if( modelCategory.getParentId() >= 0 )
                     	if( condition.length() > 0 )
                             condition.append( " and" );
                         condition.append( " parent_id = '" + modelCategory.getParentId() + "'" );
@@ -206,32 +207,29 @@ public class CategoryManager {
                 //
                 if( stmt.execute( query.toString() ) ) { // statement returned a result
                     ResultSet r = stmt.getResultSet();
-                    Iterator<Category> categoryIter = new CategoryIterator( r, objectModel );
-                    if( categoryIter != null && categoryIter.hasNext() ) {
-                        return categoryIter.next();
-                    }
-                    else
-                        return null;
+                    return new ItemIterator( r, objectModel);
+                    
+                    
                 }
             }
             catch( Exception e ) {      // just in case...
-                throw new DTException( "CategoryManager.restoreOwner: Could not restore persistent category objects; Root cause: " + e );
+                throw new DTException( "CategoryManager.restoreItemsInCategory: Could not restore persistent category objects; Root cause: " + e );
             }
-            throw new DTException( "CategoryManager.restoreOwner: Could not restore persistent category objects" );
+            throw new DTException( "CategoryManager.restoreItemsInCategory: Could not restore persistent category objects" );
     	}
 
 		
         public Iterator<AttributeType> restoreAttributeTypes(Category category) throws DTException  {
-        	String       selectAttributeSql = "select a.attribute_id, a.attribute_value, a.attribute_type_id, a.item_id 
-			from category c, attribute_type a 
-			where a.category_id = c.category_id";
+        	String       selectAttributeSql = "select a.attribute_id, a.attribute_value, a.attribute_type_id, a.item_id "
+        			+ "from category c, attribute_type a "
+        			+ "where a.category_id = c.category_id";
 
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
             condition.setLength( 0 );
             // form the query based on the given Item object instance
-            query.append( selectItemSql );
+            query.append( selectAttributeSql );
 
             if( category != null ) {
                 if( category.getId() >= 0 ) // id is unique, so it is sufficient to get a category
@@ -243,7 +241,7 @@ public class CategoryManager {
                     else
                         condition.append( " AND c.category_name = '" + category.getName() + "'" );
 	
-                    if( category.getParentId() != null && condition.length() == 0 )
+                    if( category.getParentId() >= 0 && condition.length() == 0 )
                         condition.append( " c.parent_id = '" + category.getParentId() + "'" );
                     else
                         condition.append( " AND c.parent_id = '" + category.getParentId() + "'" );
@@ -260,10 +258,8 @@ public class CategoryManager {
                 //
                 if( stmt.execute( query.toString() ) ) { // statement returned a result
                     ResultSet r = stmt.getResultSet();
-                    return new AttributeIterator(r, objectModel);
+                    return new AttributeTypeIterator(r, objectModel);
                 }
-                else
-                      return null;
                 
             }
             catch( Exception e ) {      // just in case...
@@ -275,75 +271,105 @@ public class CategoryManager {
 	
 	
 	    public Iterator<Category> restoreChildren(Category category) throws DTException  {
-		    String       selectChildrenSql = "select c.category_id, c.category_name, c.parent_id from category c";
-		    Statement    stmt = null;
+		    String       selectChildrenSql = "select c.category_id, c.category_name, c.parent_id from category c, category c2 where c.parent_id = c2.category_id";
+            Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
+
             condition.setLength( 0 );
+
             // form the query based on the given Item object instance
             query.append( selectChildrenSql );
 
             if( category != null ) {
-                if( category.getId() >= 0 ) {
-				// id is unique, so get category
-                    query.append( " where c.category_id in (select category_id from category where parent_id= " + category.getId() + ")" );
+                if( category.getId() >= 0 ) // id is unique, so it is sufficient to get a item
+                    query.append( " and c.category_id = " + category.getId() );
+                else {
+                    if( category.getParentId() >= 0 )
+                        condition.append( " c.parent_id = '" + category.getParentId() + "'" );
+
+                    if( category.getName() != null && condition.length() == 0 )
+                        condition.append( " c.category_name = '" + category.getName() + "'" );
+                    else
+                        condition.append( " AND c.category_name = '" + category.getName() + "'" );
+
+                    if( condition.length() > 0 ) {
+                        query.append( condition );
+                    }
                 }
             }
+
             try {
+
                 stmt = conn.createStatement();
-                // retrieve the persistent Item object
+
+                // retrieve the persistent category object
                 //
                 if( stmt.execute( query.toString() ) ) { // statement returned a result
                     ResultSet r = stmt.getResultSet();
-                    Iterator<Category> categoryIter = new CategoryIterator( r, objectModel );
-                    if( categoryIter != null && categoryIter.hasNext() ) {
-                        return categoryIter.next();
-                    }
-                    else
-                        return null;
+                    return new CategoryIterator(r, objectModel);
                 }
+                
             }
             catch( Exception e ) {      // just in case...
-                throw new DTException( "CategoryManager.restoreChildren: Could not restore persistent category objects; Root cause: " + e );
+                throw new DTException( "categoryManager.restoreAttributes: Could not restore persistent Attribute objects; Root cause: " + e );
             }
-            throw new DTException( "CategoryManager.restoreChildren: Could not restore persistent Category objects" );
+
+            throw new DTException( "categoryManager.restoreAttributes: Could not restore persistent Attribute objects" );
     	}			
 			
 		
-	    public Category restoreParent(Category category) throws DTException {
-		
-		    String       selectChildrenSql = "select  c.category_id, c.category_name, c.parent_id from category c";	
-		    Statement    stmt = null;
+	    public Category restoreParent(Category category) throws DTException  {
+		    String       selectParentSql = "select c.category_id, c.category_name, c.parent_id from category c, category c2 where c.category_id = c2.parent_id";
+            Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
+
             condition.setLength( 0 );
+
             // form the query based on the given Item object instance
-            query.append( selectChildrenSql );
+            query.append( selectParentSql );
 
             if( category != null ) {
-                if( category.getId() >= 0 ) {
-				// id is unique, so get category
-                    query.append( " where c.category_id in (select parent_id from category where category_id="+ category.getId() + ")" );
+                if( category.getId() >= 0 ) // id is unique, so it is sufficient to get a item
+                    query.append( " and c.category_id = " + category.getId() );
+                else {
+                    if( category.getParentId() >= 0 )
+                        condition.append( " c.parent_id = '" + category.getParentId() + "'" );
+
+                    if( category.getName() != null && condition.length() == 0 )
+                        condition.append( " c.category_name = '" + category.getName() + "'" );
+                    else
+                        condition.append( " AND c.category_name = '" + category.getName() + "'" );
+
+                    if( condition.length() > 0 ) {
+                        query.append( condition );
+                    }
                 }
             }
+
             try {
+
                 stmt = conn.createStatement();
-                // retrieve the persistent Item object
+
+                // retrieve the persistent category object
                 //
                 if( stmt.execute( query.toString() ) ) { // statement returned a result
-                    ResultSet r = stmt.getResultSet();
-                    Iterator<Category> categoryIter = new CategoryIterator( r, objectModel );
-                    if( categoryIter != null && categoryIter.hasNext() ) {
-                        return categoryIter.next();
+                	ResultSet r = stmt.getResultSet();
+                	Iterator<Category> catIter = new CategoryIterator( r, objectModel );
+                    if( catIter != null && catIter.hasNext() ) {
+                        return catIter.next();
                     }
                     else
                         return null;
                 }
+                
             }
             catch( Exception e ) {      // just in case...
-                throw new DTException( "CategoryManager.restoreChildren: Could not restore persistent category objects; Root cause: " + e );
+                throw new DTException( "categoryManager.restoreParent: Could not restore persistent Attribute objects; Root cause: " + e );
             }
-            throw new DTException( "CategoryManager.restoreChildren: Could not restore persistent Category objects" );
-    	}	
+
+            throw new DTException( "categoryManager.restoreParent: Could not restore persistent Attribute objects" );
+    	}			
 		
 }

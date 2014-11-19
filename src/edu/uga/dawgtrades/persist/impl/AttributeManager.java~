@@ -1,0 +1,21 @@
+package edu.uga.dawgtrades.persist.impl;
+
+import java.sql.*;
+import java.util.iterator;
+import com.mysql.jdbc.Driver;
+import com.mysql.jdbc.PreparedStatement;
+import edu.uga.dawgtrades.model.*;
+
+/**
+ * AttributeManager
+ * @author William C Spivey
+ */
+
+public class AttributeManager {
+    private ObjectModel objMod = null;
+    private Connection conn = null;
+
+    public void save(Attribute attr) throws DTException {
+	String insertAttributeSql = "insert into attribute ( attribute_value, attribute_type_id, item_id) values (?, ?, ?)";
+	String updateAttributeSql = "update attribute set attribute_value = ?, attribute_type_id = ?, item_id = ? where attribute_id = ?";
+}

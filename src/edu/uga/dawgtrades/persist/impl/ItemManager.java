@@ -131,10 +131,11 @@ public class ItemManager {
                 else {
                 	if( modelItem.getName() != null )
                 		condition.append( " name = '" + modelItem.getName() + "'" );
-                    if( modelItem.getDescription() != null )
+			if( modelItem.getDescription() != null ) {
                     	if( condition.length() > 0 )
                             condition.append( " and" );
                         condition.append( " description = '" + modelItem.getDescription() + "'" );
+			}
                     if( modelItem.getIdentifier() != null ) {
                     	if( condition.length() > 0 )
                             condition.append( " and" );

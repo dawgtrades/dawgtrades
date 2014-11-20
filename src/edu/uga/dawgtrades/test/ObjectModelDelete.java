@@ -50,6 +50,7 @@ public class ObjectModelDelete
          Category computers;
          Category televisions;
          ExperienceReport report1;
+         ExperienceReport report2;
          Bid bid1;
          Bid bid2;
          Bid bid3;
@@ -72,69 +73,71 @@ public class ObjectModelDelete
 
          try {
 
+              //users
+             batman = objectModel.createRegisteredUser("bman", "Bruce", "Wayne", "batmobile", true, "bman@yahoo.com", "678-938-2342", true);
+             superman = objectModel.createRegisteredUser("sman", "Clark", "Kent", "kryptonite", false, "sman@gmail.com", "706-234-1212", false);
+
+            //membership
+             mship = objectModel.createMembership(15, new Date());
+
+			 //categories
+             electronics = objectModel.createCategory(null, "Electronics");
+             computers = objectModel.createCategory(electronics, "Computers");
+             televisions = objectModel.createCategory(electronics, "Televisions");
+
+			 //items
+             computer = objectModel.createItem(computers, batman, "PC5407", "Apple Macbook", "Used for two years");
+             tv = objectModel.createItem(televisions, superman, "TV649", "Samsung TV", "Brand new in box");
+            
+             //attribute types
+             screenSize = objectModel.createAttributeType(computers, "Screen Size");
+             screenSize = objectModel.createAttributeType(televisions, "Screen Size");
+             resolution = objectModel.createAttributeType(computers, "Resolution");
+             resolution = objectModel.createAttributeType(televisions, "Resolution");
+			 
+             //attributes
+             small = objectModel.createAttribute(screenSize, computer, "small");
+             large = objectModel.createAttribute(screenSize, tv, "large");     
+             SD = objectModel.createAttribute(resolution, tv, "SD");
+             HD = objectModel.createAttribute(resolution, computer, "HD");
+			
+             //auctions
+             computerAuction = objectModel.createAuction(computer, 400, new Date());
+             tvAuction = objectModel.createAuction(tv, 350, new Date());
+
+             //bids
+             bid1 = objectModel.createBid(computerAuction, batman, 400);
+             bid2 = objectModel.createBid(computerAuction, superman, 450);
+             bid3 = objectModel.createBid(tvAuction, superman, 350);
+             bid4 = objectModel.createBid(tvAuction, batman, 500);
+			 
             //reports
              report1 = objectModel.createExperienceReport(batman, superman, 5, "5/5 would buy again", new Date());
              report2 = objectModel.createExperienceReport(superman, batman, 1, "Never sold me the item", new Date());
-			 
-             //bids
-             bid1 = objectModel.createBid(computerAuction, batman, 400);
-             objectModel.deleteBid(bid1);
-             bid2 = objectModel.createBid(computerAuction, superman, 450);
-             objectModel.deleteBid(bid2);
-             bid3 = objectModel.createBid(tvAuction, superman, 350);
-             objectModel.deleteBid(bid3);
-             bid4 = objectModel.createBid(tvAuction, batman, 500);
-             objectModel.deleteBid(bid4);
-			 
-             //auctions
-             computerAuction = objectModel.createAuction(computer, 400, new Date());
+
+			 objectModel.deleteExperienceReport(report1);
+			 objectModel.deleteExperienceReport(report2); 
+			 objectModel.deleteBid(bid1);
+			 objectModel.deleteBid(bid2);
+			 objectModel.deleteBid(bid3);
+             objectModel.deleteBid(bid4);			 
              objectModel.deleteAuction(computerAuction);
-             tvAuction = objectModel.createAuction(tv, 350, new Date());
-             objectModel.deleteAuction(tvAuction);
-
-             //attributes
-             small = objectModel.createAttribute(screenSize, computer, "small");
-             objectModel.deleteAttribute(small);
-             large = objectModel.createAttribute(screenSize, tv, "large");
-             objectModel.deleteAttribute(large);
-             SD = objectModel.createAttribute(resolution, tv, "SD");
+             objectModel.deleteAuction(tvAuction);			 
+             objectModel.deleteAttribute(small);			 
+			 objectModel.deleteAttribute(large);
              objectModel.deleteAttribute(SD);
-             HD = objectModel.createAttribute(resolution, computer, "HD");
-             objectModel.deleteAttribute(HD);
-             
-             //attribute types
-             screenSize = objectModel.createAttributeType(computers, "Screen Size");
-             objectModel.deleteAttributeType(screenSize);
-             screenSize = objectModel.createAttributeType(televisions, "Screen Size");
-             objectModel.deleteAttributeType(screenSize);
-             resolution = objectModel.createAttributeType(computers, "Resolution");
-             objectModel.deleteAttributeType(resolution);
-             resolution = objectModel.createAttributeType(televisions, "Resolution");
-             objectModel.deleteAttributeType(resolution);
-			 
-             //items
-             computer = objectModel.createItem(computers, batman, "PC5407", "Apple Macbook", "Used for two years");
-             objectModel.deleteItem(computer);
-             tv = objectModel.createItem(televisions, superman, "TV649", "Samsung TV", "Brand new in box");
-             objectModel.deleteItem(tv);
-			 
-             //categories
-             electronics = objectModel.createCategory(null, "Electronics");
-             objectModel.deleteCategory(electronics);
-             computers = objectModel.createCategory(electronics, "Computers");
-             objectModel.deleteCategory(computers);
-             televisions = objectModel.createCategory(electronics, "Televisions");
-             objectModel.deleteCategory(televisions);
-			 
-             //membership
-             mship = objectModel.createMembership(15, new Date());
-             objectModel.deleteMembership(mship);
-			 
-              //users
-             batman = objectModel.createRegisteredUser("bman", "Bruce", "Wayne", "batmobile", true, "bman@yahoo.com", "678-938-2342", true);
-             objectModel.deleteRegisteredUser(batman);
-
-             superman = objectModel.createRegisteredUser("sman", "Clark", "Kent", "kryptonite", false, "sman@gmail.com", "706-234-1212", false);
+             objectModel.deleteAttribute(HD);			 
+             objectModel.deleteAttributeType(screenSize);			 
+             objectModel.deleteAttributeType(screenSize);			 
+             objectModel.deleteAttributeType(resolution);			 
+             objectModel.deleteAttributeType(resolution);			 
+             objectModel.deleteItem(computer);			 
+             objectModel.deleteItem(tv);			 
+             objectModel.deleteCategory(electronics);			 
+             objectModel.deleteCategory(computers);			 
+             objectModel.deleteCategory(televisions);			 
+             objectModel.deleteMembership(mship);			 
+             objectModel.deleteRegisteredUser(batman);			 
              objectModel.deleteRegisteredUser(superman);
 			              
              System.out.println( "Entity objects deleted and saved in the persistence module" );

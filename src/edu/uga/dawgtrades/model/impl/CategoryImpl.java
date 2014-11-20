@@ -20,10 +20,13 @@ public class CategoryImpl extends Persistent implements Category {
     //new obj cons
     public CategoryImpl(String name, Category parent) throws DTException {
 	super(-1);
+	/*
 	if(parent == null)
 	    throw new DTException("Parent category is null");
 	if(!parent.isPersistent())
 	    throw new DTException("Parent category is not persistent");
+	*/
+	//	if(parent == null)
 	this.name = name;
 	this.parentId = parent.getId();
     }

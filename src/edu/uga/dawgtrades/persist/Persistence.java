@@ -26,7 +26,7 @@ public interface Persistence {
 	public void deleteAttribute(Attribute attribute) throws DTException;
 	
 	public void saveAttributeType(AttributeType attributeType) throws DTException;
-	public AttributeType restoreAttributeType(AttributeType attributeType) throws DTException;
+	public Iterator<AttributeType> restoreAttributeType(AttributeType attributeType) throws DTException;
 	public void deleteAttributeType(AttributeType attributeType) throws DTException;
 	
 	public void saveAuction(Auction auction) throws DTException;
@@ -50,7 +50,7 @@ public interface Persistence {
 	public void deleteItem(Item item) throws DTException;
 	
 	public void saveMembership(Membership membership) throws DTException;
-	public Membership restoreMembership(Membership membership) throws DTException;
+	public Membership restoreMembership() throws DTException;
 	public void deleteMembership(Membership membership) throws DTException;
 	
 	public void saveRegisteredUser(RegisteredUser registeredUser) throws DTException;

@@ -1,5 +1,7 @@
 package edu.uga.dawgtrades.model;
 
+import edu.uga.dawgtrades.persist.Persistence;
+
 /**
  * This is the interface to the Object Model subsystem.  It includes operations to create, store, 
  * retrieve, and delete all entity classes in the DawgTrades data model.  For some of the classes, 
@@ -556,5 +558,8 @@ public interface ObjectModel
     public AttributeType getAttributeType( Attribute attribute ) throws DTException;
     
     //public Iterator<Attribute>         getHasType( AttributeType attributeType ) throws DTException;   
-
+    
+    public void setPersistence( Persistence pers ) throws DTException;
+    
+    public Persistence getPersistence() throws DTException;
 }

@@ -86,7 +86,6 @@ public class ObjectModelCreate
              
              //categories
              electronics = objectModel.createCategory();
-	     electronics.setName("electronics");
              objectModel.storeCategory(electronics);
              computers = objectModel.createCategory(electronics, "Computers");
              objectModel.storeCategory(computers);

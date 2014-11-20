@@ -1,29 +1,60 @@
-package edu.uga.clubs.test;
+package edu.uga.dawgtrades.test;
 
 import java.sql.Connection;
-import java.util.Iterator;
+import java.util.Date;
 
-import edu.uga.clubs.ClubsException;
-import edu.uga.clubs.model.Club;
-import edu.uga.clubs.model.Membership;
-import edu.uga.clubs.model.ObjectModel;
-import edu.uga.clubs.model.Person;
-import edu.uga.clubs.model.impl.ObjectModelImpl;
-import edu.uga.clubs.persistence.Persistence;
-import edu.uga.clubs.persistence.impl.DbUtils;
-import edu.uga.clubs.persistence.impl.PersistenceImpl;
+import edu.uga.dawgtrades.model.Attribute;
+import edu.uga.dawgtrades.model.AttributeType;
+import edu.uga.dawgtrades.model.Auction;
+import edu.uga.dawgtrades.model.Bid;
+import edu.uga.dawgtrades.model.Category;
+import edu.uga.dawgtrades.model.DTException;
+import edu.uga.dawgtrades.model.ExperienceReport;
+import edu.uga.dawgtrades.model.Item;
+import edu.uga.dawgtrades.model.Membership;
+import edu.uga.dawgtrades.model.ObjectModel;
+import edu.uga.dawgtrades.model.RegisteredUser;
+import edu.uga.dawgtrades.model.impl.ObjectModelImpl;
+import edu.uga.dawgtrades.persist.Persistence;
+import edu.uga.dawgtrades.persist.impl.DbUtils;
+import edu.uga.dawgtrades.persist.impl.PersistenceImpl;
 
 
-// A class to illustrate how to delete entity objects and associations
-//
+/** Testing the deletion of the entity classes and associations for DawgTrades
+ * 
+ * @author Vic
+ *
+ */
 public class ObjectModelDelete
 {
-    public static void main(String[] args)
+    public static void main(String[] args) throws DTException
     {
-         Connection  conn = null;
+         Connection conn = null;
          ObjectModel objectModel = null;
          Persistence persistence = null;
-
+         
+         RegisteredUser batman;
+         RegisteredUser superman;
+         Membership mship;
+         Item computer;
+         Item tv;
+         AttributeType screenSize;
+         AttributeType resolution;
+         Attribute small;
+         Attribute large;
+         Attribute SD;
+         Attribute HD;
+         Auction computerAuction;
+         Auction tvAuction;
+         Category electronics;
+         Category computers;
+         Category televisions;
+         ExperienceReport report1;
+         Bid bid1;
+         Bid bid2;
+         Bid bid3;
+         Bid bid4;
+         
          // get a database connection
          try {
              conn = DbUtils.connect();
@@ -34,111 +65,87 @@ public class ObjectModelDelete
          
          // obtain a reference to the ObjectModel module      
          objectModel = new ObjectModelImpl();
-
          // obtain a reference to Persistence module and connect it to the ObjectModel        
          persistence = new PersistenceImpl( conn, objectModel ); 
-
          // connect the ObjectModel module to the Persistence module
-         objectModel.setPersistence( persistence ); 
-         
-         Iterator<Club> clubIter = null;
-                  
+         objectModel.setPersistence( persistence);  
+
          try {
-             
-	     // Delete the Running club object
-             // First: find the Running club
-             Club runningClub = null;
-             Club modelClub = objectModel.createClub();
-             modelClub.setName( "Running" );
-             clubIter = objectModel.findClub( modelClub );
-             while( clubIter.hasNext() ) {
-                 runningClub = clubIter.next();
-                 System.out.println( runningClub );
-             }
-             
-             // Second: delete the Running club
-             if( runningClub != null ) {
-                 objectModel.deleteClub( runningClub );
-                 System.out.println( "Deleted the Running club" );
-             }
-             else
-                 System.out.println( "Failed to retrieve the Running Club object" );
-             
-	     // Delete Heather Brooks Person object
-             // First: find Heather Brooks
-             Person heatherBrooks = null;
-             Person modelPerson = objectModel.createPerson();
-             modelPerson.setFirstName( "Heather" );
-             modelPerson.setLastName( "Brooks" );
-             Iterator<Person> personIter = objectModel.findPerson( modelPerson );
-             while( personIter.hasNext() ) {
-                 heatherBrooks = personIter.next();
-                 System.out.println( heatherBrooks );
-             }
-             
-             // Second: delete Heather Brooks
-             if( heatherBrooks != null ) {
-                 objectModel.deletePerson( heatherBrooks );
-                 System.out.println( "Deleted the Heather Brooks Person object" );
-             }
-             else
-                 System.out.println( "Failed to find Heather Brooks" );
-             
-             // Delete the membership of Robert Wilson in the Bridge club
-             // First: locate the Bridge club
-             Club bridgeClub = null;
-             modelClub = objectModel.createClub();
-             modelClub.setName( "Bridge" );
-             clubIter = objectModel.findClub( modelClub );
-             while( clubIter.hasNext() ) {
-                 bridgeClub = clubIter.next();
-                 System.out.println( bridgeClub );
-             }
-             
-             if( bridgeClub == null )
-                 System.out.println( "Failed to retrieve the Bridge club object" );
-             
-             // Second: locate Robert Wilson
-             Person robertWilson = null;
-             modelPerson = objectModel.createPerson();
-             modelPerson.setFirstName( "Robert" );
-             modelPerson.setLastName( "Wilson" );
-             personIter = objectModel.findPerson( modelPerson );
-             while( personIter.hasNext() ) {
-                 robertWilson = personIter.next();
-                 System.out.println( robertWilson );
-             }
-             
-             if( robertWilson == null )
-                 System.out.println( "Failed to retrieve Robert Wilson person object" );
-             
-             // Third: locate the Membership record of Robert Wilson in the Bridge club
-             if( bridgeClub != null && robertWilson != null ) {
-                 Membership robertInbridgeMembership = null;
-                 Membership modelMembership = objectModel.createMembership();
-                 modelMembership.setClub( bridgeClub );
-                 modelMembership.setPerson( robertWilson );
-                 Iterator<Membership> membershipIter = objectModel.findMembership( modelMembership );
-                 while( membershipIter.hasNext() ) {
-                     robertInbridgeMembership = membershipIter.next();
-                     System.out.println( robertInbridgeMembership );
-                 }
 
-                 // delete the Membership record of Robert Wilson in the Bridge club
-                 if( robertInbridgeMembership != null ) {
-                     objectModel.deleteMembership( robertInbridgeMembership );
-                     System.out.println( "Deleted the membership of Robert Wilson in the Bridge club" );
-                 }
-                 else
-                     System.out.println( "Failed to retrieve the membership of Robert Wilson in the Bridge club" );
-             }
+            //reports
+             report1 = objectModel.createExperienceReport(batman, superman, 5, "5/5 would buy again", new Date());
+             report2 = objectModel.createExperienceReport(superman, batman, 1, "Never sold me the item", new Date());
+			 
+             //bids
+             bid1 = objectModel.createBid(computerAuction, batman, 400);
+             objectModel.deleteBid(bid1);
+             bid2 = objectModel.createBid(computerAuction, superman, 450);
+             objectModel.deleteBid(bid2);
+             bid3 = objectModel.createBid(tvAuction, superman, 350);
+             objectModel.deleteBid(bid3);
+             bid4 = objectModel.createBid(tvAuction, batman, 500);
+             objectModel.deleteBid(bid4);
+			 
+             //auctions
+             computerAuction = objectModel.createAuction(computer, 400, new Date());
+             objectModel.deleteAuction(computerAuction);
+             tvAuction = objectModel.createAuction(tv, 350, new Date());
+             objectModel.deleteAuction(tvAuction);
 
+             //attributes
+             small = objectModel.createAttribute(screenSize, computer, "small");
+             objectModel.deleteAttribute(small);
+             large = objectModel.createAttribute(screenSize, tv, "large");
+             objectModel.deleteAttribute(large);
+             SD = objectModel.createAttribute(resolution, tv, "SD");
+             objectModel.deleteAttribute(SD);
+             HD = objectModel.createAttribute(resolution, computer, "HD");
+             objectModel.deleteAttribute(HD);
+             
+             //attribute types
+             screenSize = objectModel.createAttributeType(computers, "Screen Size");
+             objectModel.deleteAttributeType(screenSize);
+             screenSize = objectModel.createAttributeType(televisions, "Screen Size");
+             objectModel.deleteAttributeType(screenSize);
+             resolution = objectModel.createAttributeType(computers, "Resolution");
+             objectModel.deleteAttributeType(resolution);
+             resolution = objectModel.createAttributeType(televisions, "Resolution");
+             objectModel.deleteAttributeType(resolution);
+			 
+             //items
+             computer = objectModel.createItem(computers, batman, "PC5407", "Apple Macbook", "Used for two years");
+             objectModel.deleteItem(computer);
+             tv = objectModel.createItem(televisions, superman, "TV649", "Samsung TV", "Brand new in box");
+             objectModel.deleteItem(tv);
+			 
+             //categories
+             electronics = objectModel.createCategory(null, "Electronics");
+             objectModel.deleteCategory(electronics);
+             computers = objectModel.createCategory(electronics, "Computers");
+             objectModel.deleteCategory(computers);
+             televisions = objectModel.createCategory(electronics, "Televisions");
+             objectModel.deleteCategory(televisions);
+			 
+             //membership
+             mship = objectModel.createMembership(15, new Date());
+             objectModel.deleteMembership(mship);
+			 
+              //users
+             batman = objectModel.createRegisteredUser("bman", "Bruce", "Wayne", "batmobile", true, "bman@yahoo.com", "678-938-2342", true);
+             objectModel.deleteRegisteredUser(batman);
+
+             superman = objectModel.createRegisteredUser("sman", "Clark", "Kent", "kryptonite", false, "sman@gmail.com", "706-234-1212", false);
+             objectModel.deleteRegisteredUser(superman);
+			              
+             System.out.println( "Entity objects deleted and saved in the persistence module" );
+             
          }
-         catch( ClubsException ce ) {
-             System.err.println( "ClubsException: " + ce );
+         catch( DTException de) {
+             System.err.println( "Exception: " + de );
+             de.printStackTrace();
          }
          catch( Exception e ) {
-             System.err.println( "Exception: " + e );
+             e.printStackTrace();
          }
          finally {
              // close the connection
@@ -147,7 +154,8 @@ public class ObjectModelDelete
              }
              catch( Exception e ) {
                  System.err.println( "Exception: " + e );
+		 e.printStackTrace();
              }
-         }   
-    }
+         }
+    }  
 }

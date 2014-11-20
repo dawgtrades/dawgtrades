@@ -26,11 +26,11 @@ public abstract class DbAccessConfig
     
     /** The database server name for the connection pool
      */
-    static final String DB_SERVER_NAME = "uml.cs.uga.edu";
+    static final String DB_SERVER_NAME = "localhost";
 
     /** The JDBC connection string/URL.
      */
-    static final String DB_CONNECTION_URL = "jdbc:mysql://uml.cs.uga.edu:3306/team9";
+    static final String DB_CONNECTION_URL = "jdbc:mysql://localhost:3306/team9";
 
     /** The database user name.
      */

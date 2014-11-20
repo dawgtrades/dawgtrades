@@ -56,10 +56,10 @@ public class CategoryManager {
             else
                 throw new DTException( "CategoryManager.save: can't save a Category: name undefined" );
 
-            if( category.getParentId() >=0 )
+	    //            if( category.getParentId() >=0 )
                 stmt.setLong( 2, category.getParentId() );
-            else
-                throw new DTException( "CategoryManager.save: can't save a Category: parentId undefined" );
+		//            else
+		//                throw new DTException( "CategoryManager.save: can't save a Category: parentId undefined" );
             
             numUpdated = stmt.executeUpdate();
 

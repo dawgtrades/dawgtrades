@@ -1,7 +1,7 @@
 package edu.uga.dawgtrades.persist.impl;
 
 import java.sql.*;
-import java.util.iterator;
+import java.util.Iterator;
 import com.mysql.jdbc.Driver;
 import com.mysql.jdbc.PreparedStatement;
 import edu.uga.dawgtrades.model.*;
@@ -14,6 +14,11 @@ import edu.uga.dawgtrades.model.*;
 public class AttributeManager {
     private ObjectModel objMod = null;
     private Connection conn = null;
+
+    public AttributeManager(Connection conn, ObjectModel objectModel) {
+	this.conn = conn;
+	this.objMod = objectModel;
+    }
 
     public void save(Attribute attr) throws DTException {
 	String insertAttributeSql = "insert into attribute ( attribute_value, attribute_type_id, item_id) values (?, ?, ?)";
@@ -44,7 +49,7 @@ public class AttributeManager {
 	    else
 		throw new DTException("AttributeManager.save: can't save Attribute: item undefined");
 
-	    if(item.isPersistent())
+	    if(attr.isPersistent())
 		stmt.setLong(4, attr.getId());
 
 	    numUpdated = stmt.executeUpdate();
@@ -111,7 +116,7 @@ public class AttributeManager {
 
 	    if(stmt.execute(query.toString())) {
 		ResultSet r = stmt.getResultSet();
-		return new ItemIterator(r, objectModel);
+		return new AttributeIterator(r, objMod);
 	    }
 	}
 	catch(Exception e) {
@@ -120,7 +125,7 @@ public class AttributeManager {
 	throw new DTException("AttributeManager.restore: Could not restore persistent attribute obj");
     }
 
-    public AttributeType restoreAttributeType(Attribute attr) throws DTException {
+    public AttributeType restoreTypeOfAttribute(Attribute attr) throws DTException {
 	String selectAttributeSql = "select at.attribute_type_id, at.attribute_type_name, at.category_id from attribute a, attribute_type at where a.attribute_type_id = at.attribute_type_id";
 	Statement stmt = null;
 	StringBuffer query = new StringBuffer(100);
@@ -156,7 +161,7 @@ public class AttributeManager {
 
 	    if(stmt.execute(query.toString())) {
 		ResultSet r = stmt.getResultSet();
-		Iterator<AttributeType> attrTIter = new AttributeTypeIterator(r, objectModel);
+		Iterator<AttributeType> attrTIter = new AttributeTypeIterator(r, objMod);
 		if(attrTIter != null && attrTIter.hasNext())
 		    return attrTIter.next();
 		else
@@ -204,7 +209,7 @@ public class AttributeManager {
 
 	    if(stmt.execute(query.toString())) {
 		ResultSet r = stmt.getResultSet();
-		Iterator<Item> itemIter = new ItemIterator(r, objectModel);
+		Iterator<Item> itemIter = new ItemIterator(r, objMod);
 		if(itemIter != null && itemIter.hasNext())
 		    return itemIter.next();
 		else
@@ -228,7 +233,7 @@ public class AttributeManager {
 	try {
 	    stmt = (PreparedStatement) conn.prepareStatement(deleteAttributeSql);
 
-	    stmt.setLong(1, attribute.getId());
+	    stmt.setLong(1, attr.getId());
 
 	    numUpdated = stmt.executeUpdate();
 

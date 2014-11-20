@@ -80,8 +80,6 @@ public class DbUtils {
     public static Connection connect()
             throws DTException
     {
-	System.out.println(DbAccessConfig.DB_DRIVE_NAME);
-	System.out.println(DbAccessConfig.DB_CONNECTION_URL);
         try {
             Class.forName(DbAccessConfig.DB_DRIVE_NAME);
         }

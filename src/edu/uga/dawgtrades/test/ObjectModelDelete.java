@@ -78,10 +78,11 @@ public class ObjectModelDelete
              superman = objectModel.createRegisteredUser("sman", "Clark", "Kent", "kryptonite", false, "sman@gmail.com", "706-234-1212", false);
 
             //membership
-             mship = objectModel.createMembership(15, new Date());
+	     //             mship = objectModel.createMembership(15, new Date());
 
 			 //categories
-             electronics = objectModel.createCategory(null, "Electronics");
+             electronics = objectModel.createCategory();
+	     electronics.setName("Electronics");
              computers = objectModel.createCategory(electronics, "Computers");
              televisions = objectModel.createCategory(electronics, "Televisions");
 
@@ -133,10 +134,10 @@ public class ObjectModelDelete
              objectModel.deleteAttributeType(resolution);			 
              objectModel.deleteItem(computer);			 
              objectModel.deleteItem(tv);			 
-             objectModel.deleteCategory(electronics);			 
+	     objectModel.deleteCategory(electronics);			 
              objectModel.deleteCategory(computers);			 
              objectModel.deleteCategory(televisions);			 
-             objectModel.deleteMembership(mship);			 
+	     //             objectModel.deleteMembership(mship);			 
              objectModel.deleteRegisteredUser(batman);			 
              objectModel.deleteRegisteredUser(superman);
 			              

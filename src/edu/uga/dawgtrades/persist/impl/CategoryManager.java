@@ -61,6 +61,7 @@ public class CategoryManager {
 		//            else
 		//                throw new DTException( "CategoryManager.save: can't save a Category: parentId undefined" );
             
+
             numUpdated = stmt.executeUpdate();
 
             if( !category.isPersistent() ) {
@@ -112,11 +113,11 @@ public class CategoryManager {
                 	if( modelCategory.getName() != null )
                 		condition.append( " category_name = '" + modelCategory.getName() + "'" );
 						
-                    if( modelCategory.getParentId() >= 0 )
+			if( modelCategory.getParentId() >= 0 ) {
                     	if( condition.length() > 0 )
                             condition.append( " and" );
                         condition.append( " parent_id = '" + modelCategory.getParentId() + "'" );
-
+			}
                     if( condition.length() > 0 ) {
                         query.append(  " where " );
                         query.append( condition );

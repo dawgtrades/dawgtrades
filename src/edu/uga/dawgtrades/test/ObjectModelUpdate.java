@@ -1,22 +1,14 @@
-package edu.uga.clubs.test;
+package edu.uga.dawgtrades.test;
 
 
 import java.sql.Connection;
 import java.util.Iterator;
 
-import edu.uga.clubs.ClubsException;
-import edu.uga.clubs.model.Club;
-import edu.uga.clubs.model.Membership;
-import edu.uga.clubs.model.ObjectModel;
-import edu.uga.clubs.model.Person;
-import edu.uga.clubs.model.impl.ObjectModelImpl;
-import edu.uga.clubs.persistence.Persistence;
-import edu.uga.clubs.persistence.impl.DbUtils;
-import edu.uga.clubs.persistence.impl.PersistenceImpl;
+import edu.uga.dawgtrades.model.*;
+import edu.uga.dawgtrades.model.impl.*;
+import edu.uga.dawgtrades.persist.*;
+import edu.uga.dawgtrades.persist.impl.*;
 
-
-// A class to illustrate how to perform an update of entity objects
-//
 public class ObjectModelUpdate
 {
     public static void main(String[] args)
@@ -30,7 +22,7 @@ public class ObjectModelUpdate
              conn = DbUtils.connect();
          } 
          catch (Exception seq) {
-             System.err.println( "ObjectModelDelete: Unable to obtain a database connection" );
+             System.err.println( "ObjectModelUpdate: Unable to obtain a database connection" );
          }
          
          // obtain a reference to the ObjectModel module      
@@ -40,58 +32,64 @@ public class ObjectModelUpdate
          persistence = new PersistenceImpl( conn, objectModel ); 
 
          // connect the ObjectModel module to the Persistence module
+	 try {
          objectModel.setPersistence( persistence ); 
+	 }
+	 catch(DTException e) {
+	     System.err.println("ObjectModelUpdate: something something something");
+	 }
+
          
-         Iterator<Club> clubIter = null;
+         Iterator<Category> catIter = null;
                   
          try {
              
-	     // modify the name of the "Tennis" club to "Advanced Tennis"
-	     // First: locate the Tennis club
-             Club tennisClub = null;
-             Club modelClub = objectModel.createClub();
-             modelClub.setName( "Tennis" );
-             clubIter = objectModel.findClub( modelClub );
-             while( clubIter.hasNext() ) {
-                 tennisClub = clubIter.next();
-                 System.out.println( tennisClub );
+	     // modify the name of the "Computers" cat to "Advanced Computers"
+	     // First: locate the Computers cat
+             Category computers = null;
+             Category modelCat = objectModel.createCategory();
+             modelCat.setName( "Computers" );
+             catIter = objectModel.findCategory( modelCat );
+             while( catIter.hasNext() ) {
+		 computers = catIter.next();
+                 System.out.println( computers );
              }
              
-	     // Second: modify the name of the "Tennis" club to "Advanced Tennis"
-	     // and store the updated club
-	     if( tennisClub != null ) {
-		 tennisClub.setName( "Advanced Tennis" );
-		 objectModel.storeClub( tennisClub );
-		 System.out.println( "Updated the name of the Tenis club to Advanced Tennis" );
+	     // Second: modify the name of the "Computers cat to "Advanced Computers"
+	     // and store the updated cat
+	     if( computers != null ) {
+		 computers.setName( "Advanced Computers" );
+		 objectModel.storeCategory( computers );
+		 System.out.println( "Updated the name of the Computers cat to Advanced Computers" );
 	     }
 	     else
-		 System.out.println( "Failed to retrieve the Tennis Club object" );
+		 System.out.println( "Failed to retrieve the Computers cat object" );
              
-	     // modify the phone number of Mary Swift
-	     // First: locate Mary Swift
-             Person marySwift = null;
-             Person modelPerson = objectModel.createPerson();
-             modelPerson.setFirstName( "Mary" );
-             modelPerson.setLastName( "Swift" );
-             Iterator<Person> personIter = objectModel.findPerson( modelPerson );
-             while( personIter.hasNext() ) {
-                 marySwift = personIter.next();
-                 System.out.println( marySwift );
+	     // modify the phone number of batman
+	     // First: locate batman
+             RegisteredUser batman = null;
+             RegisteredUser modelRegUser = objectModel.createRegisteredUser();
+	     //             modelRegUser.setFirstName( "Bruce" );
+             modelRegUser.setLastName( "Wayne" );
+             Iterator<RegisteredUser> regUserIter = objectModel.findRegisteredUser( modelRegUser );
+             while( regUserIter.hasNext() ) {
+                 batman = regUserIter.next();
+                 System.out.println( batman );
              }
              
-             // Second: modify the name of the Tennis club to "Advanced Tennis"
+             // Second: modify the phone number of batman to (111) 123-4567
 	     // and store the updated Person object
-             if( marySwift != null ) {
-		 marySwift.setPhone( "(111) 123-4567" );
-		 objectModel.storePerson( marySwift );
-		 System.out.println( "Updated the phone number of Mary Swift to (111) 123-4567" );
+             if( batman != null ) {
+		 batman.setPhone( "(111) 123-4567" );
+		 objectModel.storeRegisteredUser( batman );
+		 System.out.println( "Updated the phone number of batman to (111) 123-4567" );
 	     }
 	     else
-                 System.out.println( "Failed to retrieve the Mary Swift Person object" );
+                 System.out.println( "Failed to retrieve the batman Person object" );
 
          }
-         catch( ClubsException ce) {
-             System.err.println( "ClubsException: " + ce );
+         catch( DTException ce) {
+             System.err.println( "DTException: " + ce );
          }
          catch( Exception e) {
              System.err.println( "Exception: " + e );

@@ -44,7 +44,7 @@ public class ObjectModelCreate
          Attribute large;
          Attribute SD;
          Attribute HD;
-         Auction computerAuction;
+oh man          Auction computerAuction;
          Auction tvAuction;
          Category electronics;
          Category computers;
@@ -86,6 +86,7 @@ public class ObjectModelCreate
              
              //categories
              electronics = objectModel.createCategory();
+	     electronics.setName("electronics");
              objectModel.storeCategory(electronics);
              computers = objectModel.createCategory(electronics, "Computers");
              objectModel.storeCategory(computers);

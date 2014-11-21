@@ -63,15 +63,15 @@ public class RegisteredUserIterator
 
             try {
 		
-                lastName = rs.getString( 4 );
-                firstName = rs.getString( 3 );
-                phone = rs.getString( 8 );
-                email = rs.getString( 7 );
-                name = rs.getString( 2 );
-                password = rs.getString( 5 );
-                isAdmin = rs.getBoolean( 6 );
-                canText = rs.getBoolean( 9 );
-                id = rs.getLong( 1 );
+                lastName = rs.getString( 1 );
+                firstName = rs.getString( 2 );
+                phone = rs.getString( 3 );
+                email = rs.getString( 4 );
+                name = rs.getString( 5 );
+                password = rs.getString( 6 );
+                isAdmin = rs.getBoolean( 7 );
+                canText = rs.getBoolean( 8 );
+                id = rs.getLong( 9 );
                 
                 more = rs.next();
             }

@@ -54,12 +54,12 @@ public class ItemIterator implements Iterator<Item> {
         if( more ) {
 
             try {
-                id = rs.getLong( 1 );
-                ownerId = rs.getLong( 2 );
-                categoryId = rs.getLong( 3 );
-                identifier = rs.getString (4 );
-                name = rs.getString( 5 );
-                description = rs.getString( 6 );
+                name = rs.getString( 1 );
+                description = rs.getString( 2 );
+                identifier = rs.getString (3 );
+                categoryId = rs.getLong( 4 );
+                ownerId = rs.getLong( 5 );
+                id = rs.getLong( 6 );
 
                 more = rs.next();
             }

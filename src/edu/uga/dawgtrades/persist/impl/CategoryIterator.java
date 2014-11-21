@@ -38,12 +38,13 @@ public class CategoryIterator implements Iterator<Category> {
         if( more ) {
             try {
             	name = rs.getString(1);
-            	id = rs.getLong(2);
+		parentId = rs.getLong(2);
+		//          	id = rs.getLong(2);
 		try {
-		    parentId = rs.getLong(3);
+		    id = rs.getLong(3);
 		}
 		catch(Exception e) {
-		    parentId = -1;
+		    id = -1;
 		}
                 
                 more = rs.next();

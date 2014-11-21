@@ -25,13 +25,13 @@ public class ItemImpl extends Persistent implements Item {
 			String name, String description) throws DTException {
 		super(-1);
 		if (owner == null)
-			throw new DTException("The owner is null");
-		if (!owner.isPersistent())
-			throw new DTException("The owner is not persistent");
+		    throw new DTException("The owner is null");
+		//if (!owner.isPersistent())
+		//	throw new DTException("The owner is not persistent");
 		if (category == null)
 			throw new DTException("The category is null");
-		if (!category.isPersistent())
-			throw new DTException("The category is not persistent");
+	        //if (!category.isPersistent())
+		//	throw new DTException("The category is not persistent");
 		this.ownerId = owner.getId();
 		this.categoryId = category.getId();
 		this.identifier = identifier;

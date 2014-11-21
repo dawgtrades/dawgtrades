@@ -1,4 +1,4 @@
-<project name="dawgtrades" default="run" basedir=".">
+<project name="dawgtrades" default="dist" basedir=".">
 <property name="src" location="src"/>
 <property name="classes" location="classes"/>
 <property name="dist" location="dist"/>
@@ -25,8 +25,26 @@
 <jar jarfile="${dist}/lib/dawgtrades.jar" basedir="${classes}"/>
 </target>
 
-<target name="run" depends="dist">
+<target name="testCreate" depends="dist">
 <java classname="edu.uga.dawgtrades.test.ObjectModelCreate" fork="true">
+<classpath>
+<path refid="classpath"/>
+<path location="${dist}/lib/dawgtrades.jar"/>
+</classpath>
+</java>
+</target>
+
+<target name="testUpdate" depends="dist">
+<java classname="edu.uga.dawgtrades.test.ObjectModelUpdate" fork="true">
+<classpath>
+<path refid="classpath"/>
+<path location="${dist}/lib/dawgtrades.jar"/>
+</classpath>
+</java>
+</target>
+
+<target name="testDelete" depends="dist">
+<java classname="edu.uga.dawgtrades.test.ObjectModelDelete" fork="true">
 <classpath>
 <path refid="classpath"/>
 <path location="${dist}/lib/dawgtrades.jar"/>

@@ -62,16 +62,16 @@ public class RegisteredUserIterator
         if( more ) {
 
             try {
-		id = rs.getLong( 1 );
-		System.out.println(rs.getString(2));
-                name = rs.getString( 2 );
-                firstName = rs.getString( 3 );
+		
                 lastName = rs.getString( 4 );
+                firstName = rs.getString( 3 );
+                phone = rs.getString( 8 );
+                email = rs.getString( 7 );
+                name = rs.getString( 2 );
                 password = rs.getString( 5 );
                 isAdmin = rs.getBoolean( 6 );
-                email = rs.getString( 7 );
-                phone = rs.getString( 8 );
                 canText = rs.getBoolean( 9 );
+                id = rs.getLong( 1 );
                 
                 more = rs.next();
             }

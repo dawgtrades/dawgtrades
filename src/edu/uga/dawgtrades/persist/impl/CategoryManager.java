@@ -60,7 +60,8 @@ public class CategoryManager {
                 stmt.setLong( 2, category.getParentId() );
 		//            else
 		//                throw new DTException( "CategoryManager.save: can't save a Category: parentId undefined" );
-            
+		if(category.isPersistent())
+		    stmt.setLong(3, category.getId());
 
             numUpdated = stmt.executeUpdate();
 

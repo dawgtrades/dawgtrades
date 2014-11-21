@@ -62,6 +62,17 @@ public class RegisteredUserIterator
         if( more ) {
 
             try {
+		/*<<<<<<< HEAD
+		id = rs.getLong( 1 );
+                lastName = rs.getString( 2 );
+                firstName = rs.getString( 3 );
+                phone = rs.getString( 4 );
+                email = rs.getString( 5 );
+                name = rs.getString( 6 );
+                password = rs.getString( 7 );
+                isAdmin = rs.getBoolean( 8 );
+                canText = rs.getBoolean( 9 );
+		*/
 		
                 lastName = rs.getString( 1 );
                 firstName = rs.getString( 2 );

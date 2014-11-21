@@ -1,9 +1,11 @@
 package edu.uga.dawgtrades.persist.impl;
 
 import java.sql.*;
-import java.util.iterator;
+import java.util.Iterator;
+
 import com.mysql.jdbc.Driver;
 import com.mysql.jdbc.PreparedStatement;
+
 import edu.uga.dawgtrades.model.*;
 
 /**
@@ -12,7 +14,7 @@ import edu.uga.dawgtrades.model.*;
  */
 
 public class AttributeManager {
-    private ObjectModel objMod = null;
+    private ObjectModel objModel = null;
     private Connection conn = null;
 
     public void save(Attribute attr) throws DTException {
@@ -44,7 +46,7 @@ public class AttributeManager {
 	    else
 		throw new DTException("AttributeManager.save: can't save Attribute: item undefined");
 
-	    if(item.isPersistent())
+	    if(attr.isPersistent())
 		stmt.setLong(4, attr.getId());
 
 	    numUpdated = stmt.executeUpdate();
@@ -228,7 +230,7 @@ public class AttributeManager {
 	try {
 	    stmt = (PreparedStatement) conn.prepareStatement(deleteAttributeSql);
 
-	    stmt.setLong(1, attribute.getId());
+	    stmt.setLong(1, attr.getId());
 
 	    numUpdated = stmt.executeUpdate();
 

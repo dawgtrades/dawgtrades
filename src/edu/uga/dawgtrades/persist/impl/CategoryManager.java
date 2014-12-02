@@ -39,30 +39,35 @@ public class CategoryManager {
             throws DTException
     {
         String               insertCategorySql = "insert into category ( category_name, parent_id) values ( ?, ?)";
-        String               updateCategorySql = "update category set category_name = ?, parent_id = ? where category_id = ?";
+        String               updateCategorySql = "update category set category_name = ?, parent_id = ? where category_name = ?";
         PreparedStatement	 stmt = null;
         int                  numUpdated;
         long                 categoryId;
        
         try {
 
-            if( !category.isPersistent() )
+		System.out.println("category name==" + category.getName());
+		
+            //if( !category.isPersistent() )
+			if (category.getName() == null)
                 stmt = (PreparedStatement) conn.prepareStatement( insertCategorySql );
             else
                 stmt = (PreparedStatement) conn.prepareStatement( updateCategorySql );
 
-            if( category.getName() != null )
+            if( category.getName() != null )  {
                 stmt.setString( 1, category.getName() );
+                stmt.setString( 3, category.getName() );				
+			}
             else
                 throw new DTException( "CategoryManager.save: can't save a Category: name undefined" );
 
 	    //            if( category.getParentId() >=0 )
-                stmt.setLong( 2, category.getParentId() );
+            stmt.setLong( 2, category.getParentId() );
 		//            else
 		//                throw new DTException( "CategoryManager.save: can't save a Category: parentId undefined" );
-		if(category.isPersistent())
-		    stmt.setLong(3, category.getId());
-
+		//  if(category.isPersistent())
+		//    stmt.setLong(3, category.getId());
+		
             numUpdated = stmt.executeUpdate();
 
             if( !category.isPersistent() ) {
@@ -97,7 +102,7 @@ public class CategoryManager {
         public Iterator<Category> restore( Category modelCategory )
                 throws DTException
         {
-            String       selectCategorySql = "select category_name, parent_id from category";
+            String       selectCategorySql = "select category_id, parent_id from category";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
@@ -107,25 +112,32 @@ public class CategoryManager {
             // form the query based on the given Category object instance
             query.append( selectCategorySql );
 
+//			System.out.println( "CAT QUERY ==" + query.toString() );
+			
             if( modelCategory != null ) {
+			    /*
                 if( modelCategory.getId() >= 0 ) // id is unique, so it is sufficient to get a Category
                     query.append( " where category_id = " + modelCategory.getId() );
                 else {
-                	if( modelCategory.getName() != null )
-                		condition.append( " category_name = '" + modelCategory.getName() + "'" );
-						
-			if( modelCategory.getParentId() >= 0 ) {
+				*/
+                if( modelCategory.getName() != null )
+                		query.append( " where category_name = '" + modelCategory.getName() + "'" );
+				/*		
+			    if( modelCategory.getParentId() >= 0 ) {
                     	if( condition.length() > 0 )
                             condition.append( " and" );
                         condition.append( " parent_id = '" + modelCategory.getParentId() + "'" );
-			}
-                    if( condition.length() > 0 ) {
+			    }
+                if( condition.length() > 0 ) {
                         query.append(  " where " );
                         query.append( condition );
-                    }
-                }
+                }    
+				*/
+                //}
             }
 
+			//System.out.println( "CAT QUERY ==" + query.toString() );
+			
             try {
 
                 stmt = conn.createStatement();
@@ -134,6 +146,9 @@ public class CategoryManager {
                 //
                 if( stmt.execute( query.toString() ) ) { // statement returned a result
                     ResultSet r = stmt.getResultSet();
+					
+					System.out.println( "results set ==" + r );
+					
                     return new CategoryIterator( r, objectModel );
                 }
             }
@@ -152,10 +167,16 @@ public class CategoryManager {
             PreparedStatement    stmt = null;
             int                  numUpdated;
 
+	//System.out.println("DELETE isPersistent == " + category.isPersistent());
+			
             // form the query based on the given Category object instance
-            if( !category.isPersistent() ) // is the Category object persistent?  If not, nothing to actually delete
-                return;
+            if( !category.isPersistent() ) { 
+			    //System.out.println("nothing to DELETE" );
 
+			    // If category not persistent, nothing to actually delete
+                return;
+            }
+			
             try {
 
                 //DELETE t1, t2 FROM t1, t2 WHERE t1.id = t2.id;
@@ -164,6 +185,8 @@ public class CategoryManager {
 
                 stmt.setLong( 1, category.getId() );
 
+				System.out.println("stmt == " + stmt.toString());
+				
                 numUpdated = stmt.executeUpdate();
 
                 if( numUpdated == 0 ) {

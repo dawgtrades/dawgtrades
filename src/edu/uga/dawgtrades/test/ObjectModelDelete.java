@@ -2,6 +2,7 @@ package edu.uga.dawgtrades.test;
 
 import java.sql.Connection;
 import java.util.Date;
+import java.util.Iterator;
 
 import edu.uga.dawgtrades.model.Attribute;
 import edu.uga.dawgtrades.model.AttributeType;
@@ -33,22 +34,22 @@ public class ObjectModelDelete
          ObjectModel objectModel = null;
          Persistence persistence = null;
          
-         RegisteredUser batman;
+         //RegisteredUser batman;
          RegisteredUser superman;
          Membership mship;
          Item computer;
          Item tv;
-         AttributeType screenSize;
-         AttributeType resolution;
-         Attribute small;
-         Attribute large;
-         Attribute SD;
-         Attribute HD;
+         AttributeType screenSize = null;
+         AttributeType resolution = null;
+         Attribute small = null;
+         Attribute large = null;
+         Attribute SD = null;
+         Attribute HD = null;
          Auction computerAuction;
          Auction tvAuction;
-         Category electronics;
-         Category computers;
-         Category televisions;
+         Category electronics = null;
+         //Category computers = null;
+         Category televisions = null;
          ExperienceReport report1;
          ExperienceReport report2;
          Bid bid1;
@@ -63,44 +64,80 @@ public class ObjectModelDelete
          catch (Exception seq) {
              System.err.println( "ObjectModelDelete: Unable to obtain a database connection" );
          }
-         
-         // obtain a reference to the ObjectModel module      
-         objectModel = new ObjectModelImpl();
-         // obtain a reference to Persistence module and connect it to the ObjectModel        
-         persistence = new PersistenceImpl( conn, objectModel ); 
-         // connect the ObjectModel module to the Persistence module
-         objectModel.setPersistence( persistence);  
 
-         try {
+         try {         
+            // obtain a reference to the ObjectModel module      
+            objectModel = new ObjectModelImpl();
+            // obtain a reference to Persistence module and connect it to the ObjectModel        
+            persistence = new PersistenceImpl( conn, objectModel ); 
+            // connect the ObjectModel module to the Persistence module
+            objectModel.setPersistence( persistence);  
+		 }
+         catch (Exception seq) {
+             System.err.println( "ObjectModelDelete: Unable to obtain persistence module" );
+         }
 
-              //users
-             batman = objectModel.createRegisteredUser("bman", "Bruce", "Wayne", "batmobile", true, "bman@yahoo.com", "678-938-2342", true);
-             superman = objectModel.createRegisteredUser("sman", "Clark", "Kent", "kryptonite", false, "sman@gmail.com", "706-234-1212", false);
-
-            //membership
-	     //             mship = objectModel.createMembership(15, new Date());
-
+         try {  
+              //users 
+             RegisteredUser batman = null;
+             RegisteredUser modelRegUser = objectModel.createRegisteredUser();
+	         modelRegUser.setFirstName( "Bruce" );
+             modelRegUser.setLastName( "Wayne" );
+             Iterator<RegisteredUser> regUserIter = objectModel.findRegisteredUser( modelRegUser );
+             while( regUserIter.hasNext() ) {
+                 batman = regUserIter.next();
+                 System.out.println( batman );
+             }
+             if( batman != null )
+                 objectModel.deleteRegisteredUser(batman);
+             else
+                 System.out.println( "Failed to retrieve the batman object" );
+			
+             //membership
+	         // mship = objectModel.createMembership(15, new Date());
+		     
 			 //categories
-             electronics = objectModel.createCategory();
-	     electronics.setName("Electronics");
-             computers = objectModel.createCategory(electronics, "Computers");
-             televisions = objectModel.createCategory(electronics, "Televisions");
-
+	         // First: locate the Computers cat
+             Category computers = null;
+             Category modelCat = objectModel.createCategory();
+             modelCat.setName( "Computers" );
+             Iterator<Category> catIter = objectModel.findCategory( modelCat );
+             while( catIter.hasNext() ) {
+		         computers = catIter.next();
+				 } 
+             if( computers != null )
+                 objectModel.deleteCategory(computers);
+             else
+                 System.out.println( "Failed to retrieve the computer object" );
+                 
+/*			
 			 //items
              computer = objectModel.createItem(computers, batman, "PC5407", "Apple Macbook", "Used for two years");
              tv = objectModel.createItem(televisions, superman, "TV649", "Samsung TV", "Brand new in box");
             
+			try {
              //attribute types
              screenSize = objectModel.createAttributeType(computers, "Screen Size");
              screenSize = objectModel.createAttributeType(televisions, "Screen Size");
              resolution = objectModel.createAttributeType(computers, "Resolution");
              resolution = objectModel.createAttributeType(televisions, "Resolution");
-			 
+        	}
+             catch( DTException de) {
+                System.err.println( "Create Attribute type Exception: " + de );
+                de.printStackTrace();
+            }
+
+			try {
              //attributes
              small = objectModel.createAttribute(screenSize, computer, "small");
              large = objectModel.createAttribute(screenSize, tv, "large");     
              SD = objectModel.createAttribute(resolution, tv, "SD");
              HD = objectModel.createAttribute(resolution, computer, "HD");
+			}
+             catch( DTException de) {
+                System.err.println( "Create Attributes Exception: " + de );
+                de.printStackTrace();
+            }
 			
              //auctions
              computerAuction = objectModel.createAuction(computer, 400, new Date());
@@ -116,6 +153,7 @@ public class ObjectModelDelete
              report1 = objectModel.createExperienceReport(batman, superman, 5, "5/5 would buy again", new Date());
              report2 = objectModel.createExperienceReport(superman, batman, 1, "Never sold me the item", new Date());
 
+	 	  try {	 	  
 			 objectModel.deleteExperienceReport(report1);
 			 objectModel.deleteExperienceReport(report2); 
 			 objectModel.deleteBid(bid1);
@@ -123,7 +161,8 @@ public class ObjectModelDelete
 			 objectModel.deleteBid(bid3);
              objectModel.deleteBid(bid4);			 
              objectModel.deleteAuction(computerAuction);
-             objectModel.deleteAuction(tvAuction);			 
+             objectModel.deleteAuction(tvAuction);
+			 
              objectModel.deleteAttribute(small);			 
 			 objectModel.deleteAttribute(large);
              objectModel.deleteAttribute(SD);
@@ -133,19 +172,28 @@ public class ObjectModelDelete
              objectModel.deleteAttributeType(resolution);			 
              objectModel.deleteAttributeType(resolution);			 
              objectModel.deleteItem(computer);			 
-             objectModel.deleteItem(tv);			 
-	     objectModel.deleteCategory(electronics);			 
-             objectModel.deleteCategory(computers);			 
-             objectModel.deleteCategory(televisions);			 
-	     //             objectModel.deleteMembership(mship);			 
+             objectModel.deleteItem(tv);
+	         objectModel.deleteCategory(electronics);             objectModel.deleteCategory(computers);        objectModel.deleteCategory(televisions);			 
+			 
+             
+			 // objectModel.deleteMembership(mship);
+
+			System.out.println( "Before Delete" );
+			 
              objectModel.deleteRegisteredUser(batman);			 
-             objectModel.deleteRegisteredUser(superman);
-			              
+             //objectModel.deleteRegisteredUser(superman);
+			 
              System.out.println( "Entity objects deleted and saved in the persistence module" );
              
-         }
+            }
+             catch( DTException de) {
+                System.err.println( "DELETE Exception: " + de );
+                de.printStackTrace();
+             }
+		*/	 
+		 }
          catch( DTException de) {
-             System.err.println( "Exception: " + de );
+             System.err.println( "Create or Delete Exception: " + de );
              de.printStackTrace();
          }
          catch( Exception e ) {
@@ -158,7 +206,7 @@ public class ObjectModelDelete
              }
              catch( Exception e ) {
                  System.err.println( "Exception: " + e );
-		 e.printStackTrace();
+		         e.printStackTrace();
              }
          }
     }  

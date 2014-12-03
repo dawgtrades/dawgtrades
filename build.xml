@@ -1,0 +1,59 @@
+<project name="dawgtrades" default="dist" basedir=".">
+<property name="src" location="src"/>
+<property name="classes" location="classes"/>
+<property name="dist" location="dist"/>
+
+<path id="classpath">
+<fileset dir="/opt/classes/">
+<include name="mysql-connector-java-5.1.22-bin.jar"/>
+</fileset>
+</path>
+
+<target name="init">
+<tstamp/>
+<mkdir dir="${classes}"/>
+</target>
+
+<target name="compile" depends="init">
+<javac srcdir="${src}" destdir="${classes}">
+<classpath refid="classpath"/>
+</javac>
+</target>
+
+<target name="dist" depends="compile">
+<mkdir dir="${dist}/lib"/>
+<jar jarfile="${dist}/lib/dawgtrades.jar" basedir="${classes}"/>
+</target>
+
+<target name="testCreate" depends="dist">
+<java classname="edu.uga.dawgtrades.test.ObjectModelCreate" fork="true">
+<classpath>
+<path refid="classpath"/>
+<path location="${dist}/lib/dawgtrades.jar"/>
+</classpath>
+</java>
+</target>
+
+<target name="testUpdate" depends="dist">
+<java classname="edu.uga.dawgtrades.test.ObjectModelUpdate" fork="true">
+<classpath>
+<path refid="classpath"/>
+<path location="${dist}/lib/dawgtrades.jar"/>
+</classpath>
+</java>
+</target>
+
+<target name="testDelete" depends="dist">
+<java classname="edu.uga.dawgtrades.test.ObjectModelDelete" fork="true">
+<classpath>
+<path refid="classpath"/>
+<path location="${dist}/lib/dawgtrades.jar"/>
+</classpath>
+</java>
+</target>
+
+<target name="clean">
+<delete dir="${classes}"/>
+<delete dir="${dist}"/>
+</target>
+</project>

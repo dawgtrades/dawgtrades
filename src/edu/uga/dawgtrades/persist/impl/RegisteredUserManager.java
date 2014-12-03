@@ -32,8 +32,8 @@ class RegisteredUserManager
     public void save( RegisteredUser user ) 
             throws DTException
     {
-        String               insertUserSql = "insert into registered_user ( last_name, first_name, phone, email, uname, upassword, is_admin, can_text, membership_fee_id ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";              
-        String               updateUserSql = "update registered_user  set last_name = ?, first_name = ?, phone = ?, email = ?, uname = ?, upassword = ?, is_admin = ?, can_text = ?, , membership_fee_id = ? where id = ?";              
+        String               insertUserSql = "insert into registered_user ( last_name, first_name, phone, email, uname, upassword, is_admin, can_text) values ( ?, ?, ?, ?, ?, ?, ?, ?)";              
+        String               updateUserSql = "update registered_user  set last_name = ?, first_name = ?, phone = ?, email = ?, uname = ?, upassword = ?, is_admin = ?, can_text = ? where id = ?";              
         PreparedStatement    stmt;
         int                  inscnt;
         long                 userId;

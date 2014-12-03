@@ -25,7 +25,7 @@ import edu.uga.dawgtrades.persist.impl.ExperienceReportManager;
 
 public class PersistenceImpl implements Persistence {
 	
-	//private AttributeManager attributeManager = null;
+    private AttributeManager attributeManager = null;
     private AttributeTypeManager attributeTypeManager = null;
     private AuctionManager auctionManager = null;
     private BidManager bidManager = null;
@@ -37,7 +37,7 @@ public class PersistenceImpl implements Persistence {
 
     public PersistenceImpl( Connection conn, ObjectModel objectModel )
     {
-        //attributeManager = new AttributeManager( conn, objectModel );
+        attributeManager = new AttributeManager( conn, objectModel );
         attributeTypeManager = new AttributeTypeManager( conn, objectModel );
         auctionManager = new AuctionManager( conn, objectModel );
         bidManager = new BidManager( conn, objectModel );
@@ -173,15 +173,15 @@ public class PersistenceImpl implements Persistence {
 		
 	
 	public AttributeType restoreTypeOfAttribute(Attribute attribute) throws DTException {
-		attributeManager.restoreTypeOfAttribute(attribute);
+		return attributeManager.restoreTypeOfAttribute(attribute);
 	}
 	public Item restoreItemWithAttribute(Attribute attribute) throws DTException {
-		attributeManager.restoreTypeOfAttribute(attribute);
+		return attributeManager.restoreItem(attribute);
 	}
 		
 	//attribute type
 	public Category restoreCategoryWithType(AttributeType attributeType) throws DTException {
-		attributeTypeManager.restoreCategoryWithType(attributeType);
+		return attributeTypeManager.restoreCategoryWithType(attributeType);
 	}
 	
 	//auction

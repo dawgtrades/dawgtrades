@@ -61,7 +61,7 @@ public class ObjectModelCreate
              conn = DbUtils.connect();
          } 
          catch (Exception seq) {
-             System.err.println( "ObjectModelDelete: Unable to obtain a database connection" );
+             System.err.println( "ObjectModelCreate: Unable to obtain a database connection" );
          }
          
          // obtain a reference to the ObjectModel module      
@@ -85,7 +85,8 @@ public class ObjectModelCreate
              objectModel.storeMembership(mship);
              
              //categories
-             electronics = objectModel.createCategory(null, "Electronics");
+             electronics = objectModel.createCategory();
+	     electronics.setName("electronics");
              objectModel.storeCategory(electronics);
              computers = objectModel.createCategory(electronics, "Computers");
              objectModel.storeCategory(computers);

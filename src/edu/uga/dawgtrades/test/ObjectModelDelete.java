@@ -37,8 +37,8 @@ public class ObjectModelDelete
          //RegisteredUser batman;
          RegisteredUser superman;
          Membership mship;
-         Item computer;
-         Item tv;
+         //Item computer;
+         //Item tv;
          AttributeType screenSize = null;
          AttributeType resolution = null;
          Attribute small = null;
@@ -77,7 +77,8 @@ public class ObjectModelDelete
              System.err.println( "ObjectModelDelete: Unable to obtain persistence module" );
          }
 
-         try {  
+         try { 
+/*		 
               //users 
              RegisteredUser batman = null;
              RegisteredUser modelRegUser = objectModel.createRegisteredUser();
@@ -108,13 +109,33 @@ public class ObjectModelDelete
              if( computers != null )
                  objectModel.deleteCategory(computers);
              else
-                 System.out.println( "Failed to retrieve the computer object" );
-                 
-/*			
+                 System.out.println( "Failed to retrieve the computer Catelog object" );
+        
+             //computer = objectModel.createItem(computers, batman, "PC5407", "Apple Macbook", "Used for two years");
+             //tv = objectModel.createItem(televisions, superman, "TV649", "Samsung TV", "Brand new in box");
+			 		 	
 			 //items
-             computer = objectModel.createItem(computers, batman, "PC5407", "Apple Macbook", "Used for two years");
-             tv = objectModel.createItem(televisions, superman, "TV649", "Samsung TV", "Brand new in box");
-            
+			 Item computer = null;
+             Item modelItem = objectModel.createItem();
+             modelItem.setName( "Apple Macbook");
+			 modelItem.setId(12);
+             Iterator<Item> itemIter = objectModel.findItem( modelItem );
+             while( itemIter.hasNext() ) {
+		         computer = itemIter.next();
+				 } 
+             if( computer != null ) {
+			   try {
+                 objectModel.deleteItem(computer);
+				}
+			   catch( DTException de) {
+                System.err.println( "Delete ITEM Exception: " + de );
+                de.printStackTrace();
+                }
+              }
+			 else
+                System.out.println( "Failed to retrieve the computer ITEM object" );
+*/			 
+				 
 			try {
              //attribute types
              screenSize = objectModel.createAttributeType(computers, "Screen Size");
@@ -127,6 +148,7 @@ public class ObjectModelDelete
                 de.printStackTrace();
             }
 
+/*			
 			try {
              //attributes
              small = objectModel.createAttribute(screenSize, computer, "small");
@@ -153,6 +175,9 @@ public class ObjectModelDelete
              report1 = objectModel.createExperienceReport(batman, superman, 5, "5/5 would buy again", new Date());
              report2 = objectModel.createExperienceReport(superman, batman, 1, "Never sold me the item", new Date());
 
+			 
+			 
+			 //  GO AWAY.......
 	 	  try {	 	  
 			 objectModel.deleteExperienceReport(report1);
 			 objectModel.deleteExperienceReport(report2); 
@@ -193,7 +218,7 @@ public class ObjectModelDelete
 		*/	 
 		 }
          catch( DTException de) {
-             System.err.println( "Create or Delete Exception: " + de );
+             System.err.println( "ObjectModelDelete Exception: " + de );
              de.printStackTrace();
          }
          catch( Exception e ) {

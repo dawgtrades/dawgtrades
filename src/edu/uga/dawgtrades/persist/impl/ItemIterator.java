@@ -59,8 +59,12 @@ public class ItemIterator implements Iterator<Item> {
                 identifier = rs.getString (3 );
                 categoryId = rs.getLong( 4 );
                 ownerId = rs.getLong( 5 );
-                id = rs.getLong( 6 );
-
+				try {
+		           id = rs.getLong( 6 );
+		        }
+		        catch(Exception e) {
+		          id = -1;
+		        }
                 more = rs.next();
             }
             catch( Exception e ) {

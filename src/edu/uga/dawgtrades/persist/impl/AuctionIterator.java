@@ -60,7 +60,6 @@ public class AuctionIterator implements Iterator<Auction> {
                 sellingPrice = rs.getFloat(4);
                 expiration = rs.getDate( 5 ); //TODO: See if have to convert sql to java here
                 minPrice = rs.getFloat( 6 );
-                
 		
                 more = rs.next();
             }

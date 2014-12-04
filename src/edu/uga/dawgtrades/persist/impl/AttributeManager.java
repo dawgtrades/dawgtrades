@@ -139,15 +139,14 @@ public class AttributeManager {
 	    if(attr.getId() >= 0)
 		query.append(" and a.attribute_id = '" + attr.getId() + "'");
 	    else {
-		if(attr.getValue() != null)
+		if(attr.getValue() != null) {
 		    condition.append(" and a.attribute_value = '" + attr.getValue() + "'");
+		}
 		if(attr.getAttributeType() >= 0) {
-		       condition.append(" and");
-		       condition.append(" a.attribute_type_id = '" + attr.getAttributeType() + "'");
+		    condition.append(" and a.attribute_type_id = '" + attr.getAttributeType() + "'");
 		}
 		if(attr.getItemId() >= 0) {
-			condition.append(" and");
-		    condition.append(" a.item_id = '" + attr.getItemId() + "'");
+		    condition.append(" and a.item_id = '" + attr.getItemId() + "'");
 		}
 		if(condition.length() > 0)
 		    query.append(condition);
@@ -189,12 +188,10 @@ public class AttributeManager {
 		if(attr.getValue() != null)
 		    condition.append(" and a.attribute_value = '" + attr.getValue() + "'");
 		if(attr.getAttributeType() >= 0) {
-			condition.append(" and");
-		    condition.append(" a.attribute_type_id = '" + attr.getAttributeType() + "'");
+		    condition.append(" and a.attribute_type_id = '" + attr.getAttributeType() + "'");
 		}
 		if(attr.getItemId() >= 0) {
-			condition.append(" and");
-		    condition.append(" a.item_id = '" + attr.getItemId() + "'");
+		    condition.append(" and a.item_id = '" + attr.getItemId() + "'");
 		}
 		if(condition.length() > 0)
 		    query.append(condition);

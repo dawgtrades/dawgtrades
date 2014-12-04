@@ -36,13 +36,18 @@ public class CategoryIterator implements Iterator<Category> {
         Category parent = null;
         Category category = null;
         if( more ) {
-           try {
-		       
-		        id = rs.getLong(1);
-		        parentId = rs.getLong(2);
-				name = rs.getString(3);
-							
-                more = rs.next();
+
+            try {
+		try {
+		    id = rs.getLong(1);
+		}
+		catch(Exception e) {
+		    id = -1;
+		}
+		parentId = rs.getLong(2);
+		name = rs.getString(3);
+
+		more = rs.next();
             }
             catch( Exception e ) {
                 throw new NoSuchElementException( "CategoryIterator: No next CategoryObject; cause: " + e );

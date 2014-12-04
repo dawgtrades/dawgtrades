@@ -73,7 +73,6 @@ public class RegisteredUserIterator
                 isAdmin = rs.getBoolean( 8 );
                 canText = rs.getBoolean( 9 );
                 
-                
                 more = rs.next();
 				
             }

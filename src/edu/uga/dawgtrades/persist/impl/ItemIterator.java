@@ -61,8 +61,7 @@ public class ItemIterator implements Iterator<Item> {
                 categoryId = rs.getLong( 5 );
                 ownerId = rs.getLong( 6 );
 		        
-		       
-                more = rs.next();
+		more = rs.next();
             }
             catch( Exception e ) {
                 throw new NoSuchElementException( "ItemIterator: No next Itemobject; cause: " + e );

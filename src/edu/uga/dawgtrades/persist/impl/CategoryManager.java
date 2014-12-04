@@ -98,7 +98,9 @@ public class CategoryManager {
         public Iterator<Category> restore( Category modelCategory )
                 throws DTException
         {
-            String       selectCategorySql = "select category_id, parent_id from category";
+
+            String       selectCategorySql = "select category_id, category_name, parent_id from category";
+
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
@@ -111,25 +113,25 @@ public class CategoryManager {
 //			System.out.println( "CAT QUERY ==" + query.toString() );
 			
             if( modelCategory != null ) {
-			    /*
+		
                 if( modelCategory.getId() >= 0 ) // id is unique, so it is sufficient to get a Category
                     query.append( " where category_id = " + modelCategory.getId() );
                 else {
-				*/
-                if( modelCategory.getName() != null )
-                		query.append( " where category_name = '" + modelCategory.getName() + "'" );
-				/*		
-			    if( modelCategory.getParentId() >= 0 ) {
+				
+		    if( modelCategory.getName() != null )
+                		condition.append( " where category_name = '" + modelCategory.getName() + "'" );
+						
+		    if( modelCategory.getParentId() >= 0 ) {
                     	if( condition.length() > 0 )
                             condition.append( " and" );
                         condition.append( " parent_id = '" + modelCategory.getParentId() + "'" );
-			    }
-                if( condition.length() > 0 ) {
+		    }
+		    if( condition.length() > 0 ) {
                         query.append(  " where " );
                         query.append( condition );
-                }    
-				*/
-                //}
+		    }    
+				
+                }
             }
 
 			//System.out.println( "CAT QUERY ==" + query.toString() );

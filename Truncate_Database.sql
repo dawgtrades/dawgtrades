@@ -1,0 +1,10 @@
+delete from experience_reports;
+delete from bid;
+delete from auction;
+delete from attribute;
+delete from attribute_type;
+delete from item;
+delete from category;
+delete from membership;
+delete from registered_user;
+commit;

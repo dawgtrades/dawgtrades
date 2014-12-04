@@ -126,11 +126,11 @@ public class ItemManager {
             query.append( selectItemSql );
             
             if( modelItem != null ) {
-			     /*
+			     
                 if( modelItem.getId() >= 0 ) // id is unique, so it is sufficient to get a Item
                     query.append( " where item_id = " + modelItem.getId() );
                 else {
-				*/
+			
                 	if( modelItem.getName() != null )
                 		condition.append( " name = '" + modelItem.getName() + "'" );
 						
@@ -160,6 +160,7 @@ public class ItemManager {
                         query.append(  " where " );
                         query.append( condition );
                     }
+		}
             }
             
             try {

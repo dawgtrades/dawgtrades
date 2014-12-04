@@ -37,16 +37,19 @@ public class CategoryIterator implements Iterator<Category> {
         Category category = null;
         if( more ) {
             try {
-            	name = rs.getString(1);
-		parentId = rs.getLong(2);
-		//          	id = rs.getLong(2);
 		try {
-		    id = rs.getLong(3);
+		    id = rs.getLong(1);
 		}
 		catch(Exception e) {
 		    id = -1;
 		}
-                
+		parentId = rs.getLong(2);
+		try {
+		    name = rs.getString(3);
+		}
+		catch(Exception e) {
+		    name = null;
+		}
                 more = rs.next();
             }
             catch( Exception e ) {

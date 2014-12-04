@@ -102,7 +102,7 @@ public class AuctionManager {
         public Iterator<Auction> restore( Auction modelAuction )
                 throws DTException
         {
-            String       selectAuctionSql = "select item_id, status, high_bid, expiration_dt, min_price from auction";
+            String       selectAuctionSql = "select auction_id, item_id, status, high_bid, expiration_dt, min_price from auction";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
@@ -114,7 +114,7 @@ public class AuctionManager {
 
             if( modelAuction != null ) {
                 if( modelAuction.getId() >= 0 ) // id is unique, so it is sufficient to get a Auction
-                    query.append( " where id = " + modelAuction.getId() );
+                    query.append( " where auction_id = " + modelAuction.getId() );
                 else {
                     if( modelAuction.getItemId() > 0 )
                         condition.append( " item_id = '" + modelAuction.getItemId() + "'" );

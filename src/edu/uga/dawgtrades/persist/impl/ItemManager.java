@@ -115,7 +115,7 @@ public class ItemManager {
         public Iterator<Item> restore( Item modelItem )
                 throws DTException
         {
-            String       selectItemSql = "select name, description, identifier, category_id, owner_id from item";
+            String       selectItemSql = "select item_id, name, description, identifier, category_id, owner_id from item";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
@@ -127,7 +127,7 @@ public class ItemManager {
 
             if( modelItem != null ) {
                 if( modelItem.getId() >= 0 ) // id is unique, so it is sufficient to get a Item
-                    query.append( " where id = " + modelItem.getId() );
+                    query.append( " where item_id = " + modelItem.getId() );
                 else {
                 	if( modelItem.getName() != null )
                 		condition.append( " name = '" + modelItem.getName() + "'" );

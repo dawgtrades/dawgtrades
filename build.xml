@@ -43,6 +43,15 @@
 </java>
 </target>
 
+<target name="testRead" depends="dist">
+<java classname="edu.uga.dawgtrades.test.ObjectModelRead" fork="true">
+<classpath>
+<path refid="classpath"/>
+<path location="${dist}/lib/dawgtrades.jar"/>
+</classpath>
+</java>
+</target>
+
 <target name="testDelete" depends="dist">
 <java classname="edu.uga.dawgtrades.test.ObjectModelDelete" fork="true">
 <classpath>

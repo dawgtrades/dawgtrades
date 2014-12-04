@@ -45,4 +45,8 @@ public class AttributeTypeImpl extends Persistent implements AttributeType {
     public void setCategoryId(long categoryId) {
 	this.categoryId = categoryId;
     }
+    
+    public String toString() {
+		return "AttributeType[" + getId() + "]: Category[" + getCategoryId() + "] Name[" + getName() + "]";
+	}
 }

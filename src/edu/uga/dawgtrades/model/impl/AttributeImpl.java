@@ -51,5 +51,9 @@ public class AttributeImpl extends Persistent implements Attribute {
     public void setAttributeType(long attributeId) {
 	this.attributeTypeId = attributeId;
     }
+    
+    public String toString() {
+		return "Attribute[" + getId() + "]: Item[" + getItemId() + "] Value[" + getValue() + "]";
+	}
 
 }

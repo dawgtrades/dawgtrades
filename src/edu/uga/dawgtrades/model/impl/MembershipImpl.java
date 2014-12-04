@@ -29,6 +29,6 @@ public class MembershipImpl extends Persistent implements Membership {
 		return date;
 	}	
 	public String toString() {
-		return "Membership[" + getId() + "]: price[" + getPrice() + "] date[" + getDate() + "] ";
+		return "Membership[" + getId() + "]: price[" + getPrice() + "] date[" + getDate() + "]";
 	}
 }

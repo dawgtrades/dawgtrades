@@ -119,7 +119,7 @@ public class CategoryManager {
                 else {
 				
 		    if( modelCategory.getName() != null )
-                		condition.append( " where category_name = '" + modelCategory.getName() + "'" );
+                		condition.append( " category_name = '" + modelCategory.getName() + "'" );
 						
 		    if( modelCategory.getParentId() >= 0 ) {
                     	if( condition.length() > 0 )

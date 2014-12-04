@@ -67,6 +67,9 @@ class BidManager
 			
             stmt.setBoolean(5, bid.isWinning());
             
+            if( bid.isPersistent() )
+                stmt.setLong( 6, bid.getId() );
+            
             numUpdated = stmt.executeUpdate();
 
             if( !bid.isPersistent() ) {
@@ -101,7 +104,9 @@ class BidManager
     public Iterator<Bid> restore( Bid modelBid ) 
             throws DTException
     {
-        String       selectBidSql = "select user_id, auction_id, bid_value, bid_date, is_winning from bid"; 
+        String       selectBidSql = "select b.bid_id, b.user_id, b.auction_id, b.bid_value, b.bid_date, b.is_winning, a.item_id, a.status, a.min_price, a.high_bid, "
+        		+ "a.expiration_dt, u.uname, u.first_name, u.last_name, u.upassword, u.is_admin, u.email, u.phone, "
+        		+ "u.can_text from bid b, auction a, registered_user.u where a.auction_id = b.auction_id and b.user_id = u.user_id"; 
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
         StringBuffer condition = new StringBuffer( 100 );
@@ -113,40 +118,18 @@ class BidManager
         
         if( modelBid != null ) {
             if( modelBid.getId() >= 0 ) // id is unique, so it is sufficient to get a Bid
-                query.append( " where bid_id = " + modelBid.getId() );
+                query.append( " and bid_id = " + modelBid.getId() );
             else {
-                if( modelBid.getRegisteredUser() != null ) {
-                    if( condition.length() > 0 )
-                        condition.append( " and" );
-                    condition.append( " user_id = '" + modelBid.getRegisteredUser().getId() + "'" );
-                }
-				
-                if( modelBid.getAuction() != null ) {
-                    if( condition.length() > 0 )
-                        condition.append( " and" );
-                    condition.append( " auction_id = '" + modelBid.getAuction().getId() + "'" );
-                }				
-				
-     
-                if( condition.length() > 0 )
-                    condition.append( " and" );
-                condition.append( " bid_value = '" + modelBid.getAmount() + "'" );
-                
-                
-                if( modelBid.getDate() != null ) {
-                	java.util.Date jDate = modelBid.getDate();
-                    java.sql.Date sDate = new java.sql.Date( jDate.getTime() );
-                    if( condition.length() > 0 )
-                        condition.append( " and" );
-                    condition.append( " bid_date = '" + sDate + "'" );
-                } 
-                
-                if( condition.length() > 0 )
-                    condition.append( " and" );
-                condition.append( " is_winning = '" + modelBid.isWinning() + "'" );                				
-					
+
+                    if( modelBid.getAuction() != null ) {
+                        condition.append( " and b.auction_id = " + modelBid.getAuction().getId() );
+                    }
+
+                    if( modelBid.getRegisteredUser() != null ) {
+                        condition.append( " and b.user_id = " + modelBid.getRegisteredUser().getId() );
+                    }
+
                 if( condition.length() > 0 ) {
-                    query.append(  " where " );
                     query.append( condition );
                 }
             }

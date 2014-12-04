@@ -1,6 +1,7 @@
 package edu.uga.dawgtrades.persist.impl;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Iterator;
 
 import edu.uga.dawgtrades.model.Attribute;

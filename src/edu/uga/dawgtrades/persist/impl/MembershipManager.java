@@ -15,9 +15,7 @@ import edu.uga.dawgtrades.model.ObjectModel;
 import edu.uga.dawgtrades.model.impl.MembershipImpl;
 
 /**
- * MIGHT NEED TO CHANGE THIS A LOT LATER. MEMBERSHIP IS A SINGLETON. DON'T REALLY NEED
- * COMPLEX METHODS SINCE THERE WILL ALWAYS ONLY BE ONE MEMBERSHIP. WE SHOULD KNOW ITS ID
- * IS 1. 
+ *
  * @author Vic
  *
  */
@@ -93,7 +91,7 @@ class MembershipManager
     public Membership restore() 
             throws DTException
     {
-        String       selectMembershipSql = "select fee, fee_date from membership where membership_fee_id"; 
+        String       selectMembershipSql = "select fee, fee_date from membership"; 
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
         

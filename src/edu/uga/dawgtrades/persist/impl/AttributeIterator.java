@@ -43,10 +43,10 @@ public class AttributeIterator implements Iterator<Attribute> {
         Attribute attribute = null;
         if( more ) {
             try {
-		value = rs.getString(1);
-		attributeTypeId = rs.getLong(2);
-		itemId = rs.getLong(3);
-		id = rs.getLong(4);
+		id = rs.getLong(1);
+        value = rs.getString(2);
+		attributeTypeId = rs.getLong(3);
+		itemId = rs.getLong(4);
                 
                 
                 

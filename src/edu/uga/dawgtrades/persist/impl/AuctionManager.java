@@ -102,7 +102,7 @@ public class AuctionManager {
         public Iterator<Auction> restore( Auction modelAuction )
                 throws DTException
         {
-            String       selectAuctionSql = "select item_id, status, high_bid, expiration_dt, min_price from auction";
+            String       selectAuctionSql = "select auction_id, item_id, status, high_bid, expiration_dt, min_price from auction";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
@@ -114,7 +114,7 @@ public class AuctionManager {
 
             if( modelAuction != null ) {
                 if( modelAuction.getId() >= 0 ) // id is unique, so it is sufficient to get a Auction
-                    query.append( " where id = " + modelAuction.getId() );
+                    query.append( " where auction_id = " + modelAuction.getId() );
                 else {
                     if( modelAuction.getItemId() > 0 )
                         condition.append( " item_id = '" + modelAuction.getItemId() + "'" );
@@ -194,7 +194,7 @@ public class AuctionManager {
         }
         
       public Item restoreItemForAuction(Auction auction) throws DTException {
-  		  String       selectItemSql = "select i.item_id, i.category_id, i.owner_id, i.name, i.identifier, i.description from item i, auction a where i.item_id = a.item_id";
+  		  String       selectItemSql = "select i.item_id, i.name, i.description, i.identifier, i.category_id, i.owner_id from item i, auction a where i.item_id = a.item_id";
           Statement    stmt = null;
           StringBuffer query = new StringBuffer( 100 );
           StringBuffer condition = new StringBuffer( 100 );
@@ -209,26 +209,18 @@ public class AuctionManager {
                   query.append( " and a.auction_id = " + auction.getId() );
               else {
                   if( auction.getItemId() >= 0 )
-                      condition.append( " a.item_id = '" + auction.getItemId() + "'" );
+                      condition.append( " and a.item_id = '" + auction.getItemId() + "'" );
 
                   if( condition.length() == 0 )
-                      condition.append( " a.status = '" + auction.getIsClosed() + "'" );
-                  else
                       condition.append( " AND a.status = '" + auction.getIsClosed() + "'" );
 
                   if( condition.length() == 0 )
-                      condition.append( " a.high_bid = '" + auction.getSellingPrice() + "'" );
-                  else
                       condition.append( " AND a.high_bid = '" + auction.getSellingPrice() + "'" );
 
                   if( auction.getExpiration() != null && condition.length() == 0 )
-                      condition.append( " a.expiration_dt = '" + auction.getExpiration() + "'" );
-                  else
                       condition.append( " AND a.expiration_dt = '" + auction.getExpiration() + "'" );
 
                   if( auction.getMinPrice() >= 0 && condition.length() == 0 )
-                      condition.append( " a.min_price = '" + auction.getMinPrice() + "'" );
-                  else
                       condition.append( " AND a.min_price= '" + auction.getMinPrice() + "'" );
 
                   if( condition.length() > 0 ) {

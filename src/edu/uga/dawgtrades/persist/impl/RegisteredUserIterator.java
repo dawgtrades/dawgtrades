@@ -62,6 +62,7 @@ public class RegisteredUserIterator
         if( more ) {
 
             try {
+
                 lastName = rs.getString( 1 );
                 firstName = rs.getString( 2 );
                 phone = rs.getString( 3 );
@@ -73,6 +74,7 @@ public class RegisteredUserIterator
                 id = rs.getLong( 9 );
                 
                 more = rs.next();
+				
             }
             catch( Exception e ) {	// just in case...
                 throw new NoSuchElementException( "RegisteredUserIterator: No next User object; root cause: " + e );

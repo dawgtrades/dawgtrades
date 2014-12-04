@@ -39,7 +39,7 @@ public class CategoryManager {
             throws DTException
     {
         String               insertCategorySql = "insert into category ( category_name, parent_id) values ( ?, ?)";
-        String               updateCategorySql = "update category set category_name = ?, parent_id = ? where category_name = ?";
+        String               updateCategorySql = "update category set category_name = ?, parent_id = ? where category_id = ?";
         PreparedStatement	 stmt = null;
         int                  numUpdated;
         long                 categoryId;
@@ -48,25 +48,21 @@ public class CategoryManager {
 
 		System.out.println("category name==" + category.getName());
 		
-            //if( !category.isPersistent() )
-			if (category.getName() == null)
+            if( !category.isPersistent() )
                 stmt = (PreparedStatement) conn.prepareStatement( insertCategorySql );
             else
                 stmt = (PreparedStatement) conn.prepareStatement( updateCategorySql );
 
             if( category.getName() != null )  {
-                stmt.setString( 1, category.getName() );
-                stmt.setString( 3, category.getName() );				
+                stmt.setString( 1, category.getName() );			
 			}
             else
                 throw new DTException( "CategoryManager.save: can't save a Category: name undefined" );
 
-	    //            if( category.getParentId() >=0 )
-            stmt.setLong( 2, category.getParentId() );
-		//            else
-		//                throw new DTException( "CategoryManager.save: can't save a Category: parentId undefined" );
-		//  if(category.isPersistent())
-		//    stmt.setLong(3, category.getId());
+	        stmt.setLong( 2, category.getParentId() );
+	        
+            if(category.isPersistent())
+            	stmt.setLong(3, category.getId());
 		
             numUpdated = stmt.executeUpdate();
 
@@ -201,7 +197,7 @@ public class CategoryManager {
         }		
 		
         public Iterator<Item> restoreItemsInCategory(Category category)  throws DTException {
-        	String       selectCategorySql = "select i.item_id, i.name, i.category_id, i.identifier, i.description, i.owner_id from category c, item i where c.category_id = i.category_id";
+        	String       selectCategorySql = "select i.item_id, i.name, i.description, i.identifier, i.category_id, i.owner_id from category c, item i where c.category_id = i.category_id";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
@@ -213,14 +209,10 @@ public class CategoryManager {
                     query.append( " and c.category_id = " + category.getId() );
                 else {
 
-                    if( category.getName() != null && condition.length() == 0 )
-                        condition.append( " c.category_name = '" + category.getName() + "'" );
-                    else
+                    if( category.getName() != null)
                         condition.append( " AND c.category_name = '" + category.getName() + "'" );
 
-                    if( category.getParentId() >= 0 && condition.length() == 0 )
-                        condition.append( " c.parent_id = '" + category.getParentId() + "'" );
-                    else
+                    if( category.getParentId() >= 0)
                         condition.append( " AND c.parent_id = '" + category.getParentId() + "'" );
 						
                     if( condition.length() > 0 ) {
@@ -247,7 +239,7 @@ public class CategoryManager {
 
 		
         public Iterator<AttributeType> restoreAttributeTypes(Category category) throws DTException  {
-        	String       selectAttributeSql = "select a.attribute_id, a.attribute_value, a.attribute_type_id, a.item_id "
+        	String       selectAttributeSql = "select a.attribute_type_id, a.category_id, a.attribute_type_name, a.item_id "
         			+ "from category c, attribute_type a "
         			+ "where a.category_id = c.category_id";
 
@@ -263,14 +255,10 @@ public class CategoryManager {
                     query.append( " and c.category_id = " + category.getId() );
                 else {
 
-                    if( category.getName() != null && condition.length() == 0 )
-                        condition.append( " c.category_name = '" + category.getName() + "'" );
-                    else
+                    if( category.getName() != null)
                         condition.append( " AND c.category_name = '" + category.getName() + "'" );
 	
-                    if( category.getParentId() >= 0 && condition.length() == 0 )
-                        condition.append( " c.parent_id = '" + category.getParentId() + "'" );
-                    else
+                    if( category.getParentId() >= 0)
                         condition.append( " AND c.parent_id = '" + category.getParentId() + "'" );
 
                     if( condition.length() > 0 ) {
@@ -298,7 +286,7 @@ public class CategoryManager {
 	
 	
 	    public Iterator<Category> restoreChildren(Category category) throws DTException  {
-		    String       selectChildrenSql = "select c.category_id, c.category_name, c.parent_id from category c, category c2 where c.parent_id = c2.category_id";
+		    String       selectChildrenSql = "select c.category_id, c.parent_id, c.category_name from category c, category c2 where c.parent_id = c2.category_id";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
@@ -313,11 +301,9 @@ public class CategoryManager {
                     query.append( " and c.category_id = " + category.getId() );
                 else {
                     if( category.getParentId() >= 0 )
-                        condition.append( " c.parent_id = '" + category.getParentId() + "'" );
+                        condition.append( "and c.parent_id = '" + category.getParentId() + "'" );
 
-                    if( category.getName() != null && condition.length() == 0 )
-                        condition.append( " c.category_name = '" + category.getName() + "'" );
-                    else
+                    if( category.getName() != null)
                         condition.append( " AND c.category_name = '" + category.getName() + "'" );
 
                     if( condition.length() > 0 ) {
@@ -347,7 +333,7 @@ public class CategoryManager {
 			
 		
 	    public Category restoreParent(Category category) throws DTException  {
-		    String       selectParentSql = "select c.category_id, c.category_name, c.parent_id from category c, category c2 where c.category_id = c2.parent_id";
+		    String       selectParentSql = "select c.category_id, c.parent_id, c.category_name from category c, category c2 where c.category_id = c2.parent_id";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
@@ -362,11 +348,9 @@ public class CategoryManager {
                     query.append( " and c.category_id = " + category.getId() );
                 else {
                     if( category.getParentId() >= 0 )
-                        condition.append( " c.parent_id = '" + category.getParentId() + "'" );
+                        condition.append( " and c.parent_id = '" + category.getParentId() + "'" );
 
-                    if( category.getName() != null && condition.length() == 0 )
-                        condition.append( " c.category_name = '" + category.getName() + "'" );
-                    else
+                    if( category.getName() != null)
                         condition.append( " AND c.category_name = '" + category.getName() + "'" );
 
                     if( condition.length() > 0 ) {

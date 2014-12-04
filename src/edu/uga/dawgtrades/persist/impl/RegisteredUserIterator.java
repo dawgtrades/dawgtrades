@@ -62,8 +62,8 @@ public class RegisteredUserIterator
         if( more ) {
 
             try {
-
-		id = rs.getLong( 1 );
+            	
+            	id = rs.getLong( 1 );
                 lastName = rs.getString( 2 );
                 firstName = rs.getString( 3 );
                 phone = rs.getString( 4 );

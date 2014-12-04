@@ -78,7 +78,10 @@ class RegisteredUserManager
             stmt.setBoolean( 7,  user.getIsAdmin() );
 
             stmt.setBoolean( 8,  user.getCanText() );
-							
+			
+            if( user.isPersistent() )
+                stmt.setLong( 9, user.getId() );
+            
             inscnt = stmt.executeUpdate();
 
             if( !user.isPersistent() ) {
@@ -113,7 +116,7 @@ class RegisteredUserManager
     public Iterator<RegisteredUser> restore( RegisteredUser modelUser ) 
             throws DTException
     {
-	String       selectUserSql = "select user_id, last_name, first_name, phone, email, uname, upassword, is_admin, can_text from registered_user"; 
+        String       selectUserSql = "select user_id, last_name, first_name, phone, email, uname, upassword, is_admin, can_text from registered_user"; 
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
         StringBuffer condition = new StringBuffer( 100 );
@@ -205,7 +208,7 @@ class RegisteredUserManager
     public Iterator<Item> restoreItemsOwned(RegisteredUser user) throws DTException
     {
         String       selectUserSql = 
-		"select i.item_id, i.name, i.category_id, i.identifier, i.description, i.owner_id from registered_user u, item i where u.user_id = i.owner_id";
+		"select i.item_id, i.name, i.description, i.identifier, i.category_id, i.owner_id from registered_user u, item i where u.user_id = i.owner_id";
 		
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
@@ -223,37 +226,23 @@ class RegisteredUserManager
                 query.append( " and u.uname = '" + user.getName() + "'" );
             else {
 			
-                if( user.getLastName() != null && condition.length() == 0 )
-                    condition.append( " u.last_name = '" + user.getLastName() + "'" );
-                else
+                if( user.getLastName() != null)
                     condition.append( " AND u.last_name = '" + user.getLastName() + "'"); 										
-                if( user.getFirstName() != null && condition.length() == 0 )
-                    condition.append( " u.first_name = '" + user.getFirstName() + "'" );
-                else
+                if( user.getFirstName() != null)
                     condition.append( " AND u.first_name = '" + user.getFirstName() + "'" );
 
-                if( user.getPhone() != null && condition.length() == 0 )
-                    condition.append( " u.phone = '" + user.getPhone() + "'" );
-                else
+                if( user.getPhone() != null)
                     condition.append( " AND u.phone = '" + user.getPhone() + "'" );					
 					
-                if( user.getEmail() != null && condition.length() == 0 )
-                    condition.append( " u.email = '" + user.getEmail() + "'" );
-                else
+                if( user.getEmail() != null)
                     condition.append( " AND u.email = '" + user.getEmail() + "'" );
 					
-                if( user.getPassword() != null && condition.length() == 0 )
-                    condition.append( " u.upassword = '" + user.getPassword() + "'" );
-                else
+                if( user.getPassword() != null)
                     condition.append( " AND u.upassword = '" + user.getPassword() + "'" );
 
-                if( condition.length() == 0 )
-                    condition.append( " u.is_admin = '" + user.getIsAdmin() + "'" );
-                else
+                
                     condition.append( " AND u.is_admin = '" + user.getIsAdmin() + "'" );   					
-                if( condition.length() == 0 )
-                    condition.append( " u.can_text = '" + user.getCanText() + "'" );
-                else
+               
                     condition.append( " AND u.can_text = '" + user.getCanText() + "'" );         
                 
                 if( condition.length() > 0 ) {

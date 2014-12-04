@@ -105,13 +105,15 @@ class MembershipManager
             // retrieve the persistent membership object
             //
             if( stmt.execute( query.toString() ) ) { // statement returned a result
-                ResultSet rs = stmt.getResultSet();
-                
-                float price = rs.getFloat( 1 );
+            	 
+            	ResultSet rs = stmt.getResultSet();
+            	if (rs.next()) {
+            	float price = rs.getFloat( 1 );
                 Date date = rs.getDate( 2 );
                 Membership membership = new MembershipImpl(price, date);
                 membership.setId(1);
                 return membership;
+                }
             }
         }
         catch( Exception e ) {      // just in case...

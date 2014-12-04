@@ -99,7 +99,7 @@ public class CategoryManager {
                 throws DTException
         {
 
-            String       selectCategorySql = "select category_id, category_name, parent_id from category";
+            String       selectCategorySql = "select category_id, parent_id, category_name from category";
 
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
@@ -239,7 +239,7 @@ public class CategoryManager {
 
 		
         public Iterator<AttributeType> restoreAttributeTypes(Category category) throws DTException  {
-        	String       selectAttributeSql = "select a.attribute_type_id, a.category_id, a.attribute_type_name, a.item_id "
+        	String       selectAttributeSql = "select a.attribute_type_id, a.category_id, a.attribute_type_name "
         			+ "from category c, attribute_type a "
         			+ "where a.category_id = c.category_id";
 
@@ -252,7 +252,7 @@ public class CategoryManager {
 
             if( category != null ) {
                 if( category.getId() >= 0 ) // id is unique, so it is sufficient to get a category
-                    query.append( " and c.category_id = " + category.getId() );
+                    query.append( " and c.category_id = " + category.getId());
                 else {
 
                     if( category.getName() != null)

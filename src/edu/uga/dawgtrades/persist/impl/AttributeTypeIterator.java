@@ -40,13 +40,13 @@ public class AttributeTypeIterator implements Iterator<AttributeType> {
         if( more ) {
             try {
                 
-		id = rs.getLong(1);
+            	id = rs.getLong(1);
                 categoryId = rs.getLong(2);
             	name = rs.getString(3);
 		more = rs.next();
             }
             catch( Exception e ) {
-                throw new NoSuchElementException( "AttributeIterator: No next AttributeObject; cause: " + e );
+                throw new NoSuchElementException( "AttributeTypeIterator: No next AttributeTypeObject; cause: " + e );
             }
             
             try {

@@ -106,7 +106,7 @@ class BidManager
     {
         String       selectBidSql = "select b.bid_id, b.user_id, b.auction_id, b.bid_value, b.bid_date, b.is_winning, a.item_id, a.status, a.min_price, a.high_bid, "
         		+ "a.expiration_dt, u.uname, u.first_name, u.last_name, u.upassword, u.is_admin, u.email, u.phone, "
-        		+ "u.can_text from bid b, auction a, registered_user.u where a.auction_id = b.auction_id and b.user_id = u.user_id"; 
+        		+ "u.can_text from bid b, auction a, registered_user u where a.auction_id = b.auction_id and b.user_id = u.user_id"; 
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
         StringBuffer condition = new StringBuffer( 100 );

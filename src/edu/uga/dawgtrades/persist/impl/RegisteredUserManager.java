@@ -33,7 +33,7 @@ class RegisteredUserManager
             throws DTException
     {
         String               insertUserSql = "insert into registered_user ( last_name, first_name, phone, email, uname, upassword, is_admin, can_text) values ( ?, ?, ?, ?, ?, ?, ?, ?)";              
-        String               updateUserSql = "update registered_user  set last_name = ?, first_name = ?, phone = ?, email = ?, uname = ?, upassword = ?, is_admin = ?, can_text = ? where id = ?";              
+        String               updateUserSql = "update registered_user set last_name = ?, first_name = ?, phone = ?, email = ?, uname = ?, upassword = ?, is_admin = ?, can_text = ? where user_id = ?";              
         PreparedStatement    stmt;
         int                  inscnt;
         long                 userId;
@@ -175,7 +175,7 @@ class RegisteredUserManager
                 } 				
 					
                 if( condition.length() > 0 ) {
-                    query.append(  " where " );
+                    query.append(  " where" );
                     query.append( condition );
                 }
             }
@@ -188,9 +188,7 @@ class RegisteredUserManager
             // retrieve the persistent user object
             //
 			
-//	System.out.println( "Heres the query batman..." + query.toString() );
-			
-            if( stmt.execute( query.toString() ) ) { // statement returned a result
+	    if( stmt.execute( query.toString() ) ) { // statement returned a result
                 ResultSet r = stmt.getResultSet();
                 return new RegisteredUserIterator( r, objectModel );
             }

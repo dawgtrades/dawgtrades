@@ -44,8 +44,8 @@ public class CategoryIterator implements Iterator<Category> {
 		catch(Exception e) {
 		    id = -1;
 		}
-		parentId = rs.getLong(2);
-		name = rs.getString(3);
+		name = rs.getString(2);
+		parentId = rs.getLong(3);
 
 		more = rs.next();
             }

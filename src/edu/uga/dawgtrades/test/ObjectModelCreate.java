@@ -76,9 +76,9 @@ public class ObjectModelCreate
              //users
              batman = objectModel.createRegisteredUser("bman", "Bruce", "Wayne", "batmobile", true, "bman@yahoo.com", "678-938-2342", true);
              objectModel.storeRegisteredUser(batman);
-             
-             
-             superman = objectModel.createRegisteredUser("sman", "Clark", "Kent", "kryptonite", false, "sman@gmail.com", "706-234-1212", false);
+
+	     superman = objectModel.createRegisteredUser("sman", "Clark", "Kent", "kryptonite", false, "sman@gmail.com", "706-234-1212", false);
+
              objectModel.storeRegisteredUser(superman);
              
              //membership

@@ -38,7 +38,7 @@ public class CategoryManager {
     public void save( Category category )
             throws DTException
     {
-        String               insertCategorySql = "insert into category ( category_name, parent_id) values ( ?, ?)";
+        String               insertCategorySql = "insert into category (category_name, parent_id) values ( ?, ?)";
         String               updateCategorySql = "update category set category_name = ?, parent_id = ? where category_id = ?";
         PreparedStatement	 stmt = null;
         int                  numUpdated;
@@ -46,7 +46,6 @@ public class CategoryManager {
        
         try {
 
-		System.out.println("category name==" + category.getName());
 		
             if( !category.isPersistent() )
                 stmt = (PreparedStatement) conn.prepareStatement( insertCategorySql );
@@ -118,19 +117,21 @@ public class CategoryManager {
                     query.append( " where category_id = " + modelCategory.getId() );
                 else {
 				
-		    if( modelCategory.getName() != null )
+		    if( modelCategory.getName() != null ) {
+			if(condition.length() > 0)
+			    condition.append(" and");
                 		condition.append( " category_name = '" + modelCategory.getName() + "'" );
-						
+		    }						
+
 		    if( modelCategory.getParentId() >= 0 ) {
                     	if( condition.length() > 0 )
                             condition.append( " and" );
                         condition.append( " parent_id = '" + modelCategory.getParentId() + "'" );
 		    }
 		    if( condition.length() > 0 ) {
-                        query.append(  " where " );
+                        query.append(  " where" );
                         query.append( condition );
 		    }    
-				
                 }
             }
 
@@ -145,9 +146,7 @@ public class CategoryManager {
                 if( stmt.execute( query.toString() ) ) { // statement returned a result
                     ResultSet r = stmt.getResultSet();
 					
-					System.out.println( "results set ==" + r );
-					
-                    return new CategoryIterator( r, objectModel );
+		    return new CategoryIterator( r, objectModel );
                 }
             }
             catch( Exception e ) {      // just in case...

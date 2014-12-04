@@ -76,7 +76,9 @@ public class ObjectModelCreate
              //users
              batman = objectModel.createRegisteredUser("bman", "Bruce", "Wayne", "batmobile", true, "bman@yahoo.com", "678-938-2342", true);
              objectModel.storeRegisteredUser(batman);
+
 	     superman = objectModel.createRegisteredUser("sman", "Clark", "Kent", "kryptonite", false, "sman@gmail.com", "706-234-1212", false);
+
              objectModel.storeRegisteredUser(superman);
              
              //membership
@@ -136,7 +138,9 @@ public class ObjectModelCreate
              
              //reports
              report1 = objectModel.createExperienceReport(batman, superman, 5, "5/5 would buy again", new Date());
+             objectModel.storeExperienceReport(report1);
              report2 = objectModel.createExperienceReport(superman, batman, 1, "Never sold me the item", new Date());
+             objectModel.storeExperienceReport(report2);
              
              
              System.out.println( "Entity objects created and saved in the persistence module" );

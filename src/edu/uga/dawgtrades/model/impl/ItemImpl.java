@@ -81,7 +81,7 @@ public class ItemImpl extends Persistent implements Item {
 	}
 	
 	public String toString() {
-		return "Item[" + getId() + "]: Owner[" + getOwnerId() + "] Category[" + getCategoryId() + "] " + getIdentifier() + " " + getName() + " " + getDescription();
+		return "Item[" + getId() + "]: Owner[" + getOwnerId() + "] Category[" + getCategoryId() + "] ID[" + getIdentifier() + "] Name[" + getName() + "] Description[" + getDescription() + "]";
 	}
 	
 	public boolean equals(Object item) {

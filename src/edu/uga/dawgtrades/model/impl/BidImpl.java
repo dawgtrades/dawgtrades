@@ -66,7 +66,11 @@ public class BidImpl extends Persistent implements Bid {
 	}
 	
 	public String toString() {
-		return "implement later"; //TODO
+		String result = "Bid[" + getId() + "]: Amount[" + getAmount() + "] Date[" + getDate() + "] This bid is ";
+		if (!isWinning)
+			result += " not";
+		result +="winning. \n     " + getAuction().toString() + "\n      " + getRegisteredUser().toString();
+		return result;
 	}
 	
 	public boolean equals(Object bid) {

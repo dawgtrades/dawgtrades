@@ -79,6 +79,6 @@ public class RegisteredUserImpl extends Persistent implements RegisteredUser {
 		this.canText = canText;
 	}	
 	public String toString() {
-		return "RegisteredUser[" + getId() + "]: name[" + getName() + "]: Lastname[" + getLastName() + "] Firstname[" + getFirstName() + "] ";
+		return "RegisteredUser[" + getId() + "]: name[" + getName() + "]: Lastname[" + getLastName() + "] Firstname[" + getFirstName() + "]";
 	}
 }

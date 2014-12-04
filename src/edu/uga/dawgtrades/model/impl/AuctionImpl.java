@@ -80,8 +80,12 @@ public class AuctionImpl extends Persistent implements Auction {
 	
 	
 	public String toString() {
-		return "Auction[" + getId() + "]: Item[" + getItemId() + "] MinPrice[$" + getMinPrice() + "] SellingPrice[$" + getSellingPrice() + "] Expiration["
-				+ getExpiration() + "] This item ";
+		String result =  "Auction[" + getId() + "]: Item[" + getItemId() + "] MinPrice[$" + getMinPrice() + "] SellingPrice[$" + getSellingPrice() + "] Expiration["
+				+ getExpiration() + "] This auction is ";
+				if (!isClosed)
+					result += "not ";
+				result += "closed";
+				return result;
 	}
 	
 	public boolean equals(Object auction) {

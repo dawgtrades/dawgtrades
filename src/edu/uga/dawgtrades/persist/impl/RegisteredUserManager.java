@@ -113,7 +113,7 @@ class RegisteredUserManager
     public Iterator<RegisteredUser> restore( RegisteredUser modelUser ) 
             throws DTException
     {
-        String       selectUserSql = "select last_name, first_name, phone, email, uname, upassword, is_admin, can_text from registered_user"; 
+        String       selectUserSql = "select last_name, first_name, phone, email, uname, upassword, is_admin, can_text, user_id from registered_user"; 
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
         StringBuffer condition = new StringBuffer( 100 );
@@ -153,18 +153,23 @@ class RegisteredUserManager
                     condition.append( " email = '" + modelUser.getEmail() + "'" );
                 }       
 				
-                if( modelUser.getPassword() != null )
+				if( modelUser.getPassword() != null ) {
+                    if( condition.length() > 0 )
+                        condition.append( " and" );
                     condition.append( " upassword = '" + modelUser.getPassword() + "'" );
+                } 					
 					
-                if( condition.length() > 0 )
-                	condition.append( " and" );
-                condition.append( " is_admin = '" + modelUser.getIsAdmin() + "'" );
-               					
-					
-                if( condition.length() > 0 )
-                    condition.append( " and" );
-                condition.append( " can_text = '" + modelUser.getCanText() + "'" );
-                					
+				if( modelUser.getIsAdmin() ) {
+                    if( condition.length() > 0 )
+                        condition.append( " and" );
+                    condition.append( " is_admin = '" + modelUser.getIsAdmin() + "'" );
+                } 
+
+				if( modelUser.getCanText() ) {
+                    if( condition.length() > 0 )
+                        condition.append( " and" );
+                    condition.append( " can_text = '" + modelUser.getCanText() + "'" );
+                } 				
 					
                 if( condition.length() > 0 ) {
                     query.append(  " where " );
@@ -179,6 +184,9 @@ class RegisteredUserManager
 
             // retrieve the persistent user object
             //
+			
+//	System.out.println( "Heres the query batman..." + query.toString() );
+			
             if( stmt.execute( query.toString() ) ) { // statement returned a result
                 ResultSet r = stmt.getResultSet();
                 return new RegisteredUserIterator( r, objectModel );
@@ -207,7 +215,7 @@ class RegisteredUserManager
         
         // form the query based on the given user object instance
         query.append( selectUserSql );
-        
+		
         if( user != null ) {
             if( user.getId() >= 0 ) // id is unique, so it is sufficient to get a user
                 query.append( " and u.user_id = " + user.getId() );
@@ -259,11 +267,13 @@ class RegisteredUserManager
             stmt = conn.createStatement();
 
             // retrieve the persistent user object
-            //
-            if( stmt.execute( query.toString() ) ) { // statement returned a result
+			
+            if( stmt.execute( query.toString() ) ) { 
+			   // statement returned a result
                 ResultSet r = stmt.getResultSet();
                 return new ItemIterator( r, objectModel );
             }
+			
         }
         catch( Exception e ) {      // just in case...
             throw new DTException( "RegisteredUserManager.restoreItemsOwned: Could not restore persistent user objects; Root cause: " + e );

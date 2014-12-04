@@ -1,4 +1,4 @@
-delete from experience_reports;
+delete from experience_report;
 delete from bid;
 delete from auction;
 delete from attribute;

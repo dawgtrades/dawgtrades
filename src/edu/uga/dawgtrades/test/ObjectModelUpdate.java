@@ -52,11 +52,7 @@ public class ObjectModelUpdate
              catIter = objectModel.findCategory( modelCat );
              while( catIter.hasNext() ) {
 		         computers = catIter.next();
-                 System.out.println( computers );
              }
-			 System.out.println("HERE ID == ");
-			 System.out.println( computers.getId() );
-			 System.out.println(modelCat.getName());
              
 	     // Second: modify the name of the "Computers cat to "Advanced Computers"
 	     // and store the updated cat
@@ -77,13 +73,12 @@ public class ObjectModelUpdate
              Iterator<RegisteredUser> regUserIter = objectModel.findRegisteredUser( modelRegUser );
              while( regUserIter.hasNext() ) {
                  batman = regUserIter.next();
-                 System.out.println( batman );
              }
              
              // Second: modify the phone number of batman to (111) 123-4567
 	     // and store the updated Person object
              if( batman != null ) {
-		 batman.setPhone( "(777) 777-7777" );
+		 batman.setPhone( "777-777-7777" );
 		 objectModel.storeRegisteredUser( batman );
 		 System.out.println( "Updated the phone number of batman to (111) 123-4567" );
 	     }

@@ -14,7 +14,7 @@ import edu.uga.dawgtrades.model.ObjectModel;
 
 /**
  * Bid Manager
- * @author Joey
+ * @author Justin
  *
  */
 

@@ -140,8 +140,11 @@ public class ExperienceReportManager {
                 }       
 				
                 //MAY NEED TO FIX DATE CONVERSION
-                if( modelReport.getDate() != null )
-                    condition.append( " rating_date = '" + modelReport.getDate() + "'" );                				
+                if( modelReport.getDate() != null ) {
+                	if( condition.length() > 0 )
+                        condition.append( " and" );
+                    condition.append( " rating_date = '" + modelReport.getDate() + "'" );  
+                }
 					
                 if( condition.length() > 0 ) {
                     query.append(  " where " );

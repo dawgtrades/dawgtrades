@@ -5,10 +5,14 @@ import java.util.Date;
 import java.util.Iterator;
 
 import edu.uga.dawgtrades.model.Attribute;
+import edu.uga.dawgtrades.model.AttributeType;
 import edu.uga.dawgtrades.model.Auction;
+import edu.uga.dawgtrades.model.Bid;
 import edu.uga.dawgtrades.model.Category;
+import edu.uga.dawgtrades.model.ExperienceReport;
 import edu.uga.dawgtrades.model.Item;
 import edu.uga.dawgtrades.model.DTException;
+import edu.uga.dawgtrades.model.Membership;
 import edu.uga.dawgtrades.model.ObjectModel;
 import edu.uga.dawgtrades.model.RegisteredUser;
 import edu.uga.dawgtrades.model.impl.ObjectModelImpl;
@@ -50,8 +54,8 @@ public class ObjectModelRead
                   
          try {
              
-	     // Retrieve all existing Item objects and list their founders and members
-             System.out.println( "Item objects:" );
+	     // Retrieve all existing Item objects and list their founders, members and categories
+             System.out.println( "ITEM OBJECTS:" );
              Iterator<Item> itemIter = objectModel.findItem( null );
              while( itemIter.hasNext() ) {
                  Item i = itemIter.next();
@@ -69,6 +73,49 @@ public class ObjectModelRead
                  RegisteredUser u = objectModel.getRegisteredUser(i);
                  System.out.println("   Owner: " + u);
              }
+             
+             //Retrive all categories and their attribute types, items and parent
+             System.out.println( "\nCATEGORY OBJECTS:" );
+             Iterator<Category> catIter = objectModel.findCategory( null );
+             while( catIter.hasNext() ) {
+                 Category c = catIter.next();
+                 System.out.println( c );
+                 Iterator<AttributeType> attrTypeIter = objectModel.getAttributeType(c);
+                 System.out.println( "   Attributes Types: ");
+                 while( attrTypeIter != null && attrTypeIter.hasNext() ) {
+                     AttributeType a = attrTypeIter.next();
+                     System.out.println( "       " + a );
+                 }
+                 itemIter = objectModel.getItem(c);
+                 System.out.println( "   Items: ");
+                 while( itemIter != null && itemIter.hasNext() ) {
+                     Item i = itemIter.next();
+                     System.out.println( "       " + i );
+                 }
+                 
+                 Category cp = objectModel.getParent(c);
+                 System.out.println( "   Parent: " + cp);
+             }
+             
+             System.out.println( "\nBID OBJECTS:" );
+             Iterator<Bid> bidIter = objectModel.findBid( null );
+             while( bidIter.hasNext() ) {
+                 Bid b = bidIter.next();
+                 System.out.println( b );
+             }
+             
+             System.out.println( "\nEXPERIENCE REPORT OBJECTS:" );
+             Iterator<ExperienceReport> reportIter = objectModel.findExperienceReport( null );
+             while( reportIter.hasNext() ) {
+                 ExperienceReport er = reportIter.next();
+                 System.out.println( er );
+             }
+             
+             System.out.println( "\nMEMBERSHIP OBJECT:" );
+             Membership m = objectModel.findMembership();
+             System.out.println( m );
+             
+             
         
 
          }

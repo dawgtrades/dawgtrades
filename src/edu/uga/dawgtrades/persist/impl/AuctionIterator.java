@@ -54,7 +54,7 @@ public class AuctionIterator implements Iterator<Auction> {
 
             try {
             	
-                id = rs.getLong(1);
+            	id = rs.getLong( 1 );
                 itemId = rs.getLong( 2 );
                 isClosed = rs.getBoolean(3);
                 sellingPrice = rs.getFloat(4);

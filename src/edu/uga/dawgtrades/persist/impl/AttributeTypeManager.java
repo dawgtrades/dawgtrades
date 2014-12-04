@@ -36,8 +36,8 @@ public class AttributeTypeManager {
         PreparedStatement stmt = null;
         int inscnt;
         long attributeTypeId;
-        
         try {
+
             if( !attributeType.isPersistent() )
                 stmt = (PreparedStatement) conn.prepareStatement( insertAttributeTypeSql );
 	    else
@@ -53,10 +53,9 @@ public class AttributeTypeManager {
                 } else {
                     throw new DTException( "AttributeTypeManager.save: can't save a AttributeType: name undefined" );
                 }
-            } 
-            
-	if(attributeType.isPersistent())
-	    stmt.setLong(4, attributeType.getId());
+             
+                if(attributeType.isPersistent())
+            		stmt.setLong(4, attributeType.getId());
 
             inscnt = stmt.executeUpdate();
             if( !attributeType.isPersistent() ) {
@@ -83,10 +82,11 @@ public class AttributeTypeManager {
                     throw new DTException( "AttributeTypeManager.save: failed to save a report" );
             }
         }
-        catch( SQLException e ) {
-            e.printStackTrace();
-            throw new DTException( "AttributeTypeManager.save: failed to save an attributeType: " + e );
-        }
+    	catch(SQLException e) {
+    	    e.printStackTrace();
+    	    throw new DTException("AttributeManager.save: failed to save attribute: " + e);
+    	}
+        
     }
     
     public Iterator<AttributeType> restore( AttributeType modelAttributeType ) 
@@ -145,7 +145,7 @@ public class AttributeTypeManager {
     }
     
     public Category restoreCategoryWithType(AttributeType attributeType) throws DTException{
-    	String       selectItemSql = "select c.category_id, c.category_name, c.parent_id from attribute_type a, category c where a.category_id = c.category_id";
+    	String       selectItemSql = "select c.category_id, c.parent_id, c.category_name  from attribute_type a, category c where a.category_id = c.category_id";
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
         StringBuffer condition = new StringBuffer( 100 );
@@ -160,11 +160,8 @@ public class AttributeTypeManager {
                 query.append( " and a.attributeType_id = " + attributeType.getId() );
             else {
                 if( attributeType.getCategoryId() >= 0 )
-                    condition.append( " a.category_id = '" + attributeType.getCategoryId() + "'" );
-
-                if( condition.length() == 0 )
-                    condition.append( " a.attribute_type_name = '" + attributeType.getName() + "'" );
-                else
+                    condition.append( " and a.category_id = '" + attributeType.getCategoryId() + "'" );
+                
                     condition.append( " AND a.attribute_type_name = '" + attributeType.getName() + "'" );
 
                 if( condition.length() > 0 ) {

@@ -44,12 +44,13 @@ public class ExperienceReportIterator implements Iterator<ExperienceReport> {
         RegisteredUser reviewed = null;
         if( more ) {
             try {
-                id = rs.getLong(1);
-            	rating = rs.getInt(2);
-                report = rs.getString(3);
-                date = rs.getDate(4);
-                reviewerId = rs.getLong(5);
-                reviewedId = rs.getLong(6);
+            	id = rs.getLong(1);
+            	reviewerId = rs.getLong(2);
+                reviewedId = rs.getLong(3);
+            	rating = rs.getInt(4);
+                report = rs.getString(5);
+                date = rs.getDate(6);
+                
                 more = rs.next();
             }
             catch( Exception e ) {

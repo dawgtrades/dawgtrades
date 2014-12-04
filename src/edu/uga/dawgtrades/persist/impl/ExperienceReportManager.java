@@ -63,7 +63,10 @@ public class ExperienceReportManager {
             }
             else
                 stmt.setNull(5, java.sql.Types.DATE);
-							
+			
+            if(report.isPersistent())
+            	stmt.setLong(6, report.getId());
+            
             inscnt = stmt.executeUpdate();
 
             if( !report.isPersistent() ) {
@@ -98,7 +101,7 @@ public class ExperienceReportManager {
     public Iterator<ExperienceReport> restore( ExperienceReport modelReport ) 
             throws DTException
     {
-        String       selectReportSql = "select reviewer_id, reviewed_id, rating, report, rating_date from experience_report"; 
+        String       selectReportSql = "select report_id, reviewer_id, reviewed_id, rating, report, rating_date from experience_report"; 
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
         StringBuffer condition = new StringBuffer( 100 );

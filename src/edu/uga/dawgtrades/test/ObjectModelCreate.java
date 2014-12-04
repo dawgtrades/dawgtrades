@@ -76,7 +76,9 @@ public class ObjectModelCreate
              //users
              batman = objectModel.createRegisteredUser("bman", "Bruce", "Wayne", "batmobile", true, "bman@yahoo.com", "678-938-2342", true);
              objectModel.storeRegisteredUser(batman);
-
+             
+             System.out.println(batman.getId());
+             
              superman = objectModel.createRegisteredUser("sman", "Clark", "Kent", "kryptonite", false, "sman@gmail.com", "706-234-1212", false);
              objectModel.storeRegisteredUser(superman);
              
@@ -86,7 +88,7 @@ public class ObjectModelCreate
              
              //categories
              electronics = objectModel.createCategory();
-	     electronics.setName("electronics");
+             electronics.setName("electronics");
              objectModel.storeCategory(electronics);
              computers = objectModel.createCategory(electronics, "Computers");
              objectModel.storeCategory(computers);

@@ -183,7 +183,7 @@ public class ItemManager {
         }
         
         public RegisteredUser restoreOwner(Item item) throws DTException {
-        	String       selectItemSql = "select u.user_id, u.last_name, u.first_name, u.phone, u.email, u.uname, u.upassword, u,is_admin, u.can_text from item i, registered_user u where i.owner_id = u.user_id";
+        	String       selectItemSql = "select u.user_id, u.last_name, u.first_name, u.phone, u.email, u.uname, u.upassword, u.is_admin, u.can_text from item i, registered_user u where i.owner_id = u.user_id";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
@@ -198,26 +198,19 @@ public class ItemManager {
                     query.append( " and i.item_id = " + item.getId() );
                 else {
                     if( item.getOwnerId() >= 0 )
-                        condition.append( " i.owner_id = '" + item.getOwnerId() + "'" );
+                        condition.append( " and i.owner_id = '" + item.getOwnerId() + "'" );
 
-                    if( item.getCategoryId() >= 0 && condition.length() == 0 )
-                        condition.append( " i.category_id = '" + item.getCategoryId() + "'" );
-                    else
+                    if( item.getCategoryId() >= 0)
                         condition.append( " AND i.category_id = '" + item.getCategoryId() + "'" );
 
-                    if( item.getIdentifier() != null && condition.length() == 0 )
-                        condition.append( " i.identifier = '" + item.getIdentifier() + "'" );
-                    else
+                    if( item.getIdentifier() != null)
+           
                         condition.append( " AND i.identifier = '" + item.getIdentifier() + "'" );
 
-                    if( item.getName() != null && condition.length() == 0 )
-                        condition.append( " i.name = '" + item.getName() + "'" );
-                    else
+                    if( item.getName() != null)
                         condition.append( " AND i.name = '" + item.getName() + "'" );
 
-                    if( item.getDescription() != null && condition.length() == 0 )
-                        condition.append( " i.description = '" + item.getDescription() + "'" );
-                    else
+                    if( item.getDescription() != null)
                         condition.append( " AND i.description= '" + item.getDescription() + "'" );
 
                     if( condition.length() > 0 ) {
@@ -250,7 +243,7 @@ public class ItemManager {
     	}
         
     	public Category restoreCategoryOfItem(Item item) throws DTException {
-    		String       selectItemSql = "select c.category_id, c.category_name, c.parent_id from item i, category c where i.category_id = c.category_id";
+    		String       selectItemSql = "select c.category_id, c.parent_id, c.category_name from item i, category c where i.category_id = c.category_id";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
@@ -265,26 +258,18 @@ public class ItemManager {
                     query.append( " and i.item_id = " + item.getId() );
                 else {
                     if( item.getOwnerId() >= 0 )
-                        condition.append( " i.owner_id = '" + item.getOwnerId() + "'" );
+                        condition.append( " and i.owner_id = '" + item.getOwnerId() + "'" );
 
-                    if( item.getCategoryId() >= 0 && condition.length() == 0 )
-                        condition.append( " i.category_id = '" + item.getCategoryId() + "'" );
-                    else
+                    if( item.getCategoryId() >= 0)
                         condition.append( " AND i.category_id = '" + item.getCategoryId() + "'" );
 
-                    if( item.getIdentifier() != null && condition.length() == 0 )
-                        condition.append( " i.identifier = '" + item.getIdentifier() + "'" );
-                    else
+                    if( item.getIdentifier() != null)
                         condition.append( " AND i.identifier = '" + item.getIdentifier() + "'" );
 
-                    if( item.getName() != null && condition.length() == 0 )
-                        condition.append( " i.name = '" + item.getName() + "'" );
-                    else
+                    if( item.getName() != null)
                         condition.append( " AND i.name = '" + item.getName() + "'" );
 
-                    if( item.getDescription() != null && condition.length() == 0 )
-                        condition.append( " i.description = '" + item.getDescription() + "'" );
-                    else
+                    if( item.getDescription() != null)
                         condition.append( " AND i.description= '" + item.getDescription() + "'" );
 
                     if( condition.length() > 0 ) {
@@ -333,26 +318,18 @@ public class ItemManager {
                     query.append( " and i.item_id = " + item.getId() );
                 else {
                     if( item.getOwnerId() >= 0 )
-                        condition.append( " i.owner_id = '" + item.getOwnerId() + "'" );
+                        condition.append( " and i.owner_id = '" + item.getOwnerId() + "'" );
 
-                    if( item.getCategoryId() >= 0 && condition.length() == 0 )
-                        condition.append( " i.category_id = '" + item.getCategoryId() + "'" );
-                    else
+                    if( item.getCategoryId() >= 0)
                         condition.append( " AND i.category_id = '" + item.getCategoryId() + "'" );
 
-                    if( item.getIdentifier() != null && condition.length() == 0 )
-                        condition.append( " i.identifier = '" + item.getIdentifier() + "'" );
-                    else
+                    if( item.getIdentifier() != null)
                         condition.append( " AND i.identifier = '" + item.getIdentifier() + "'" );
 
-                    if( item.getName() != null && condition.length() == 0 )
-                        condition.append( " i.name = '" + item.getName() + "'" );
-                    else
+                    if( item.getName() != null)
                         condition.append( " AND i.name = '" + item.getName() + "'" );
 
-                    if( item.getDescription() != null && condition.length() == 0 )
-                        condition.append( " i.description = '" + item.getDescription() + "'" );
-                    else
+                    if( item.getDescription() != null )
                         condition.append( " AND i.description= '" + item.getDescription() + "'" );
 
                     if( condition.length() > 0 ) {
@@ -402,26 +379,18 @@ public class ItemManager {
                     query.append( " and i.item_id = " + item.getId() );
                 else {
                     if( item.getOwnerId() >= 0 )
-                        condition.append( " i.owner_id = '" + item.getOwnerId() + "'" );
+                        condition.append( " and i.owner_id = '" + item.getOwnerId() + "'" );
 
-                    if( item.getCategoryId() >= 0 && condition.length() == 0 )
-                        condition.append( " i.category_id = '" + item.getCategoryId() + "'" );
-                    else
+                    if( item.getCategoryId() >= 0)
                         condition.append( " AND i.category_id = '" + item.getCategoryId() + "'" );
 
-                    if( item.getIdentifier() != null && condition.length() == 0 )
-                        condition.append( " i.identifier = '" + item.getIdentifier() + "'" );
-                    else
+                    if( item.getIdentifier() != null)
                         condition.append( " AND i.identifier = '" + item.getIdentifier() + "'" );
 
-                    if( item.getName() != null && condition.length() == 0 )
-                        condition.append( " i.name = '" + item.getName() + "'" );
-                    else
+                    if( item.getName() != null)
                         condition.append( " AND i.name = '" + item.getName() + "'" );
 
-                    if( item.getDescription() != null && condition.length() == 0 )
-                        condition.append( " i.description = '" + item.getDescription() + "'" );
-                    else
+                    if( item.getDescription() != null)
                         condition.append( " AND i.description= '" + item.getDescription() + "'" );
 
                     if( condition.length() > 0 ) {

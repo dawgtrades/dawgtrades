@@ -46,16 +46,20 @@ public class BidIterator implements Iterator<Bid> {
     {
     	//bid info
     	long id;
+    	long userId;
+    	long auctionId;
     	float amount;
     	Date date;
     	boolean isWinning;
     	//auction info
-    	long auctionId;
+    	
     	long itemId;
+    	boolean isClosed;
     	float minPrice;
+    	float sellingPrice;
     	Date expiration;
     	//user info
-    	long userId;
+    	
     	String name;
     	String firstName;
     	String lastName;
@@ -73,22 +77,24 @@ public class BidIterator implements Iterator<Bid> {
             try {
             	
                 id = rs.getLong( 1 );
-                amount = rs.getFloat( 2 );
-                date = rs.getDate( 3 );
-                isWinning = rs.getBoolean(4 );
-                auctionId = rs.getLong( 5 );
-            	itemId = rs.getLong( 6 );
-            	minPrice = rs.getFloat(7);
-            	expiration = rs.getDate(8);
-            	userId = rs.getLong(9);
-            	name = rs.getString(10);
-            	firstName = rs.getString(11);
-            	lastName = rs.getString(12);
-            	password = rs.getString(13);
-            	isAdmin = rs.getBoolean(14);
-            	email = rs.getString(15);
-            	phone = rs.getString(16);
-            	canText = rs.getBoolean(17);
+                userId = rs.getLong(2);
+                auctionId = rs.getLong( 3 );
+                amount = rs.getFloat( 4 );
+                date = rs.getDate( 5 );
+                isWinning = rs.getBoolean(6);
+            	itemId = rs.getLong( 7 );
+            	isClosed = rs.getBoolean(8);
+            	minPrice = rs.getFloat(9);
+            	sellingPrice = rs.getFloat(10);
+            	expiration = rs.getDate(11);
+            	name = rs.getString(12);
+            	firstName = rs.getString(13);
+            	lastName = rs.getString(14);
+            	password = rs.getString(15);
+            	isAdmin = rs.getBoolean(16);
+            	email = rs.getString(17);
+            	phone = rs.getString(18);
+            	canText = rs.getBoolean(19);
 
                 more = rs.next();
             }

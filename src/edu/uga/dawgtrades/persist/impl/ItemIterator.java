@@ -54,14 +54,14 @@ public class ItemIterator implements Iterator<Item> {
         if( more ) {
 
             try {
-		id = rs.getLong(1);
-                name = rs.getString( 2 );
+            	id = rs.getLong( 1 );
+            	name = rs.getString( 2 );
                 description = rs.getString( 3 );
-                identifier = rs.getString ( 4 );
+                identifier = rs.getString (4 );
                 categoryId = rs.getLong( 5 );
                 ownerId = rs.getLong( 6 );
-
-                more = rs.next();
+		        
+		more = rs.next();
             }
             catch( Exception e ) {
                 throw new NoSuchElementException( "ItemIterator: No next Itemobject; cause: " + e );

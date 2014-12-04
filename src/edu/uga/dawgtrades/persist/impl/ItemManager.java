@@ -124,18 +124,21 @@ public class ItemManager {
 
             // form the query based on the given Item object instance
             query.append( selectItemSql );
-
+            
             if( modelItem != null ) {
+			     /*
                 if( modelItem.getId() >= 0 ) // id is unique, so it is sufficient to get a Item
                     query.append( " where item_id = " + modelItem.getId() );
                 else {
+				*/
                 	if( modelItem.getName() != null )
                 		condition.append( " name = '" + modelItem.getName() + "'" );
-			if( modelItem.getDescription() != null ) {
+						
+			        if( modelItem.getDescription() != null ) {
                     	if( condition.length() > 0 )
                             condition.append( " and" );
-                        condition.append( " description = '" + modelItem.getDescription() + "'" );
-			}
+                            condition.append( " description = '" + modelItem.getDescription() + "'" );
+			        }
                     if( modelItem.getIdentifier() != null ) {
                     	if( condition.length() > 0 )
                             condition.append( " and" );
@@ -144,22 +147,21 @@ public class ItemManager {
                     if( modelItem.getCategoryId() > 0 ) {
                         if( condition.length() > 0 )
                             condition.append( " and" );
-                        condition.append( " categoryId = '" + modelItem.getCategoryId() + "'" );
+                        condition.append( " category_id = '" + modelItem.getCategoryId() + "'" );
                     }
 
                     if( modelItem.getOwnerId() > 0 ) {
                         if( condition.length() > 0 )
                             condition.append( " and" );
-                        condition.append( " ownerId = '" + modelItem.getOwnerId() + "'" );
+                        condition.append( " owner_id = '" + modelItem.getOwnerId() + "'" );
                     }
 
                     if( condition.length() > 0 ) {
                         query.append(  " where " );
                         query.append( condition );
                     }
-                }
             }
-
+            
             try {
 
                 stmt = conn.createStatement();
@@ -449,22 +451,28 @@ public class ItemManager {
         public void delete( Item item )
                 throws DTException
         {
-            String               deleteItemSql = "delete from item where item_id = ?";
+            //String    deleteItemSql = "delete from item where item_id = ?";
+			String    deleteItemSql = "delete from item where name = ?";
             PreparedStatement    stmt = null;
             int                  numUpdated;
 
             // form the query based on the given Item object instance
-            if( !item.isPersistent() ) // is the Item object persistent?  If not, nothing to actually delete
+/*
+            if( !item.isPersistent() )   { 
+			    System.out.println( "ItemManager Delete: item NOT persistent." );
+			    // if Item object NOT persistent, nothing to actually delete
                 return;
-
+			}
+*/
             try {
 
                 //DELETE t1, t2 FROM t1, t2 WHERE t1.id = t2.id;
                 //DELETE FROM t1, t2 USING t1, t2 WHERE t1.id = t2.id;
                 stmt = (PreparedStatement) conn.prepareStatement( deleteItemSql );
 
-                stmt.setLong( 1, item.getId() );
-
+                //stmt.setLong( 1, item.getId() );
+                stmt.setString( 1, item.getName() );
+				
                 numUpdated = stmt.executeUpdate();
 
                 if( numUpdated == 0 ) {

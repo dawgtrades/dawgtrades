@@ -36,6 +36,7 @@ public class CategoryIterator implements Iterator<Category> {
         Category parent = null;
         Category category = null;
         if( more ) {
+<<<<<<< HEAD
             try {
 		try {
 		    id = rs.getLong(1);
@@ -50,10 +51,27 @@ public class CategoryIterator implements Iterator<Category> {
 		catch(Exception e) {
 		    name = null;
 		}
+=======
+           try {
+		        try {
+		           id = rs.getLong(1);
+		        }
+		        catch(Exception e) {
+		          id = -1;
+		        }
+		        parentId = rs.getLong(2);
+				
+				try {
+				  name = rs.getString(3);
+				}
+		        catch(Exception e) {
+		          name = null;
+		        }				
+>>>>>>> 7db5530a435af883ad8ef1d2f8178fafb2086e5f
                 more = rs.next();
             }
             catch( Exception e ) {
-                throw new NoSuchElementException( "AttributeIterator: No next AttributeObject; cause: " + e );
+                throw new NoSuchElementException( "CategoryIterator: No next CategoryObject; cause: " + e );
             }
             
             try {
@@ -68,7 +86,7 @@ public class CategoryIterator implements Iterator<Category> {
             }
         }
         else {
-            throw new NoSuchElementException( "AttributeIterator: No next Attribute object" );
+            throw new NoSuchElementException( "CategoryIterator: No next Category object" );
         }
 
         return category;

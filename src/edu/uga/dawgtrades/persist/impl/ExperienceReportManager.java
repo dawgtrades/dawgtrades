@@ -101,7 +101,10 @@ public class ExperienceReportManager {
     public Iterator<ExperienceReport> restore( ExperienceReport modelReport ) 
             throws DTException
     {
-        String       selectReportSql = "select report_id, reviewer_id, reviewed_id, rating, report, rating_date from experience_report"; 
+        String       selectReportSql = "select er.report_id, er.reviewer_id, er.reviewed_id, er.rating, er.report, er.rating_date, "
+        		+ "ur.uname, ur.first_name, ur.last_name, ur.upassword, ur.is_admin, ur.email, ur.phone, "
+        		+ "ur.can_text, ud.uname, ud.first_name, ud.last_name, ud.upassword, ud.is_admin, ud.email, ud.phone, "
+        		+ "ud.can_text from experience_report er, registered_user ur, registered_user ud where ur.user_id = er.reviewer_id and ud.user_id = er.reviewed_id"; 
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
         StringBuffer condition = new StringBuffer( 100 );

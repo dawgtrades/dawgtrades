@@ -51,9 +51,12 @@ public class ObjectModelUpdate
              modelCat.setName( "Computers" );
              catIter = objectModel.findCategory( modelCat );
              while( catIter.hasNext() ) {
-		 computers = catIter.next();
+		         computers = catIter.next();
                  System.out.println( computers );
              }
+			 System.out.println("HERE ID == ");
+			 System.out.println( computers.getId() );
+			 System.out.println(modelCat.getName());
              
 	     // Second: modify the name of the "Computers cat to "Advanced Computers"
 	     // and store the updated cat
@@ -80,7 +83,7 @@ public class ObjectModelUpdate
              // Second: modify the phone number of batman to (111) 123-4567
 	     // and store the updated Person object
              if( batman != null ) {
-		 batman.setPhone( "(111) 123-4567" );
+		 batman.setPhone( "(777) 777-7777" );
 		 objectModel.storeRegisteredUser( batman );
 		 System.out.println( "Updated the phone number of batman to (111) 123-4567" );
 	     }

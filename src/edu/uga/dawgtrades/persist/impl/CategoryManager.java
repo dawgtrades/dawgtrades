@@ -102,7 +102,11 @@ public class CategoryManager {
         public Iterator<Category> restore( Category modelCategory )
                 throws DTException
         {
+<<<<<<< HEAD
+            String       selectCategorySql = "select category_id, category_name, parent_id from category";
+=======
             String       selectCategorySql = "select category_id, parent_id from category";
+>>>>>>> 7db5530a435af883ad8ef1d2f8178fafb2086e5f
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );

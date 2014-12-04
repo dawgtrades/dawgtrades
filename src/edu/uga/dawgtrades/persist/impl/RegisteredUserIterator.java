@@ -62,9 +62,7 @@ public class RegisteredUserIterator
         if( more ) {
 
             try {
-		/*<<<<<<< HEAD
-		*/
-		
+
                 lastName = rs.getString( 1 );
                 firstName = rs.getString( 2 );
                 phone = rs.getString( 3 );
@@ -73,7 +71,7 @@ public class RegisteredUserIterator
                 password = rs.getString( 6 );
                 isAdmin = rs.getBoolean( 7 );
                 canText = rs.getBoolean( 8 );
-                id = rs.getLong( 9 );
+		id = rs.getLong( 9 );
                 
                 more = rs.next();
 				

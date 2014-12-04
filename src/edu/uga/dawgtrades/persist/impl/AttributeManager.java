@@ -79,7 +79,7 @@ public class AttributeManager {
     }
 
     public Iterator<Attribute> restore(Attribute modelAttribute) throws DTException {
-	String selectAttributeSql = "select attribute_value, attribute_type_id, item_id";
+	String selectAttributeSql = "select attribute_id, attribute_value, attribute_type_id, item_id";
 	Statement stmt = null;
 	StringBuffer query = new StringBuffer(100);
 	StringBuffer condition = new StringBuffer(100);

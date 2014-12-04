@@ -113,7 +113,7 @@ class RegisteredUserManager
     public Iterator<RegisteredUser> restore( RegisteredUser modelUser ) 
             throws DTException
     {
-	String       selectUserSql = "select last_name, first_name, phone, email, uname, upassword, is_admin, can_text, user_id from registered_user"; 
+	String       selectUserSql = "select user_id, last_name, first_name, phone, email, uname, upassword, is_admin, can_text from registered_user"; 
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
         StringBuffer condition = new StringBuffer( 100 );

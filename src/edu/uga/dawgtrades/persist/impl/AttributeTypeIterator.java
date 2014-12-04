@@ -40,9 +40,9 @@ public class AttributeTypeIterator implements Iterator<AttributeType> {
         if( more ) {
             try {
                 
-                categoryId = rs.getLong(1);
-            	name = rs.getString(2);
-            	id = rs.getLong(3);
+		id = rs.getLong(1);
+                categoryId = rs.getLong(2);
+            	name = rs.getString(3);
                 
                 more = rs.next();
             }

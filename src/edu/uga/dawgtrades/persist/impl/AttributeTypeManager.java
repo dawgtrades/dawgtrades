@@ -38,8 +38,10 @@ public class AttributeTypeManager {
         long attributeTypeId;
         
         try {
-            if( !attributeType.isPersistent() ) {
+            if( !attributeType.isPersistent() )
                 stmt = (PreparedStatement) conn.prepareStatement( insertAttributeTypeSql );
+	    else
+		stmt = (PreparedStatement) conn.prepareStatement( updateAttributeTypeSql );
                 
                 if( attributeType.getCategoryId() >= 0 ){
                     stmt.setLong( 1, attributeType.getCategoryId() );
@@ -53,6 +55,9 @@ public class AttributeTypeManager {
                 }
             } 
             
+	if(attributeType.isPersistent())
+	    stmt.setLong(4, attributeType.getId());
+
             inscnt = stmt.executeUpdate();
             if( !attributeType.isPersistent() ) {
                 // in case this this object is stored for the first time,
@@ -87,7 +92,7 @@ public class AttributeTypeManager {
     public Iterator<AttributeType> restore( AttributeType modelAttributeType ) 
             throws DTException
     {
-        String       selectUserSql = "select category_id, attribute_type_name from attribute_type"; 
+        String       selectUserSql = "select attribute_type_id, category_id, attribute_type_name from attribute_type"; 
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
         StringBuffer condition = new StringBuffer( 100 );

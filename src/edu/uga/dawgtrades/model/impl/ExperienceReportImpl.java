@@ -82,7 +82,10 @@ public class ExperienceReportImpl extends Persistent implements ExperienceReport
 	    this.reviewed = reviewed;
 	}
 	public String toString() {
-		return "ExperienceReport[" + getId() + "]: Reviewer[" + getReviewer() + "] Reviewed[$" + getReviewed() + "] date[" + getDate() + "] Report[" + getReport();
+		String result = "ExperienceReport[" + getId() + "]: date[" + getDate() + "] Report[" + getReport() + "]";
+		result += "\n     Reviewer: " + getReviewer().toString();
+		result += "\n     Reviewed: " + getReviewed().toString();
+		return result;
 	}
 
 }

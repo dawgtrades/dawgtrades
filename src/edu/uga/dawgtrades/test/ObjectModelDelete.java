@@ -31,8 +31,9 @@ public class ObjectModelDelete {
 	catch(DTException e) {
 	    System.out.println("can't set persistence");
 	}
-	Iterator<Category> catIter = null;
 
+	Iterator<Category> catIter = null;
+	Iterator<RegisteredUser> userIter = null;
 	try {
 	    //find electronics cat
 	    Category electronics = null;
@@ -80,6 +81,37 @@ public class ObjectModelDelete {
 	    }
 	    else
 		System.out.println("Failed to retrieve televisions");
+	    //find batman
+	    RegisteredUser batman = null;
+	    RegisteredUser modUser = objMod.createRegisteredUser();
+	    modUser.setName("bman");
+	    userIter = objMod.findRegisteredUser(modUser);
+	    while(userIter.hasNext()) {
+		batman = userIter.next();
+		System.out.println(batman);
+	    }
+	    //delete batman
+	    if(batman != null) {
+		objMod.deleteRegisteredUser(batman);
+		System.out.println("Deleted batman");
+	    }
+	    else
+		System.out.println("Failed to retrieve batman obj");
+	    //find superman
+	    RegisteredUser superman = null;
+	    modUser.setName("sman");
+	    userIter = objMod.findRegisteredUser(modUser);
+	    while(userIter.hasNext()) {
+		superman = userIter.next();
+		System.out.println(superman);
+	    }
+	    //delete superman
+	    if(superman != null) {
+		objMod.deleteRegisteredUser(superman);
+		System.out.println("Deleted superman");
+	    }
+	    else
+		System.out.println("Failed to retrieve superman obj");
 	}
 	catch(DTException e) {
 	    System.err.println("DTException: " + e);

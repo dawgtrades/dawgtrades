@@ -79,7 +79,7 @@ public class AttributeManager {
     }
 
     public Iterator<Attribute> restore(Attribute modelAttribute) throws DTException {
-	String selectAttributeSql = "select attribute_value, attribute_type_id, item_id";
+	String selectAttributeSql = "select attribute_id, attribute_value, attribute_type_id, item_id from attribute";
 	Statement stmt = null;
 	StringBuffer query = new StringBuffer(100);
 	StringBuffer condition = new StringBuffer(100);
@@ -126,7 +126,7 @@ public class AttributeManager {
     }
 
     public AttributeType restoreTypeOfAttribute(Attribute attr) throws DTException {
-	String selectAttributeSql = "select at.attribute_type_id, at.attribute_type_name, at.category_id from attribute a, attribute_type at where a.attribute_type_id = at.attribute_type_id";
+	String selectAttributeSql = "select at.attribute_type_id, at.category_id, at.attribute_type_name from attribute a, attribute_type at where a.attribute_type_id = at.attribute_type_id";
 	Statement stmt = null;
 	StringBuffer query = new StringBuffer(100);
 	StringBuffer condition = new StringBuffer(100);
@@ -140,14 +140,12 @@ public class AttributeManager {
 		query.append(" and a.attribute_id = '" + attr.getId() + "'");
 	    else {
 		if(attr.getValue() != null)
-		    condition.append(" a.attribute_value = '" + attr.getValue() + "'");
+		    condition.append(" and a.attribute_value = '" + attr.getValue() + "'");
 		if(attr.getAttributeType() >= 0) {
-		    if(condition.length() == 0)
 		       condition.append(" and");
 		       condition.append(" a.attribute_type_id = '" + attr.getAttributeType() + "'");
 		}
 		if(attr.getItemId() >= 0) {
-		    if(condition.length() == 0)
 			condition.append(" and");
 		    condition.append(" a.item_id = '" + attr.getItemId() + "'");
 		}
@@ -175,7 +173,7 @@ public class AttributeManager {
     }
 
     public Item restoreItem(Attribute attr) throws DTException {
-	String selectAttributeSql = "select i.item_id, i.name, i.category_id, i.identifier, i.description, i.owner_id from attribute a, item i where a.item_id = i.item_id";
+	String selectAttributeSql = "select i.item_id, i.name, i.description, i.identifier, i.category_id, i.owner_id from attribute a, item i where a.item_id = i.item_id";
 	Statement stmt = null;
 	StringBuffer query = new StringBuffer(100);
 	StringBuffer condition = new StringBuffer(100);
@@ -189,14 +187,12 @@ public class AttributeManager {
 		query.append(" and a.attribute_id = '" + attr.getId() + "'");
 	    else {
 		if(attr.getValue() != null)
-		    condition.append(" a.attribute_value = '" + attr.getValue() + "'");
+		    condition.append(" and a.attribute_value = '" + attr.getValue() + "'");
 		if(attr.getAttributeType() >= 0) {
-		    if(condition.length() == 0)
 			condition.append(" and");
 		    condition.append(" a.attribute_type_id = '" + attr.getAttributeType() + "'");
 		}
 		if(attr.getItemId() >= 0) {
-		    if(condition.length() == 0)
 			condition.append(" and");
 		    condition.append(" a.item_id = '" + attr.getItemId() + "'");
 		}

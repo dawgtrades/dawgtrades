@@ -54,7 +54,6 @@ public class ItemIterator implements Iterator<Item> {
         if( more ) {
 
             try {
-<<<<<<< HEAD
 		id = rs.getLong(1);
                 name = rs.getString( 2 );
                 description = rs.getString( 3 );
@@ -62,19 +61,6 @@ public class ItemIterator implements Iterator<Item> {
                 categoryId = rs.getLong( 5 );
                 ownerId = rs.getLong( 6 );
 
-=======
-                name = rs.getString( 1 );
-                description = rs.getString( 2 );
-                identifier = rs.getString (3 );
-                categoryId = rs.getLong( 4 );
-                ownerId = rs.getLong( 5 );
-				try {
-		           id = rs.getLong( 6 );
-		        }
-		        catch(Exception e) {
-		          id = -1;
-		        }
->>>>>>> 7db5530a435af883ad8ef1d2f8178fafb2086e5f
                 more = rs.next();
             }
             catch( Exception e ) {

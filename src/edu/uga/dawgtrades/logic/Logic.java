@@ -50,7 +50,7 @@ public interface Logic
     public void deleteAuction( long auctionId );
     public void deleteRegisteredUser( long userId );
     public void deleteAttributeType( long attributeTypeId );
-    public void deleteAttribute( long itemId );
+    public void deleteAttribute( long attributeId );
     
     //FIND RELATED TO
     public List<Category> findSubcategoriesOfCategory( long categoryId ) throws DTException;

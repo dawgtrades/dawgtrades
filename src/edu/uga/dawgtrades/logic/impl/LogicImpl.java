@@ -85,27 +85,76 @@ public class LogicImpl implements Logic
     }
     
     //UPDATE
-    public void updateCategory( long categoryId, long parentId, String name );
-    public void updateMembershipPrice( float newPrice );
+    public void updateCategory( long categoryId, long parentId, String name ) {
+    	CtrlUpdateCategory ctrlUpdateCategory = new CtrlUpdateCategory( objectModel );
+    	return ctrlUpdateCategory.updateCategory( categoryId, parentId, name);
+    }
+    public void updateMembershipPrice( float newPrice ) {
+    	CtrlUpdateMembershipPrice ctrlUpdateMembershipPrice = new CtrlUpdateMembershipPrice( objectModel );
+    	return ctrlUpdateMembershipPrice.updateMembershipPrice( newPrice );
+    }
     public void updateRegisteredUser( long userId, String name, String firstName, String lastName, String password,
-    		boolean isAdmin, String email, String phone, boolean canText );
-    public void updateAttributeType( long attributeTypeId, String name );
-    public void updateAuction( long auctionId, boolean isClosed ); // for reauction and close
-    public void updateBid( long bidId, boolean isWinning ); //when a new bid is placed, old one should be updating to losing
+    		boolean isAdmin, String email, String phone, boolean canText ) {
+    	CtrlUpdateRegisteredUser ctrlUpdateRegisteredUser = new CtrlUpdateRegisteredUser( objectModel );
+    	return ctrlUpdateRegisteredUser.updateRegisteredUser( userId, name, firstName, lastName, password,
+        		isAdmin, email, phone, canText);
+    }
+    public void updateAttributeType( long attributeTypeId, String name ) {
+    	CtrlUpdateAttributeType ctrlUpdateAttributeType = new CtrlUpdateAttributeType( objectModel );
+    	return ctrlUpdateAttributeType.updateAttributeType( attributeTypeId, name );
+    }
+    public void updateAuction( long auctionId, boolean isClosed ) {
+    	CtrlUpdateAuction ctrlUpdateAuction = new CtrlUpdateAuction( objectModel );
+    	return ctrlUpdateAuction.updateAuction( auctionId, isClosed);
+    }
+    public void updateBid( long bidId, boolean isWinning ) {
+    	CtrlUpdateBid ctrlUpdateBid = new CtrlUpdateBid( objectModel );
+    	return ctrlUpdateBid.updateBid( bidId, isWinning);
+    }
     
     //DELETE
-    public void deleteCategory( long categoryId );
-    public void deleteItem( long itemId );
-    public void deleteAuction( long auctionId );
-    public void deleteRegisteredUser( long userId );
-    public void deleteAttributeType( long attributeTypeId );
-    public void deleteAttribute( long itemId );
+    public void deleteCategory( long categoryId ) {
+    	CtrlDeleteCategory ctrlDeleteCategory = new CtrlDeleteCategory( objectModel );
+    	return ctrlDeleteCategory.deleteCategory( categoryId );
+    }
+    public void deleteItem( long itemId ) {
+    	CtrlDeleteItem ctrlDeleteItem = new CtrlDeleteItem( objectModel );
+    	return ctrlDeleteItem.deleteItem( itemId );
+    }
+    public void deleteAuction( long auctionId ) {
+    	CtrlDeleteAuction ctrlDeleteAuction = new CtrlDeleteAuction( objectModel );
+    	return ctrlDeleteAuction.deleteAuction( auctionId );
+    }
+    public void deleteRegisteredUser( long userId ) {
+    	CtrlDeleteRegisteredUser ctrlDeleteRegisteredUser = new CtrlDeleteRegisteredUser( objectModel );
+    	return ctrlDeleteRegisteredUser.deleteRegisteredUser( userId );
+    }
+    public void deleteAttributeType( long attributeTypeId ) {
+    	CtrlDeleteAttributeType ctrlDeleteAttributeType = new CtrlDeleteAttributeType( objectModel );
+    	return ctrlDeleteAttributeType.deleteAttributeType( attributeTypeId );
+    }
+    public void deleteAttribute( long attributeId ) {
+    	CtrlDeleteAttribute ctrlDeleteAttribute = new CtrlDeleteAttribute( objectModel );
+    	return ctrlDeleteAttribute.deleteAttribute( attributeId );
+    }
     
     //FIND RELATED TO
-    public List<Category> findSubcategoriesOfCategory( long categoryId ) throws DTException;
-    public List<Item> findItemsOfCategory( long categoryId ) throws DTException;
-    public List<Attribute> findAttributesOfItem( long itemId ) throws DTException;
-    public List<Auction> findAuctionsOfUser( long userId ) throws DTException;
+    public List<Category> findSubcategoriesOfCategory( long categoryId ) throws DTException {
+    	CtrlFindSubcategoriesOfCategory ctrlFindSubcategoriesOfCategory = new CtrlFindSubcategoriesOfCategory( objectModel );
+    	return ctrlFindSubcategoriesOfCategory.findSubcategoriesOfCategory( categoryId );
+    }
+    public List<Item> findItemsOfCategory( long categoryId ) throws DTException {
+    	CtrlFindSubcategoriesOfCategory ctrlFindSubcategoriesOfCategory = new CtrlFindSubcategoriesOfCategory( objectModel );
+    	return ctrlFindSubcategoriesOfCategory.findSubcategoriesOfCategory( categoryId );
+    }
+    public List<Attribute> findAttributesOfItem( long itemId ) throws DTException {
+    	CtrlFindSubcategoriesOfCategory ctrlFindSubcategoriesOfCategory = new CtrlFindSubcategoriesOfCategory( objectModel );
+    	return ctrlFindSubcategoriesOfCategory.findSubcategoriesOfCategory( itemId );
+    }
+    public List<Auction> findAuctionsOfUser( long userId ) throws DTException {
+    	CtrlFindSubcategoriesOfCategory ctrlFindSubcategoriesOfCategory = new CtrlFindSubcategoriesOfCategory( objectModel );
+    	return ctrlFindSubcategoriesOfCategory.findSubcategoriesOfCategory( userId );
+    }
     
     //TODO: Not sure about singular use cases such us finding the data about a particular auction.
     //We may or may not be able to do this already without adding to the logic layer.
@@ -114,9 +163,11 @@ public class LogicImpl implements Logic
     //MISC:
  
     //Emails a link
-    public void resetPassword( long userId, String email);
+    public void resetPassword( long userId, String email) {
+    	CtrlResetPassword ctrlResetPassword = new CtrlResetPassword( objectModel );
+    	return ctrlResetPassword.resetPassword( userId, email );
+    }
     
-    public void reauctionItem( long auctionId );
     
     //TODO: Not sure about pay membership
     //TODO: The system timer use cases. HOW are we implementing these?? Chron job to run a deamon might work. Logout already in session.

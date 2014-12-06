@@ -29,18 +29,20 @@ public interface Logic
     public long createAttribute( long attributeTypeId, long itemId, String value ) throws DTException;
     public long createCategory( long parentId, String name ) throws DTException;
     public long createAttributeType( long categoryId, String name ) throws DTException;
-    public long createAuction( long itemId, float minPrice, java.util.Date expiration) throws DTException;
+    public long createAuction( long itemId, float minPrice) throws DTException;
     public long createItem( long categoryId, long userId, String identifier, String name, String description) throws DTException;
-    public long createMembership( float price, java.util.Date date ) throws DTException; //Not sure on this as not in the UC's
-    public long createExperienceReport(int rating, String report, Date date, long reviewerId, long reviewedId);
-    public long createBid(float amount, Date date, boolean isWinning, long auctionId, long registeredUserId);
+    public long createMembership( float price ) throws DTException; //Not sure on this as not in the UC's
+    public long createExperienceReport(int rating, String report, long reviewerId, long reviewedId);
+    public long createBid(float amount, long auctionId, long registeredUserId);
     
     //UPDATE
-    public void updateCategory( long categoryId );
-    public void updateMembershipPrice();
-    public void updateRegisteredUser( long userId );
-    public void updateAttributeType( long attributeTypeId );
-    //TODO: Kochut's UC's do not have anything about updating items/auctions. Do we want this?
+    public void updateCategory( long categoryId, long parentId, String name );
+    public void updateMembershipPrice( float newPrice );
+    public void updateRegisteredUser( long userId, String name, String firstName, String lastName, String password,
+    		boolean isAdmin, String email, String phone, boolean canText );
+    public void updateAttributeType( long attributeTypeId, String name );
+    public void updateAuction( long auctionId, boolean isClosed ); // for reauction and close
+    public void updateBid( long bidId, boolean isWinning ); //when a new bid is placed, old one should be updating to losing
     
     //DELETE
     public void deleteCategory( long categoryId );
@@ -59,13 +61,9 @@ public interface Logic
     //TODO: Not sure about singular use cases such us finding the data about a particular auction.
     //We may or may not be able to do this already without adding to the logic layer.
     
-    
-    //MISC:
- 
     //Emails a link
     public void resetPassword( long userId, String email);
     
-    public void reauctionItem( long auctionId );
     
     //TODO: Not sure about pay membership
     //TODO: The system timer use cases. HOW are we implementing these?? Chron job to run a deamon might work. Logout already in session.

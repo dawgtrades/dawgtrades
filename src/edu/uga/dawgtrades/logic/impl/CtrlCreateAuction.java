@@ -31,15 +31,6 @@ public class CtrlCreateAuction
         // check if the auction already exists
         modelAuction = objectModel.createAuction();
 		modelAuction.setItemId( itemId);
-		modelAuction.setMinPrice(minPrice);
-        // starts with today's date and time
-        Calendar c = Calendar.getInstance(); 
-        // advances it 3 days
-        c.add(Calendar.DAY_OF_YEAR, 3);  
-        // gets modified time
-        Date expiration = c.getTime(); 
-		modelAuction.setExpiration(expiration);
-		
         auctionIter = objectModel.findAuction( modelAuction );
         while( auctionIter.hasNext() ) {
             auction = auctionIter.next();
@@ -48,9 +39,19 @@ public class CtrlCreateAuction
         // check if the Auction actually exists, and if so, throw an exception
         if( auction != null )
             throw new DTException( "An Auction with this itemID and price already exists" );
-        
+			
+        // create auction object
         auction = objectModel.createAuction(itemId, minPrice);
-
+        // set minimum price
+		auction.setMinPrice(minPrice);
+        // starts with today's date and time
+        Calendar c = Calendar.getInstance(); 
+        // advances it 3 days
+        c.add(Calendar.DAY_OF_YEAR, 3);  
+        // gets modified time
+        Date expiration = c.getTime(); 
+		auction.setExpiration(expiration);
+		// save auction data
         objectModel.storeAuction( auction );
 
         return auction.getId();

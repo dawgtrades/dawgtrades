@@ -80,12 +80,68 @@ public class ObjectModelUpdate
              if( batman != null ) {
 		 batman.setPhone( "777-777-7777" );
 		 objectModel.storeRegisteredUser( batman );
-		 System.out.println( "Updated the phone number of batman to (111) 123-4567" );
+		 System.out.println( "Updated the phone number of batman to (777) 777-7777" );
+             }
+		 else
+             System.out.println( "Failed to retrieve the batman Person object" );
+		 
+		 
+		 //Finding item
+         Item macbook = null;
+	     Item modelItem = objectModel.createItem();
+	     modelItem.setName("Apple Macbook");
+	     Iterator<Item> itemIter = objectModel.findItem(modelItem);
+	     while( itemIter.hasNext() ) {
+	         macbook = itemIter.next();
+	     }
+	     
+             
+	     //Updating Item
+	     if( macbook != null ) {
+		 macbook.setName( "Dell" );
+		 macbook.setDescription("Great condition, used just over a month");
+		 objectModel.storeItem( macbook );
+		 System.out.println( "Updated the name of the macbook item to Dell & its description" );
 	     }
 	     else
-                 System.out.println( "Failed to retrieve the batman Person object" );
-
+		 System.out.println( "Failed to retrieve the macbook item object" );
+	     
+         
+         //Finding ExperienceReport
+         ExperienceReport report = null;
+	     ExperienceReport modelExperienceReport = objectModel.createExperienceReport();
+	     modelExperienceReport.setReport("5/5 would buy again");
+	     Iterator<ExperienceReport> reportIter = objectModel.findExperienceReport(report);
+	     while( reportIter.hasNext() ) {
+	         report = reportIter.next();
+	     }
+             
+	     //Updating ExperienceReport
+	     if( report != null ) {
+		 report.setRating(3);
+		 report.setReport("It was an okay experience");
+		 objectModel.storeExperienceReport( report );
+		 System.out.println( "Updated the rating and report of the ExperienceReport" );
+	     }
+	     else
+	     System.out.println( "Failed to retrieve the ExperienceReport object" );
+	     
+	     //Finding Membership
+	     Membership mship = objectModel.findMembership();
+             
+	     //Updating Membership
+	     if( mship != null ) {
+		 mship.setPrice(50);
+		 objectModel.storeMembership( mship );
+		 System.out.println( "Updated the price of the Membership" );
+	     }
+	     else
+	     System.out.println( "Failed to retrieve the Membership object" );
+	     
          }
+         
+         
+         
          catch( DTException ce) {
              System.err.println( "DTException: " + ce );
          }

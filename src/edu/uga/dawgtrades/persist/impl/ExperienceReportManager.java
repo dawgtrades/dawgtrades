@@ -116,41 +116,29 @@ public class ExperienceReportManager {
         
         if( modelReport != null ) {
             if( modelReport.getId() >= 0 ) // id is unique, so it is sufficient to get a report
-                query.append( " where report_id = " + modelReport.getId() );
+                query.append( " and report_id = " + modelReport.getId() );
             else {
                 if( modelReport.getReviewer() != null ) {
-                    if( condition.length() > 0 )
-                        condition.append( " and" );
-                    condition.append( " reviewer_id = '" + modelReport.getReviewer().getId() + "'" );
+                    condition.append( " and reviewer_id = '" + modelReport.getReviewer().getId() + "'" );
                 }
 				
                 if( modelReport.getReviewed() != null ) {
-                    if( condition.length() > 0 )
-                        condition.append( " and" );
-                    condition.append( " reviewed_id = '" + modelReport.getReviewed().getId() + "'" );
+                    condition.append( " and reviewed_id = '" + modelReport.getReviewed().getId() + "'" );
                 }				
 				
-     
-                if( condition.length() > 0 )
-                    condition.append( " and" );
-                condition.append( " rating = '" + modelReport.getRating() + "'" );
+                condition.append( " and rating = " + modelReport.getRating());
                 
 				
                 if( modelReport.getReport() != null ) {
-                    if( condition.length() > 0 )
-                        condition.append( " and" );
-                    condition.append( " report = '" + modelReport.getReport() + "'" );
+                    condition.append( " and report = '" + modelReport.getReport() + "'" );
                 }       
 				
                 //MAY NEED TO FIX DATE CONVERSION
                 if( modelReport.getDate() != null ) {
-                	if( condition.length() > 0 )
-                        condition.append( " and" );
-                    condition.append( " rating_date = '" + modelReport.getDate() + "'" );  
+                    condition.append( " and rating_date = '" + modelReport.getDate() + "'" );  
                 }
 					
                 if( condition.length() > 0 ) {
-                    query.append(  " where " );
                     query.append( condition );
                 }
             }

@@ -35,6 +35,7 @@ public class ObjectModelDelete {
 	Iterator<Category> catIter = null;
 	Iterator<RegisteredUser> userIter = null;
 	try {
+		/**
 	    //find electronics cat
 	    Category electronics = null;
 	    Category modCat = objMod.createCategory();
@@ -81,6 +82,7 @@ public class ObjectModelDelete {
 	    }
 	    else
 		System.out.println("Failed to retrieve televisions");
+		**/
 	    //find batman
 	    RegisteredUser batman = null;
 	    RegisteredUser modUser = objMod.createRegisteredUser();
@@ -112,6 +114,113 @@ public class ObjectModelDelete {
 	    }
 	    else
 		System.out.println("Failed to retrieve superman obj");
+	    
+	    //CATEGORIES & ATTRIBUTE TYPES
+	    Category modelCategory = objMod.createCategory();
+	    AttributeType modelAttrType = objMod.createAttributeType();
+	    Iterator<Category> categoryIter = objMod.findCategory(modelCategory);
+	    Iterator<AttributeType> attrTypeIter = null;
+	    while(categoryIter.hasNext()) {
+	    	modelCategory = categoryIter.next();
+	    	attrTypeIter = objMod.getAttributeType(modelCategory);
+	    	System.out.println(modelCategory);
+	    	while (attrTypeIter.hasNext()) {
+	    		modelAttrType = attrTypeIter.next();
+	    		System.out.println(modelAttrType);
+	    		if (modelAttrType != null) {
+	    			objMod.deleteAttributeType(modelAttrType);
+	    			System.out.println("Deleted AttributeType");
+	    		}
+	    		else
+	    			System.out.println("Failed to retrieve Attributetype obj");
+	    	}
+	    	if (modelCategory != null) {
+	    		objMod.deleteCategory(modelCategory);
+	    		System.out.println("Deleted Category");
+	    	}
+	    	else
+	    		System.out.println("Failed to retrieve Category obj");
+	    }
+	    
+	    //ITEMS & ATTRIBUTES
+	    Item modelItem = objMod.createItem();
+	    Attribute modelAttr = objMod.createAttribute();
+	    Iterator<Item> itemIter = objMod.findItem(modelItem);
+	    Iterator<Attribute> attrIter = null;
+	    while(itemIter.hasNext()) {
+	    	modelItem = itemIter.next();
+	    	attrIter = objMod.getAttribute(modelItem);
+	    	System.out.println(modelItem);
+	    	while (attrIter.hasNext()) {
+	    		modelAttr = attrIter.next();
+	    		System.out.println(modelAttr);
+	    		if (modelAttr != null) {
+	    			objMod.deleteAttribute(modelAttr);
+	    			System.out.println("Deleted attribute");
+	    		}
+	    		else
+	    			System.out.println("Failed to retrieve attribute");
+	    	}
+	    	if (modelItem != null) {
+	    		objMod.deleteItem(modelItem);
+	    		System.out.println("Deleted item");
+	    	}
+	    	else
+	    		System.out.println("Failed to retrieve itemj");
+	    }
+	    
+	    //AUCTIONS
+	    Auction modelAuction = objMod.createAuction();
+	    Iterator<Auction> auctionIter = objMod.findAuction(modelAuction);
+	    while (auctionIter.hasNext()) {
+	    	modelAuction = auctionIter.next();
+	    	System.out.println(modelAuction);
+	    	if (modelAuction != null) {
+	    		objMod.deleteAuction(modelAuction);
+	    		System.out.println("Deleted Auction");
+	    	}
+	    	else
+	    		System.out.println("Failed to retrieve auction");
+	    }
+	    
+	    //BIDS
+	    Bid modelBid = objMod.createBid();
+	    Iterator<Bid> bidIter = objMod.findBid(modelBid);
+	    while (bidIter.hasNext()) {
+	    	modelBid = bidIter.next();
+	    	System.out.println(modelBid);
+	    	if (modelBid != null) {
+	    		objMod.deleteBid(modelBid);
+	    		System.out.println("Deleted Bid");
+	    	}
+	    	else
+	    		System.out.println("Failed to retrieve bid");
+	    }
+	    
+	    //REPORTS
+	    ExperienceReport modelExperienceReport = objMod.createExperienceReport();
+	    Iterator<ExperienceReport> experienceReportIter = objMod.findExperienceReport(modelExperienceReport);
+	    while (experienceReportIter.hasNext()) {
+	    	modelExperienceReport = experienceReportIter.next();
+	    	System.out.println(modelExperienceReport);
+	    	if (modelExperienceReport != null) {
+	    		objMod.deleteExperienceReport(modelExperienceReport);
+	    		System.out.println("Deleted ExperienceReport");
+	    	}
+	    	else
+	    		System.out.println("Failed to retrieve report");
+	    }
+	    
+	    //MEMBERSHIP
+	    Membership modelMembership = objMod.findMembership();
+	    System.out.println(modelMembership);
+	    if (modelMembership != null) {
+	    	objMod.deleteMembership(modelMembership);
+	    	System.out.println("Deleted Membership");
+	    }
+	    else
+			System.out.println("Failed to retrieve membership");
+	    
 	}
 	catch(DTException e) {
 	    System.err.println("DTException: " + e);

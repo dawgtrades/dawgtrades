@@ -1,4 +1,4 @@
-package edu.uga.clubs.authentication;
+package edu.uga.dawgtrades.authentication;
 
 /*******************************************
  * Based on the modified code from Matthew Eavenson
@@ -16,12 +16,13 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-import edu.uga.clubs.ClubsException;
-import edu.uga.clubs.model.ObjectModel;
-import edu.uga.clubs.model.Person;
-import edu.uga.clubs.model.impl.ObjectModelImpl;
-import edu.uga.clubs.persistence.Persistence;
-import edu.uga.clubs.persistence.impl.PersistenceImpl;
+import edu.uga.dawgtrades.model.DTException;
+import edu.uga.dawgtrades.model.ObjectModel;
+import edu.uga.dawgtrades.model.RegisteredUser;
+import edu.uga.dawgtrades.model.impl.ObjectModelImpl;
+import edu.uga.dawgtrades.persist.Persistence;
+import edu.uga.dawgtrades.persist.impl.PersistenceImpl;
+
 
 
 /***************************************************************
@@ -33,7 +34,7 @@ public class Session
 {
     private Connection conn;
     private ObjectModel objectModel;
-    private Person person;
+    private RegisteredUser user;
     private String id;
     private Date expiration;
     private static Logger log = SessionManager.getLog();
@@ -47,7 +48,12 @@ public class Session
         this.conn = conn;
         objectModel = new ObjectModelImpl();
         Persistence persistence = new PersistenceImpl( conn, objectModel ); 
-        objectModel.setPersistence( persistence ); 
+        try {
+			objectModel.setPersistence( persistence );
+		} catch (DTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
         extendExpiration();
     }
     
@@ -65,21 +71,21 @@ public class Session
      * Gets the GVUser for which the session is created.
      * @return the loggedIn user
      */
-    public Person getUser()
+    public RegisteredUser getUser()
     {
         extendExpiration();
-        return person;
+        return user;
     }
     
     /***********************************************************
      * Sets the loggedIn user to the new created session.
      * @param  person the user to be associated with the session.
      */
-    public void setUser(Person person) 
-            throws ClubsException
+    public void setUser(RegisteredUser user) 
+            throws DTException
     {
         extendExpiration();
-        this.person = person;
+        this.user = user;
     }
     
     /***********************************************************
@@ -155,12 +161,12 @@ public class Session
         try {
             SessionManager.removeSession( this );
         } 
-        catch( ClubsException e ) {
+        catch( DTException e ) {
             log.error( e.toString(), e );
             try {
                 throw e;
             } 
-            catch (ClubsException e1) {
+            catch (DTException e1) {
                 e1.printStackTrace();
             }
         }

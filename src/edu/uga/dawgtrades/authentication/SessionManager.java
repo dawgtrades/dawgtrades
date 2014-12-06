@@ -1,4 +1,4 @@
-package edu.uga.clubs.authentication;
+package edu.uga.dawgtrades.authentication;
 
 
 import java.security.MessageDigest;
@@ -11,13 +11,15 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import edu.uga.clubs.ClubsException;
-import edu.uga.clubs.model.ObjectModel;
-import edu.uga.clubs.model.Person;
-import edu.uga.clubs.model.impl.ObjectModelImpl;
-import edu.uga.clubs.persistence.Persistence;
-import edu.uga.clubs.persistence.impl.DbUtils;
-import edu.uga.clubs.persistence.impl.PersistenceImpl;
+import edu.uga.dawgtrades.model.DTException;
+import edu.uga.dawgtrades.model.ObjectModel;
+import edu.uga.dawgtrades.model.RegisteredUser;
+import edu.uga.dawgtrades.model.impl.ObjectModelImpl;
+import edu.uga.dawgtrades.persist.Persistence;
+import edu.uga.dawgtrades.persist.impl.DbUtils;
+import edu.uga.dawgtrades.persist.impl.PersistenceImpl;
+
+
 
 
 
@@ -58,19 +60,19 @@ public class SessionManager
      * @throws GVException
      */
     public static String login( String username, String password ) 
-            throws ClubsException 
+            throws DTException 
     {
         Connection conn = null;
         ObjectModel objectModel = null;
         Persistence persistence = null;
-        Person loginPerson = null;
-        Person knownPerson = null;
+        RegisteredUser loginUser = null;
+        RegisteredUser knownUser = null;
         Session s = null;
         
         try {
             conn = DbUtils.connect();
         } catch (Exception seq) {
-            throw new ClubsException( "SessionManager.login: Unable to get a database connection" );
+            throw new DTException( "SessionManager.login: Unable to get a database connection" );
         }
         
         s = new Session( conn );
@@ -78,24 +80,24 @@ public class SessionManager
         objectModel = new ObjectModelImpl();
         persistence = new PersistenceImpl( conn, objectModel );
         
-        loginPerson = objectModel.createPerson();
-        loginPerson.setUserName( username );
-        loginPerson.setPassword( password );
+        loginUser = objectModel.createRegisteredUser();
+        loginUser.setName( username );
+        loginUser.setPassword( password );
         
-        Iterator<Person> persons = persistence.restorePerson( loginPerson );
-        if( persons.hasNext() ) {
-             knownPerson = persons.next();
-             System.out.println( "Have person!" );
-             System.out.println( "id: " + knownPerson.getId() );
-             System.out.println( "userName: " + knownPerson.getUserName() );
-             System.out.println( "password: " + knownPerson.getPassword() );
-             System.out.println( "email: " + knownPerson.getEmail() ); 
-             loginPerson = null;
-             return createSession( s, knownPerson );
+        Iterator<RegisteredUser> users = persistence.restoreRegisteredUser( loginUser );
+        if( users.hasNext() ) {
+             knownUser = users.next();
+             System.out.println( "Have user!" );
+             System.out.println( "id: " + knownUser.getId() );
+             System.out.println( "userName: " + knownUser.getName() );
+             System.out.println( "password: " + knownUser.getPassword() );
+             System.out.println( "email: " + knownUser.getEmail() ); 
+             loginUser = null;
+             return createSession( s, knownUser );
         } 
         else {
             log.error( "SessionManager.login: Invalid UserName or Password for: " + username );
-            throw new ClubsException( "SessionManager.login: Invalid User Name or Password" );
+            throw new DTException( "SessionManager.login: Invalid User Name or Password" );
         }
         
     }
@@ -107,10 +109,10 @@ public class SessionManager
      * @return  the new Session Id
      * @throws GVException
      */
-    private static String createSession( Session session, Person person ) 
-            throws ClubsException
+    private static String createSession( Session session, RegisteredUser user ) 
+            throws DTException
     {
-        if( person == null ) {
+        if( user == null ) {
             if( session.getConnection() != null ) {
                 try { 
                     session.getConnection().close();
@@ -120,21 +122,21 @@ public class SessionManager
                 }
             }
             log.error( "SessionManager.createSession: Bad username or password" );
-            throw new ClubsException( "SessionManager.createSession: Bad username or password" );
+            throw new DTException( "SessionManager.createSession: Bad username or password" );
         }
         
-        if( loggedIn.containsKey(person.getUserName()) ) {
-            Session qs = loggedIn.get(person.getUserName());
-            qs.setUser(person);
+        if( loggedIn.containsKey(user.getName()) ) {
+            Session qs = loggedIn.get(user.getName());
+            qs.setUser(user);
             return qs.getSessionId();
         }
-        session.setUser(person);
+        session.setUser(user);
         
-        String ssid = secureHash( "CLUBS" + System.nanoTime() );
+        String ssid = secureHash( "DAWGTRADES" + System.nanoTime() );
         session.setSessionId( ssid );
         
         sessions.put( ssid, session );
-        loggedIn.put( person.getUserName(), session );
+        loggedIn.put( user.getName(), session );
         session.start();
         return ssid;
     }
@@ -145,7 +147,7 @@ public class SessionManager
      * @throws GVException
      */
     public static void logout(Session s) 
-            throws ClubsException
+            throws DTException
     {
         s.setExpiration(new Date());
         s.interrupt();
@@ -158,7 +160,7 @@ public class SessionManager
      * @throws GVException
      */
     public static void logout(String ssid) 
-            throws ClubsException
+            throws DTException
     {
         Session s = getSessionById(ssid);
         s.setExpiration(new Date());
@@ -172,17 +174,17 @@ public class SessionManager
      * @throws GVException
      */
     protected static void removeSession( Session s ) 
-            throws ClubsException
+            throws DTException
     {
         try { 
             s.getConnection().close();
         } 
         catch( SQLException sqe ) { 
             log.error( "SessionManager.removeSession: cannot close connection", sqe );
-            throw new ClubsException( "SessionManager.removeSession: Cannot close connection" );
+            throw new DTException( "SessionManager.removeSession: Cannot close connection" );
         } // try
         sessions.remove( s.getSessionId() );
-        loggedIn.remove( s.getUser().getUserName() );
+        loggedIn.remove( s.getUser().getName() );
     }
     
     /****************************************************
@@ -200,7 +202,7 @@ public class SessionManager
      * @throws ClubsException 
      */
     public static String secureHash( String input ) 
-            throws ClubsException
+            throws DTException
     {
         StringBuilder output = new StringBuilder();
         try {
@@ -218,7 +220,7 @@ public class SessionManager
         catch( Exception e ) {
             log.error(
                     "SessionManager.secureHash: Invalid Encryption Algorithm", e );
-            throw new ClubsException(
+            throw new DTException(
                     "SessionManager.secureHash: Invalid Encryption Algorithm" );
         }
         return output.toString();

@@ -29,8 +29,8 @@ public interface Logic
     public long createAttribute( long attributeTypeId, long itemId, String value ) throws DTException;
     public long createCategory( long parentId, String name ) throws DTException;
     public long createAttributeType( long categoryId, String name ) throws DTException;
-    public long createAuction( long itemId, float minPrice, java.util.Date expiration, long categoryId, long userId, String identifier, 
-    		String name, String description ) throws DTException;
+    public long createAuction( long itemId, float minPrice, java.util.Date expiration) throws DTException;
+    public long createItem( long categoryId, long userId, String identifier, String name, String description) throws DTException;
     public long createMembership( float price, java.util.Date date ) throws DTException; //Not sure on this as not in the UC's
     public long createExperienceReport(int rating, String report, Date date, long reviewerId, long reviewedId);
     public long createBid(float amount, Date date, boolean isWinning, long auctionId, long registeredUserId);
@@ -62,16 +62,13 @@ public interface Logic
     
     //MISC:
  
-    //Summary data NOTE: not sure if this should be void or not
-    public void printReport();
-    
     //Emails a link
-    public void resetPassword();
+    public void resetPassword( long userId, String email);
     
     public void reauctionItem( long auctionId );
     
     //TODO: Not sure about pay membership
-    //TODO: The system timer use cases. HOW are we implementing these??
+    //TODO: The system timer use cases. HOW are we implementing these?? Chron job to run a deamon might work. Logout already in session.
     
     
 }

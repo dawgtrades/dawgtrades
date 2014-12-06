@@ -91,7 +91,7 @@ class MembershipManager
     public Membership restore() 
             throws DTException
     {
-        String       selectMembershipSql = "select fee, fee_date from membership"; 
+        String       selectMembershipSql = "select membership_fee_id, fee, fee_date from membership"; 
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
         
@@ -108,10 +108,11 @@ class MembershipManager
             	 
             	ResultSet rs = stmt.getResultSet();
             	if (rs.next()) {
-            	float price = rs.getFloat( 1 );
-                Date date = rs.getDate( 2 );
+            	long id = rs.getLong(1);
+            	float price = rs.getFloat( 2 );
+                Date date = rs.getDate( 3 );
                 Membership membership = new MembershipImpl(price, date);
-                membership.setId(1);
+                membership.setId(id);
                 return membership;
                 }
             }

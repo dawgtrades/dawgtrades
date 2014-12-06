@@ -95,7 +95,8 @@ public class ObjectModelRead
                  
                  Category cp = objectModel.getParent(c);
                  System.out.println( "   Parent: " + cp);
-             }
+             }       
+             
              
              System.out.println( "\nBID OBJECTS:" );
              Iterator<Bid> bidIter = objectModel.findBid( null );

@@ -25,14 +25,6 @@ public class ExperienceReportImpl extends Persistent implements ExperienceReport
 	// Report object is new
 	public ExperienceReportImpl (int rating, String report, Date date, RegisteredUser reviewer, RegisteredUser reviewed) throws DTException {
 		super(-1);
-		if (reviewer == null)
-			throw new DTException("Reviewer is null");
-		if(reviewed == null)
-		    throw new DTException("Reviewed is null");
-		if (!reviewer.isPersistent())
-			throw new DTException("Reviewer is not persistent");
-		if(!reviewed.isPersistent())
-		    throw new DTException("Reviewed is not persistent");
 		this.rating = rating;
 		this.report = report;
 		this.date = date;
@@ -40,17 +32,6 @@ public class ExperienceReportImpl extends Persistent implements ExperienceReport
 		this.reviewed = reviewed;
 	}
 	
-	/** Report object exists, DON"T THINK WE NEED THIS
-	public ExperienceReportImpl (int rating,
-	String report,Date date,long reviewer,long reviewed) {
-	    super(-1);
-		this.rating = rating;
-		this.report = report;
-		this.date = date;
-		this.reviewer = reviewer;
-		this.reviewed = reviewed;
-	}
-	**/
 	public int getRating() {
 		return rating;
 	}

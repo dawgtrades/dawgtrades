@@ -307,6 +307,11 @@ public class ObjectModelImpl implements ObjectModel {
 	public Persistence getPersistence() throws DTException {
 		return pers;
 	}
+	@Override
+	public void deleteMembership(Membership membership) throws DTException {
+		pers.deleteMembership(membership);
+		
+	}
 
 
 }

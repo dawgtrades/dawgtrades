@@ -421,7 +421,7 @@ public interface ObjectModel
      */
     public void storeMembership( Membership membership ) throws DTException;
     
-    //public void deleteMembership( Membership membership ) throws DTException;
+    public void deleteMembership( Membership membership ) throws DTException;
  
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //

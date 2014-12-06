@@ -124,7 +124,7 @@ public class AuctionManager {
                     
                     if( condition.length() > 0 )
                          condition.append( " and" );
-                    condition.append( " high_price = '" + modelAuction.getSellingPrice() + "'" );
+                    condition.append( " high_bid = '" + modelAuction.getSellingPrice() + "'" );
 
                     if( modelAuction.getExpiration() != null ) {
                         if( condition.length() > 0 )

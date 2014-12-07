@@ -41,7 +41,8 @@ public class CtrlCreateCategory
             throw new DTException( "A Category with this name and parent id already exists" );
         
         category = objectModel.createCategory( parentId, name);
-
+		category.setName(name);
+		category.setParentId(parentId);
         objectModel.storeCategory( category );
 
         return category.getId();

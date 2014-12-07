@@ -41,7 +41,10 @@ public class CtrlCreateAttribute
             throw new DTException( "An Attribute with this value already exists" );
         
         attribute = objectModel.createAttribute(attributeTypeId, itemId, value);
-
+        attribute.setValue( value );
+		attribute.setItemId( itemId);
+		attribute.setAttributeType( attributeTypeId );
+		
         objectModel.storeAttribute( attribute );
 
         return attribute.getId();

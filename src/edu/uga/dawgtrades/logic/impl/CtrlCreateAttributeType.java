@@ -40,7 +40,8 @@ public class CtrlCreateAttributeType
             throw new DTException( "An AttributeType with this name and category ID already exists" );
         
         attributeType = objectModel.createAttributeType( categoryId, name);
-
+        attributeType.setName(name);
+		attributeType.setCategoryId(categoryId);
         objectModel.storeAttributeType( attributeType );
 
         return attributeType.getId();

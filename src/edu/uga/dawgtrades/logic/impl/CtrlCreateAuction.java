@@ -42,6 +42,8 @@ public class CtrlCreateAuction
 			
         // create auction object
         auction = objectModel.createAuction(itemId, minPrice);
+		// set item id
+		auction.setItemId( itemId);
         // set minimum price
 		auction.setMinPrice(minPrice);
         // starts with today's date and time

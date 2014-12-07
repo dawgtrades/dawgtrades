@@ -10,15 +10,14 @@ import java.util.List;
 import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.Item;
 import edu.uga.dawgtrades.model.Attribute;
-import edu.uga.dawgtrades.model.impl;
 import edu.uga.dawgtrades.model.ObjectModel;
 
 
-public class CtrlFindAttributesOfItems {
+public class CtrlFindAttributesOfItem {
     
     private ObjectModel objectModel = null;
     
-    public CtrlFindAttributesOfItems( ObjectModel objectModel )
+    public CtrlFindAttributesOfItem( ObjectModel objectModel )
     {
         this.objectModel = objectModel;
     }
@@ -40,12 +39,12 @@ public class CtrlFindAttributesOfItems {
             item = itemIter.next();
         }
         if( item == null )
-            throw new ItemsException( "A item with this name does not exist: " + itemId );
+            throw new DTException( "This item does not exist" );
 
-        Iterator<Attribute> attributeIter = objectModel.findAttribute( item );
-        while( attributeIter != null && attributeIter.hasNext() ) {
-            Attribute m = attributeIter.next();
-            attributesOfItem.add( m.getAttribute() );
+        Iterator<Attribute> attributeIter = objectModel.getAttribute( item );
+        while( attributeIter.hasNext() ) {
+            Attribute a = attributeIter.next();
+            attributesOfItem.add( a );
         }
 
         return attributesOfItem;

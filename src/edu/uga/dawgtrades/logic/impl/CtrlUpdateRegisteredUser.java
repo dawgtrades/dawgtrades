@@ -1,7 +1,3 @@
-//
-// A control class to implement the 'Create RegisteredUser' use case
-//
-//
 
 package edu.uga.dawgtrades.logic.impl;
 
@@ -11,40 +7,43 @@ import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.ObjectModel;
 import edu.uga.dawgtrades.model.RegisteredUser;
 
+/**
+ * A control class to implement the update of a RegisteredUser's info
+ * @author Justin Rector
+ */
 
-public class CtrlCreateRegisteredUser 
+public class CtrlUpdateRegisteredUser 
 {
     
     private ObjectModel objectModel = null;
     
-    public CtrlCreateRegisteredUser( ObjectModel objectModel )
+    public CtrlUpdateRegisteredUser( ObjectModel objectModel )
     {
         this.objectModel = objectModel;
     }
     
-    public long createRegisteredUser( String name, String firstName, String lastName, String password, boolean isAdmin, String email, String phone, boolean canText	) throws DTException
+    public void updateRegisteredUser( long userId, String name, String firstName, String lastName, String password, boolean isAdmin, String email, String phone, boolean canText ) throws DTException
     { 
         RegisteredUser               registeredUser  = null;
         RegisteredUser               modelRegisteredUser  = null;
         Iterator<RegisteredUser>     registeredUserIter  = null;
 
-        // check if the userName already exists
+        // retrieve the user
         modelRegisteredUser = objectModel.createRegisteredUser();
-        modelRegisteredUser.setName( name );
+        modelRegisteredUser.setId(userId);
         registeredUserIter = objectModel.findRegisteredUser( modelRegisteredUser );
         while( registeredUserIter.hasNext() ) {
             registeredUser = registeredUserIter.next();
         }
         
-        // check if the RegisteredUser actually exists, and if so, throw an exception
-        if( registeredUser != null )
-            throw new DTException( "A RegisteredUser with this user name already exists" );
+        // make sure the user actually exists
+        if( registeredUser == null )
+            throw new DTException( "The user does not exist" );
         
-        registeredUser = objectModel.createRegisteredUser(name,firstName, lastName, password, isAdmin, email, phone, canText);
+        registeredUser = objectModel.createRegisteredUser(name, firstName, lastName, password, isAdmin, email, phone, canText);
+        registeredUser.setId(userId);
 
         objectModel.storeRegisteredUser( registeredUser );
 
-        return registeredUser.getId();
     }
 }
-

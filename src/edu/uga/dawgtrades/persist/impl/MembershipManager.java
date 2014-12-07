@@ -20,7 +20,7 @@ import edu.uga.dawgtrades.model.impl.MembershipImpl;
  *
  */
 
-class MembershipManager
+public class MembershipManager
 {
     private ObjectModel objectModel = null;
     private Connection  conn = null;

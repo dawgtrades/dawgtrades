@@ -14,11 +14,10 @@ import edu.uga.dawgtrades.model.Item;
 import edu.uga.dawgtrades.model.ObjectModel;
 import edu.uga.dawgtrades.model.RegisteredUser;
 
-//import edu.uga.clubs.model.Club;
-//import edu.uga.clubs.model.ObjectModel;
 
 
-class RegisteredUserManager
+
+public class RegisteredUserManager
 {
     private ObjectModel objectModel = null;
     private Connection  conn = null;

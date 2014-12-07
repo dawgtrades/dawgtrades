@@ -33,8 +33,8 @@ public class AuctionManager {
     public void save( Auction auction )
             throws DTException
     {
-        String               insertAuctionSql = "insert into auction ( item_id, high_bid, expiration_dt, min_price) values ( ?, ?, ?, ?)";
-        String               updateAuctionSql = "update auction set item_id = ?, high_bid = ?, expiration_dt = ?, min_price = ? where auction_id = ?";
+        String               insertAuctionSql = "insert into auction ( item_id, expiration_dt, min_price) values ( ?, ?, ?)";
+        String               updateAuctionSql = "update auction set item_id = ?, expiration_dt = ?, min_price = ? where auction_id = ?";
         PreparedStatement	 stmt = null;
         int                  numUpdated;
         long                 auctionId;
@@ -50,21 +50,19 @@ public class AuctionManager {
             	stmt.setLong(1, auction.getItemId());
             else
             	throw new DTException( "AuctionManager.save: can't save a Auction: item id undefined" );
-
-            stmt.setFloat( 2, auction.getSellingPrice() );
             
             if( auction.getExpiration() != null ) {
                 java.util.Date jDate = auction.getExpiration();
                 java.sql.Date sDate = new java.sql.Date( jDate.getTime() );
-                stmt.setDate( 3, sDate );
+                stmt.setDate( 2, sDate );
             }
             else
-                stmt.setNull(3, java.sql.Types.DATE);
+                stmt.setNull(2, java.sql.Types.DATE);
            
-            stmt.setFloat(4, auction.getMinPrice());
+            stmt.setFloat(3, auction.getMinPrice());
 
             if( auction.isPersistent() )
-                stmt.setLong( 5, auction.getId() );
+                stmt.setLong( 4, auction.getId() );
 
             numUpdated = stmt.executeUpdate();
 
@@ -100,7 +98,7 @@ public class AuctionManager {
         public Iterator<Auction> restore( Auction modelAuction )
                 throws DTException
         {
-            String       selectAuctionSql = "select auction_id, item_id, high_bid, expiration_dt, min_price from auction";
+            String       selectAuctionSql = "select auction_id, item_id, expiration_dt, min_price from auction";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );
@@ -116,10 +114,6 @@ public class AuctionManager {
                 else {
                     if( modelAuction.getItemId() > 0 )
                         condition.append( " item_id = '" + modelAuction.getItemId() + "'" );
-                    
-                    if( condition.length() > 0 )
-                         condition.append( " and" );
-                    condition.append( " high_bid = '" + modelAuction.getSellingPrice() + "'" );
 
                     if( modelAuction.getExpiration() != null ) {
                         if( condition.length() > 0 )
@@ -205,9 +199,6 @@ public class AuctionManager {
               else {
                   if( auction.getItemId() >= 0 )
                       condition.append( " and a.item_id = '" + auction.getItemId() + "'" );
-
-                  if( condition.length() == 0 )
-                      condition.append( " AND a.high_bid = '" + auction.getSellingPrice() + "'" );
 
                   if( auction.getExpiration() != null && condition.length() == 0 )
                       condition.append( " AND a.expiration_dt = '" + auction.getExpiration() + "'" );

@@ -54,7 +54,6 @@ public class BidIterator implements Iterator<Bid> {
     	
     	long itemId;
     	float minPrice;
-    	float sellingPrice;
     	Date expiration;
     	//user info
     	
@@ -81,16 +80,15 @@ public class BidIterator implements Iterator<Bid> {
                 date = rs.getDate( 5 );
             	itemId = rs.getLong( 6 );
             	minPrice = rs.getFloat(7);
-            	sellingPrice = rs.getFloat(8);
-            	expiration = rs.getDate(9);
-            	name = rs.getString(10);
-            	firstName = rs.getString(11);
-            	lastName = rs.getString(12);
-            	password = rs.getString(13);
-            	isAdmin = rs.getBoolean(14);
-            	email = rs.getString(15);
-            	phone = rs.getString(16);
-            	canText = rs.getBoolean(17);
+            	expiration = rs.getDate(8);
+            	name = rs.getString(9);
+            	firstName = rs.getString(10);
+            	lastName = rs.getString(11);
+            	password = rs.getString(12);
+            	isAdmin = rs.getBoolean(13);
+            	email = rs.getString(14);
+            	phone = rs.getString(15);
+            	canText = rs.getBoolean(16);
 
                 more = rs.next();
             }

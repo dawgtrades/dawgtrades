@@ -40,13 +40,13 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public Auction createAuction() {
-	Auction auc = new AuctionImpl(-1, 0, 0, null);
+	Auction auc = new AuctionImpl(-1, 0, null);
 	auc.setId(-1);
 	return auc;
     }
     @Override
     public Auction createAuction(Item item, float minPrice, Date expiration) throws DTException {
-	Auction auc = new AuctionImpl(item, minPrice, minPrice, expiration);
+	Auction auc = new AuctionImpl(item, minPrice, expiration);
 	return auc;
     }
     @Override

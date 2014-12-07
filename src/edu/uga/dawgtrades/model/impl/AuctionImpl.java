@@ -18,10 +18,9 @@ public class AuctionImpl extends Persistent implements Auction {
 	
 	private long itemId;
 	private float minPrice;
-	private float sellingPrice;
 	private Date expiration;
 	
-        public AuctionImpl (Item item, float minPrice, float sellingPrice, Date expiration) throws DTException {
+        public AuctionImpl (Item item, float minPrice, Date expiration) throws DTException {
 		super(-1);
 		if (item == null)
 			throw new DTException("The item related to the auction is null");
@@ -29,16 +28,14 @@ public class AuctionImpl extends Persistent implements Auction {
 			throw new DTException("The item related to the auction is not persistent");
 		this.itemId = item.getId();
 		this.minPrice = minPrice;
-		this.sellingPrice = sellingPrice;
 		this.expiration = expiration;
 		
 	}
 	
-	public AuctionImpl (long itemId, float minPrice, float sellingPrice, Date expiration) {
+	public AuctionImpl (long itemId, float minPrice, Date expiration) {
 	        super(-1);
 		this.itemId = itemId;
 		this.minPrice = minPrice;
-		this.sellingPrice = sellingPrice;
 		this.expiration = expiration;
 	}
 	
@@ -58,8 +55,12 @@ public class AuctionImpl extends Persistent implements Auction {
 		this.minPrice = minPrice;
 	}
 	
+	//Returns minPrice if auction is finished, 0 otherwise.
 	public float getSellingPrice() {
-		return sellingPrice;
+		if (getIsClosed())
+			return minPrice;
+		else
+			return 0;
 	}
 	
 	
@@ -77,7 +78,7 @@ public class AuctionImpl extends Persistent implements Auction {
 	
 	
 	public String toString() {
-		String result =  "Auction[" + getId() + "]: Item[" + getItemId() + "] MinPrice[$" + getMinPrice() + "] SellingPrice[$" + getSellingPrice() + "] Expiration["
+		String result =  "Auction[" + getId() + "]: Item[" + getItemId() + "] MinPrice[$" + getMinPrice() + "] Expiration["
 				+ getExpiration() + "] This auction is ";
 				if (!getIsClosed())
 					result += "not ";

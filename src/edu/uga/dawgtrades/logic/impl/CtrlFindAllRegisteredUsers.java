@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.RegisteredUser;
-import edu.uga.dawgtrades.model.impl;
 import edu.uga.dawgtrades.model.ObjectModel;
 
 
@@ -26,11 +25,11 @@ public class CtrlFindAllRegisteredUsers {
     public List<RegisteredUser> findAllRegisteredUsers() 
             throws DTException
     {
-        List<RegisteredUser>      registeredUser  = null;
+        List<RegisteredUser>      registeredUsers  = null;
         Iterator<RegisteredUser>  registeredUserIter = null;
         RegisteredUser            registeredUser = null;
 
-        registeredUser = new LinkedList<RegisteredUser>();
+        registeredUsers = new LinkedList<RegisteredUser>();
         
         // retrieve all Registered User objects
         //
@@ -38,9 +37,9 @@ public class CtrlFindAllRegisteredUsers {
         while( registeredUserIter.hasNext() ) {
             registeredUser = registeredUserIter.next();
             System.out.println( registeredUser );
-            registeredUser.add( registeredUser );
+            registeredUsers.add( registeredUser );
         }
 
-        return registeredUser;
+        return registeredUsers;
     }
 }

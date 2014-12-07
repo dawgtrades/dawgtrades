@@ -40,8 +40,8 @@ public interface Logic
     public void updateMembershipPrice( float newPrice );
     public void updateRegisteredUser( long userId, String name, String firstName, String lastName, String password,
     		boolean isAdmin, String email, String phone, boolean canText );
-    public void updateAttributeType( long attributeTypeId, String name );
-    public void updateAuction( long auctionId, boolean isClosed ); // for reauction and close
+    public void updateAttributeType( long attributeTypeId, long categoryId, String name );
+    public void updateAuction( long auctionId ); // for reauction and close
     public void updateBid( long bidId, boolean isWinning ); //when a new bid is placed, old one should be updating to losing
     
     //DELETE
@@ -49,8 +49,8 @@ public interface Logic
     public void deleteItem( long itemId );
     public void deleteAuction( long auctionId );
     public void deleteRegisteredUser( long userId );
-    public void deleteAttributeType( long attributeTypeId );
-    public void deleteAttribute( long attributeId );
+    public void deleteAttributeType( long attributeTypeId, long categoryId );
+    public void deleteAttribute( long attributeId, long itemId );
     
     //FIND RELATED TO
     public List<Category> findSubcategoriesOfCategory( long categoryId ) throws DTException;

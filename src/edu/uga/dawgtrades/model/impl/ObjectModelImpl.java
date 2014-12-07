@@ -40,20 +40,20 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public Auction createAuction() {
-	Auction auc = new AuctionImpl(-1, 0, 0, null, false);
+	Auction auc = new AuctionImpl(-1, 0, 0, null);
 	auc.setId(-1);
 	return auc;
     }
     @Override
     public Auction createAuction(Item item, float minPrice, Date expiration) throws DTException {
-	Auction auc = new AuctionImpl(item, minPrice, minPrice, expiration, false);
+	Auction auc = new AuctionImpl(item, minPrice, minPrice, expiration);
 	return auc;
     }
     @Override
     public Bid createBid() {
 	Bid bid = null;
 	try {
-		bid = new BidImpl(0, null, false, null, null);
+		bid = new BidImpl(0, null, null, null);
 	} catch (DTException e) {
 		e.printStackTrace();
 	}
@@ -62,7 +62,7 @@ public class ObjectModelImpl implements ObjectModel {
     }
     @Override
     public Bid createBid(Auction auction, RegisteredUser user, float price) throws DTException {
-	Bid bid = new BidImpl(price, new Date(), true, auction, user);
+	Bid bid = new BidImpl(price, new Date(), auction, user);
 	return bid;
     }
     @Override

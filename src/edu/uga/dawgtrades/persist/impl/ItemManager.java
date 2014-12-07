@@ -303,7 +303,7 @@ public class ItemManager {
     	
     	
     	public Auction restoreAuctionForItem(Item item) throws DTException {
-    		String       selectItemSql = "select a.auction_id, a.item_id, a.status, a.high_bid, a.expiration_dt, a.min_price from item i, auction a where i.item_id = a.item_id";
+    		String       selectItemSql = "select a.auction_id, a.item_id, a.high_bid, a.expiration_dt, a.min_price from item i, auction a where i.item_id = a.item_id";
             Statement    stmt = null;
             StringBuffer query = new StringBuffer( 100 );
             StringBuffer condition = new StringBuffer( 100 );

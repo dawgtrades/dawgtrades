@@ -18,15 +18,13 @@ public class BidImpl extends Persistent implements Bid {
 	
 	private float amount;
 	private Date date;
-	private boolean isWinning;
 	private Auction auction;
 	private RegisteredUser registeredUser;
 	
-	public BidImpl (float amount, Date date, boolean isWinning, Auction auction, RegisteredUser registeredUser) throws DTException {
+	public BidImpl (float amount, Date date, Auction auction, RegisteredUser registeredUser) throws DTException {
 		super(-1);
 		this.amount = amount;
 		this.date = date;
-		this.isWinning = isWinning;
 		this.auction = auction;
 		this.registeredUser = registeredUser;
 	}
@@ -45,7 +43,8 @@ public class BidImpl extends Persistent implements Bid {
 		this.date = date;
 	}
 	public boolean isWinning() {
-		return isWinning;
+		float highBid = auction.getSellingPrice();
+		return (amount == highBid);
 	}
 	public Auction getAuction() {
 		return auction;
@@ -56,7 +55,7 @@ public class BidImpl extends Persistent implements Bid {
 	
 	public String toString() {
 		String result = "Bid[" + getId() + "]: Amount[" + getAmount() + "] Date[" + getDate() + "] This bid is ";
-		if (!isWinning)
+		if (!isWinning())
 			result += " not";
 		result +="winning. \n     " + getAuction().toString() + "\n      " + getRegisteredUser().toString();
 		return result;

@@ -32,8 +32,8 @@ class BidManager
     public void save( Bid bid ) 
             throws DTException
     {
-        String               insertBidSql = "insert into bid ( user_id, auction_id, bid_value, bid_date, is_winning) values ( ?, ?, ?, ?, ? )";              
-        String               updateBidSql = "update bid set user_id = ?, auction_id = ?, bid_value = ?, bid_date= ?, is_winning = ? where bid_id = ?";              
+        String               insertBidSql = "insert into bid ( user_id, auction_id, bid_value, bid_date) values ( ?, ?, ?, ?, ? )";              
+        String               updateBidSql = "update bid set user_id = ?, auction_id = ?, bid_value = ?, bid_date= ? where bid_id = ?";              
         PreparedStatement    stmt;
         int                  numUpdated;
         long                 bidId;
@@ -64,11 +64,9 @@ class BidManager
             }
             else
                 stmt.setNull(4, java.sql.Types.DATE);
-			
-            stmt.setBoolean(5, bid.isWinning());
             
             if( bid.isPersistent() )
-                stmt.setLong( 6, bid.getId() );
+                stmt.setLong( 5, bid.getId() );
             
             numUpdated = stmt.executeUpdate();
 
@@ -104,7 +102,7 @@ class BidManager
     public Iterator<Bid> restore( Bid modelBid ) 
             throws DTException
     {
-        String       selectBidSql = "select b.bid_id, b.user_id, b.auction_id, b.bid_value, b.bid_date, b.is_winning, a.item_id, a.status, a.min_price, a.high_bid, "
+        String       selectBidSql = "select b.bid_id, b.user_id, b.auction_id, b.bid_value, b.bid_date, a.item_id, a.min_price, a.high_bid, "
         		+ "a.expiration_dt, u.uname, u.first_name, u.last_name, u.upassword, u.is_admin, u.email, u.phone, "
         		+ "u.can_text from bid b, auction a, registered_user u where a.auction_id = b.auction_id and b.user_id = u.user_id"; 
         Statement    stmt = null;

@@ -20,9 +20,8 @@ public class AuctionImpl extends Persistent implements Auction {
 	private float minPrice;
 	private float sellingPrice;
 	private Date expiration;
-	private boolean isClosed;
 	
-        public AuctionImpl (Item item, float minPrice, float sellingPrice, Date expiration, boolean isClosed) throws DTException {
+        public AuctionImpl (Item item, float minPrice, float sellingPrice, Date expiration) throws DTException {
 		super(-1);
 		if (item == null)
 			throw new DTException("The item related to the auction is null");
@@ -32,17 +31,15 @@ public class AuctionImpl extends Persistent implements Auction {
 		this.minPrice = minPrice;
 		this.sellingPrice = sellingPrice;
 		this.expiration = expiration;
-		this.isClosed = isClosed;
 		
 	}
 	
-	public AuctionImpl (long itemId, float minPrice, float sellingPrice, Date expiration, boolean isClosed) {
+	public AuctionImpl (long itemId, float minPrice, float sellingPrice, Date expiration) {
 	        super(-1);
 		this.itemId = itemId;
 		this.minPrice = minPrice;
 		this.sellingPrice = sellingPrice;
 		this.expiration = expiration;
-		this.isClosed = isClosed;
 	}
 	
 	public long getItemId() {
@@ -75,14 +72,14 @@ public class AuctionImpl extends Persistent implements Auction {
 	}
 	
 	public boolean getIsClosed() {
-		return isClosed;
+		return (new Date()).after(expiration);
 	}
 	
 	
 	public String toString() {
 		String result =  "Auction[" + getId() + "]: Item[" + getItemId() + "] MinPrice[$" + getMinPrice() + "] SellingPrice[$" + getSellingPrice() + "] Expiration["
 				+ getExpiration() + "] This auction is ";
-				if (!isClosed)
+				if (!getIsClosed())
 					result += "not ";
 				result += "closed";
 				return result;

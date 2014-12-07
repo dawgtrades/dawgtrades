@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.Auction;
-import edu.uga.dawgtrades.model.impl;
 import edu.uga.dawgtrades.model.ObjectModel;
 
 
@@ -26,11 +25,11 @@ public class CtrlFindAllAuctions {
     public List<Auction> findAllAuctions() 
             throws DTException
     {
-        List<Auction>      auction  = null;
+        List<Auction>      auctions  = null;
         Iterator<Auction>  auctionIter = null;
         Auction            auction = null;
 
-        auction = new LinkedList<Auction>();
+        auctions = new LinkedList<Auction>();
         
         // retrieve all Auction objects
         //
@@ -38,9 +37,9 @@ public class CtrlFindAllAuctions {
         while( auctionIter.hasNext() ) {
             auction = auctionIter.next();
             System.out.println( auction );
-            auction.add( auction );
+            auctions.add( auction );
         }
 
-        return auction;
+        return auctions;
     }
 }

@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.Category;
-import edu.uga.dawgtrades.model.impl;
 import edu.uga.dawgtrades.model.ObjectModel;
 
 
@@ -26,11 +25,11 @@ public class CtrlFindAllCategories {
     public List<Category> findAllCategories() 
             throws DTException
     {
-        List<Category>      category  = null;
+        List<Category>      categories  = null;
         Iterator<Category>  categoryIter = null;
         Category            category = null;
 
-        category = new LinkedList<Category>();
+        categories = new LinkedList<Category>();
         
         // retrieve all Category objects
         //
@@ -38,9 +37,9 @@ public class CtrlFindAllCategories {
         while( categoryIter.hasNext() ) {
             category = categoryIter.next();
             System.out.println( category );
-            category.add( category );
+            categories.add( category );
         }
 
-        return category;
+        return categories;
     }
 }

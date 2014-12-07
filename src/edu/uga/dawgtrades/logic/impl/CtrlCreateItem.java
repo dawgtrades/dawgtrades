@@ -5,12 +5,13 @@
 
 package edu.uga.dawgtrades.logic.impl;
 
-import java.util.Date;
-import java.util.Calendar;
 import java.util.Iterator;
+
+import edu.uga.dawgtrades.model.Category;
 import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.Item;
-import edu.uga.dawgtrades.model.impl;
+import edu.uga.dawgtrades.model.ObjectModel;
+import edu.uga.dawgtrades.model.RegisteredUser;
 
 
 public class CtrlCreateItem 
@@ -25,30 +26,39 @@ public class CtrlCreateItem
     
     public long createItem( long categoryId, long userId, String identifier, String name, String description) throws DTException   { 
         Item               item  = null;
-        Item               modelItem  = null;
-        Iterator<Item>     itemIter  = null;
+        Category category =  null;
+        RegisteredUser user = null;
+        RegisteredUser modelRegisteredUser = null;
+        Category modelCategory = null;
+        Iterator<Category> categoryIter = null;
+        Iterator<RegisteredUser> userIter = null;
 
-        // check if the item already exists
-        modelItem = objectModel.createItem();
-		modelItem.setCategoryId(categoryId);
-		modelItem.setName(name);
-        itemIter = objectModel.findItem( modelItem );
-        while( itemIter.hasNext() ) {
-            item = itemIter.next();
+        // retrieve the Category
+        modelCategory = objectModel.createCategory();
+        modelCategory.setId(categoryId);
+        categoryIter = objectModel.findCategory( modelCategory );
+        while( categoryIter.hasNext() ) {
+            category = categoryIter.next();
         }
         
-        // check if the Item actually exists, and if so, throw an exception
-        if( item != null )
-            throw new DTException( "An Item with this ID already exists" );
+        // make sure the Category actually exists
+        if( category == null )
+            throw new DTException( "The category does not exist" );
+        
+        // retrieve the RegisteredUser
+        modelRegisteredUser = objectModel.createRegisteredUser();
+        modelRegisteredUser.setId(userId);
+        userIter = objectModel.findRegisteredUser( modelRegisteredUser );
+        while( userIter.hasNext() ) {
+            user = userIter.next();
+        }
+        
+        // make sure the RegisteredUser actually exists
+        if( user == null )
+            throw new DTException( "The user does not exist" );
 			
         // create item object
-        item = objectModel.createItem(itemId, minPrice);
-        // set minimum price
-	    item.setCategoryId(categoryId);
-		item.setName(name);
-		item.setOwnerId(userId);
-        item.setIdentifier(identifier);
-		item.setDescription(description);
+        item = objectModel.createItem(category, user, identifier, name, description);
 
 		// save item data
         objectModel.storeItem( item );

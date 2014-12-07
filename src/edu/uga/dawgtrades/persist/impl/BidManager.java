@@ -102,7 +102,7 @@ class BidManager
     public Iterator<Bid> restore( Bid modelBid ) 
             throws DTException
     {
-        String       selectBidSql = "select b.bid_id, b.user_id, b.auction_id, b.bid_value, b.bid_date, a.item_id, a.min_price, a.high_bid, "
+        String       selectBidSql = "select b.bid_id, b.user_id, b.auction_id, b.bid_value, b.bid_date, a.item_id, a.min_price, "
         		+ "a.expiration_dt, u.uname, u.first_name, u.last_name, u.upassword, u.is_admin, u.email, u.phone, "
         		+ "u.can_text from bid b, auction a, registered_user u where a.auction_id = b.auction_id and b.user_id = u.user_id"; 
         Statement    stmt = null;

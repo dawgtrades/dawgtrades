@@ -42,7 +42,7 @@ public class CtrlCreateRegisteredUser
         
         registeredUser = objectModel.createRegisteredUser(name,firstName, lastName, password, isAdmin, email, phone, canText);
 
-		registeredUser.setUserName( name );
+		registeredUser.setName( name );
 		registeredUser.setFirstName( firstName );
 		registeredUser.setLastName( lastName );
 		registeredUser.setPassword( password );

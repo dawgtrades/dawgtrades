@@ -1,14 +1,14 @@
 //
 // A control class to implement the 'Create Membership' use case
-//
-//
-
+// Should ONLY be done once at start. Then should just be modified.
 package edu.uga.dawgtrades.logic.impl;
 
+import java.util.Date;
 import java.util.Iterator;
+
 import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.Membership;
-import edu.uga.dawgtrades.model.impl;
+import edu.uga.dawgtrades.model.ObjectModel;
 
 
 public class CtrlCreateMembership 
@@ -23,9 +23,12 @@ public class CtrlCreateMembership
     
     public long createMembership( float price ) throws DTException    { 
         Membership               membership  = null;
-        membership = objectModel.createMembership(price);
-		// set new membership price
-        membership.setPrice(price);
+        
+        if (price < 0)
+        	throw new DTException("Price for membership can't be negative");
+ 
+        membership = objectModel.createMembership(price, new Date());
+		
 		// save new membership price
         objectModel.storeMembership( membership );
 

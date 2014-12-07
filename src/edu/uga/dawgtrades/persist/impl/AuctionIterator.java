@@ -46,7 +46,6 @@ public class AuctionIterator implements Iterator<Auction> {
     	long itemId;
     	float minPrice;
     	Date expiration;
-    	float sellingPrice;
     	Auction auction = null;
 
         if( more ) {
@@ -55,9 +54,8 @@ public class AuctionIterator implements Iterator<Auction> {
             	
             	id = rs.getLong( 1 );
                 itemId = rs.getLong( 2 );
-                sellingPrice = rs.getFloat(3);
-                expiration = rs.getDate( 4 ); //TODO: See if have to convert sql to java here
-                minPrice = rs.getFloat( 5 );
+                expiration = rs.getDate( 3 ); //TODO: See if have to convert sql to java here
+                minPrice = rs.getFloat( 4 );
 		
                 more = rs.next();
             }

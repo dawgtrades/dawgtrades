@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -14,6 +15,10 @@ import javax.servlet.http.HttpSession;
 
 import edu.uga.dawgtrades.authentication.Session;
 import edu.uga.dawgtrades.authentication.SessionManager;
+import edu.uga.dawgtrades.logic.Logic;
+import edu.uga.dawgtrades.logic.impl.LogicImpl;
+import edu.uga.dawgtrades.model.ExperienceReport;
+import edu.uga.dawgtrades.model.ObjectModel;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -24,7 +29,7 @@ public class Login
     private static final long serialVersionUID = 1L;
     
     static  String  templateDir = "WEB-INF/templates";
-    static  String  resultTemplateName = "MainWindow.ftl";
+    static  String  resultTemplateName = "RegisteredUserWindow.ftl";
 
     private Configuration  cfg; 
 
@@ -50,6 +55,9 @@ public class Login
         String         password = null;
         String         ssid = null;
         Session        session = null;
+        ObjectModel objectModel = null;
+        Logic logic = null;
+        List<ExperienceReport> experienceReports = null;
 
         // Load templates from the WEB-INF/templates directory of the Web app.
         //
@@ -99,14 +107,28 @@ public class Login
             DTError.error( cfg, toClient, e );
             return;
         }
+        
+        objectModel = session.getObjectModel();
+        if( objectModel == null ) {
+            DTError.error( cfg, toClient, "Session expired or illegal; please log in" );
+            return;
+        }
 
+        
         // Setup the data-model
         //
         Map<String, String> root = new HashMap<String, String>();
-
+        
+        logic = new LogicImpl( objectModel );
+        
+        experienceReports = logic.
+        
         // Build the data-model
         //
         root.put( "username", username );
+        
+        
+        
 
         // Merge the data-model and the template
         //

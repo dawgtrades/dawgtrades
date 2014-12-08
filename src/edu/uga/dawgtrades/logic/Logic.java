@@ -8,6 +8,7 @@ import edu.uga.dawgtrades.model.AttributeType;
 import edu.uga.dawgtrades.model.Auction;
 import edu.uga.dawgtrades.model.Category;
 import edu.uga.dawgtrades.model.DTException;
+import edu.uga.dawgtrades.model.ExperienceReport;
 import edu.uga.dawgtrades.model.Item;
 import edu.uga.dawgtrades.model.Membership;
 import edu.uga.dawgtrades.model.RegisteredUser;
@@ -55,6 +56,7 @@ public interface Logic
     public List<Item> findItemsOfCategory( long categoryId ) throws DTException;
     public List<Attribute> findAttributesOfItem( long itemId ) throws DTException;
     public List<Auction> findAuctionsOfUser( long userId ) throws DTException;
+    public List<ExperienceReport> findExperienceReportsOfUser( long userId ) throws DTException;
     
     //TODO: Not sure about singular use cases such us finding the data about a particular auction.
     //We may or may not be able to do this already without adding to the logic layer.

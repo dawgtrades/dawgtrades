@@ -32,7 +32,7 @@ class BidManager
     public void save( Bid bid ) 
             throws DTException
     {
-        String               insertBidSql = "insert into bid ( user_id, auction_id, bid_value, bid_date) values ( ?, ?, ?, ?, ? )";              
+        String               insertBidSql = "insert into bid ( user_id, auction_id, bid_value, bid_date) values ( ?, ?, ?, ? )";              
         String               updateBidSql = "update bid set user_id = ?, auction_id = ?, bid_value = ?, bid_date= ? where bid_id = ?";              
         PreparedStatement    stmt;
         int                  numUpdated;

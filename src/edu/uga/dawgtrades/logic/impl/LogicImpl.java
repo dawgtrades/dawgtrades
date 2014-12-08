@@ -9,6 +9,7 @@ import edu.uga.dawgtrades.model.AttributeType;
 import edu.uga.dawgtrades.model.Auction;
 import edu.uga.dawgtrades.model.Category;
 import edu.uga.dawgtrades.model.DTException;
+import edu.uga.dawgtrades.model.ExperienceReport;
 import edu.uga.dawgtrades.model.Item;
 import edu.uga.dawgtrades.model.Membership;
 import edu.uga.dawgtrades.model.ObjectModel;
@@ -147,6 +148,13 @@ public class LogicImpl implements Logic
     	CtrlFindAuctionsOfUser ctrlFindAuctionsOfUser = new CtrlFindAuctionsOfUser( objectModel );
     	return ctrlFindAuctionsOfUser.findAuctionsOfUser( userId );
     }
+
+	@Override
+	public List<ExperienceReport> findExperienceReportsOfUser(long userId)
+			throws DTException {
+		CtrlFindExperienceReportsOfUser ctrlFindExperienceReportsOfUser = new CtrlFindExperienceReportsOfUser( objectModel );
+    	return ctrlFindExperienceReportsOfUser.findExperienceReportsOfUser( userId );
+	}
 
     
     //TODO: Not sure about singular use cases such us finding the data about a particular auction.

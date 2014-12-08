@@ -19,13 +19,13 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-public class ShowMainWindow
+public class ShowRegisteredUserWindow
     extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
     
     static  String  templateDir = "WEB-INF/templates";
-    static  String  resultTemplateName = "MainWindow.ftl";
+    static  String  resultTemplateName = "RegisteredUserWindow.ftl";
 
     private Configuration  cfg; 
 

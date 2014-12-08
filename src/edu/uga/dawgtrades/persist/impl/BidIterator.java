@@ -77,10 +77,16 @@ public class BidIterator implements Iterator<Bid> {
                 userId = rs.getLong(2);
                 auctionId = rs.getLong( 3 );
                 amount = rs.getFloat( 4 );
-                date = rs.getDate( 5 );
+                
+                java.sql.Date sDate = rs.getDate( 5 );
+                date = new java.util.Date( sDate.getTime());
+                
             	itemId = rs.getLong( 6 );
             	minPrice = rs.getFloat(7);
-            	expiration = rs.getDate(8);
+            	
+            	sDate = rs.getDate( 8 );
+                expiration = new java.util.Date( sDate.getTime());
+            	
             	name = rs.getString(9);
             	firstName = rs.getString(10);
             	lastName = rs.getString(11);

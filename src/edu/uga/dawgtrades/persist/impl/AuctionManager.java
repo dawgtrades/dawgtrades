@@ -118,8 +118,9 @@ public class AuctionManager {
                     if( modelAuction.getExpiration() != null ) {
                         if( condition.length() > 0 )
                             condition.append( " and" );
-                        //MAY NEED TO FIX DATE CONVERSION
-                        condition.append( " expiration_dt = '" + modelAuction.getExpiration() + "'" );
+                        java.util.Date jDate = modelAuction.getExpiration();
+                        java.sql.Date sDate = new java.sql.Date( jDate.getTime() );
+                        condition.append( " expiration_dt = '" + sDate + "'" );
                     }
                     
                     if( condition.length() > 0 )
@@ -200,8 +201,11 @@ public class AuctionManager {
                   if( auction.getItemId() >= 0 )
                       condition.append( " and a.item_id = '" + auction.getItemId() + "'" );
 
-                  if( auction.getExpiration() != null && condition.length() == 0 )
-                      condition.append( " AND a.expiration_dt = '" + auction.getExpiration() + "'" );
+                  if( auction.getExpiration() != null && condition.length() == 0 ) {
+                	  java.util.Date jDate = auction.getExpiration();
+                      java.sql.Date sDate = new java.sql.Date( jDate.getTime() );
+                      condition.append( " AND a.expiration_dt = '" + sDate + "'" );
+                  }
 
                   if( auction.getMinPrice() >= 0 && condition.length() == 0 )
                       condition.append( " AND a.min_price= '" + auction.getMinPrice() + "'" );

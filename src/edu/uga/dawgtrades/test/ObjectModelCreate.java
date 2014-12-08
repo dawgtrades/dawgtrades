@@ -136,6 +136,9 @@ public class ObjectModelCreate
              bid4 = objectModel.createBid(tvAuction, batman, 500);
              objectModel.storeBid(bid4);
              
+             //set auction as closed (testing purposes)
+             computerAuction.setExpiration(new Date());
+             
              //reports
              report1 = objectModel.createExperienceReport(batman, superman, 5, "5/5 would buy again", new Date());
              objectModel.storeExperienceReport(report1);

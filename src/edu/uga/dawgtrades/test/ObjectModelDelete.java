@@ -32,8 +32,6 @@ public class ObjectModelDelete {
 	    System.out.println("can't set persistence");
 	}
 
-	Iterator<Category> catIter = null;
-	Iterator<RegisteredUser> userIter = null;
 	try {
 		/**
 	    //find electronics cat
@@ -82,7 +80,6 @@ public class ObjectModelDelete {
 	    }
 	    else
 		System.out.println("Failed to retrieve televisions");
-		**/
 	    //find batman
 	    RegisteredUser batman = null;
 	    RegisteredUser modUser = objMod.createRegisteredUser();
@@ -114,6 +111,20 @@ public class ObjectModelDelete {
 	    }
 	    else
 		System.out.println("Failed to retrieve superman obj");
+	    **/
+	    //USERS
+	    RegisteredUser modelRegisteredUser = objMod.createRegisteredUser();
+	    Iterator<RegisteredUser> userIter = objMod.findRegisteredUser(modelRegisteredUser);
+	    while (userIter.hasNext()) {
+	    	modelRegisteredUser = userIter.next();
+	    	System.out.println(modelRegisteredUser);
+	    	if (modelRegisteredUser != null) {
+	    		objMod.deleteRegisteredUser(modelRegisteredUser);
+	    		System.out.println("Deleted RegisteredUser");
+	    	}
+	    	else
+	    		System.out.println("Failed to retrieve RegisteredUser");
+	    }
 	    
 	    //CATEGORIES & ATTRIBUTE TYPES
 	    Category modelCategory = objMod.createCategory();

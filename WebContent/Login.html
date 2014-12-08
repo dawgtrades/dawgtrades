@@ -14,7 +14,12 @@
 <form action="Login" method="post">
 <p> Username: <input name="username"  type="text" size="20"> </p>
 <p> Password: <input name="password" type=password size="20"> </p>
-<p> <input type=submit> <input type=reset> </p>
+<p> 
+	<div data-role="controlgroup" data-type="horizontal" data-mini="true">
+		<input type=submit data-role="button" value="Submit">
+		<input type=reset data-role="button" value="Reset">
+	</div>
+</p>
 </form>
 <a href="Register" data-role="button">Register</a>
 <a href="BrowseItems" data-role="button">Browse Items</a>

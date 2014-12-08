@@ -6,6 +6,7 @@ import java.util.List;
 import edu.uga.dawgtrades.model.Attribute;
 import edu.uga.dawgtrades.model.AttributeType;
 import edu.uga.dawgtrades.model.Auction;
+import edu.uga.dawgtrades.model.Bid;
 import edu.uga.dawgtrades.model.Category;
 import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.ExperienceReport;
@@ -22,6 +23,7 @@ public interface Logic
     public List<Auction> findAllAuctions() throws DTException;
     public List<Category> findAllCategories() throws DTException;
     public List<Item> findAllItems() throws DTException;
+    public List<Bid> findAllBids() throws DTException;
     
     
     //CREATE
@@ -56,7 +58,6 @@ public interface Logic
     public List<Item> findItemsOfCategory( long categoryId ) throws DTException;
     public List<Attribute> findAttributesOfItem( long itemId ) throws DTException;
     public List<Auction> findAuctionsOfUser( long userId ) throws DTException;
-    public List<ExperienceReport> findExperienceReportsOfUser( long userId ) throws DTException;
     
     //TODO: Not sure about singular use cases such us finding the data about a particular auction.
     //We may or may not be able to do this already without adding to the logic layer.

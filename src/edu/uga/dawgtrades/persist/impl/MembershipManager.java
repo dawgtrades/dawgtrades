@@ -110,7 +110,10 @@ public class MembershipManager
             	if (rs.next()) {
             	long id = rs.getLong(1);
             	float price = rs.getFloat( 2 );
-                Date date = rs.getDate( 3 );
+            
+                java.sql.Date sDate = rs.getDate( 3 );
+                Date date = new java.util.Date( sDate.getTime() );
+                
                 Membership membership = new MembershipImpl(price, date);
                 membership.setId(id);
                 return membership;

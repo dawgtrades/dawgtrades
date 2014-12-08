@@ -133,9 +133,10 @@ public class ExperienceReportManager {
                     condition.append( " and report = '" + modelReport.getReport() + "'" );
                 }       
 				
-                //MAY NEED TO FIX DATE CONVERSION
                 if( modelReport.getDate() != null ) {
-                    condition.append( " and rating_date = '" + modelReport.getDate() + "'" );  
+                	java.util.Date jDate = modelReport.getDate();
+                    java.sql.Date sDate = new java.sql.Date( jDate.getTime() );
+                    condition.append( " and rating_date = '" + sDate + "'" );  
                 }
 					
                 if( condition.length() > 0 ) {

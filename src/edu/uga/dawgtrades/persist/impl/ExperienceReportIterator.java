@@ -66,7 +66,10 @@ public class ExperienceReportIterator implements Iterator<ExperienceReport> {
                 reviewedId = rs.getLong(3);
             	rating = rs.getInt(4);
                 report = rs.getString(5);
-                date = rs.getDate(6);
+                
+                java.sql.Date sDate = rs.getDate( 6 );
+                date = new java.util.Date( sDate.getTime());
+                
                 name1 = rs.getString(7);
                 firstName1 = rs.getString(8);
                 lastName1 = rs.getString(9);

@@ -17,9 +17,9 @@
 <li>
 <#if experienceReports??>
 	Please leave feedback on your recent transactions!
-	<#list experienceReports as report>
+	<#list users as user>
 		<form action="CreateExperienceReport" method="Post">
-		    <p>You are reviewing: ${report.reviewed}</p>
+		    <p>You are reviewing: ${user.name}</p>
 		    <p> 
 		    	<div data-role="fieldcontain">
 				<label for="select-1">Select</label>

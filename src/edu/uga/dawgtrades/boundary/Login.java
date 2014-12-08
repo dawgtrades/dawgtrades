@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +19,12 @@ import edu.uga.dawgtrades.authentication.Session;
 import edu.uga.dawgtrades.authentication.SessionManager;
 import edu.uga.dawgtrades.logic.Logic;
 import edu.uga.dawgtrades.logic.impl.LogicImpl;
+import edu.uga.dawgtrades.model.Auction;
+import edu.uga.dawgtrades.model.Bid;
+import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.ExperienceReport;
 import edu.uga.dawgtrades.model.ObjectModel;
+import edu.uga.dawgtrades.model.RegisteredUser;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -57,7 +63,10 @@ public class Login
         Session        session = null;
         ObjectModel objectModel = null;
         Logic logic = null;
-        List<ExperienceReport> experienceReports = null;
+        RegisteredUser user = null;
+        List<RegisteredUser> users = null; //users to be reviewed
+        List<Auction> auctions = null; //auctions the user sold items in
+        List<Bid> bids = null;
 
         // Load templates from the WEB-INF/templates directory of the Web app.
         //
@@ -117,15 +126,38 @@ public class Login
         
         // Setup the data-model
         //
-        Map<String, String> root = new HashMap<String, String>();
+        Map<String, Object> root = new HashMap<String, Object>();
         
         logic = new LogicImpl( objectModel );
         
-        experienceReports = logic.
         
+        try {
+        	
+			auctions = logic.findAuctionsOfUser(session.getUser().getId());
+			users = new LinkedList<RegisteredUser>();
+			root.put( "username", username );
+	        root.put("users", users);
+			//adds users who won auctions from the reviewer
+	        for (int i = 0; i < auctions.size(); i++) {
+	        	if (auctions.get(i).getIsClosed()) {
+	        		bids = logic.findAllBids();
+	        		for (int b = 0; b < bids.size(); b++) {
+	        			if (bids.get(b).getAuction().getId() == auctions.get(i).getId()) {
+	        				if (bids.get(b).getAmount() == auctions.get(i).getSellingPrice()) {
+	        					user = bids.get(b).getRegisteredUser();
+	        					users.add(user);
+	        				}
+	        			}
+	        		}
+	        	}
+	        		
+	        }
+        }
+        catch (DTException e1) {
+			e1.printStackTrace();
+		}
         // Build the data-model
         //
-        root.put( "username", username );
         
         
         

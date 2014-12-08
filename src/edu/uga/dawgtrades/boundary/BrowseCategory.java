@@ -39,4 +39,5 @@ public class BrowseCategory extends HttpServlet {
 	List<RegisteredUser> users = null;
 	List<Auction> auctions = null;
 	List<Bid> bids = null;
+    }
 }

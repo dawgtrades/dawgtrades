@@ -1,6 +1,7 @@
 package edu.uga.dawgtrades.test;
 
 import java.sql.Connection;
+import java.util.Calendar;
 import java.util.Date;
 
 import edu.uga.dawgtrades.model.Attribute;
@@ -120,7 +121,6 @@ public class ObjectModelCreate
              HD = objectModel.createAttribute(resolution, computer, "HD");
              objectModel.storeAttribute(HD);
              
-             //auctions
              computerAuction = objectModel.createAuction(computer, 400, new Date());
              objectModel.storeAuction(computerAuction);
              tvAuction = objectModel.createAuction(tv, 350, new Date());
@@ -136,8 +136,6 @@ public class ObjectModelCreate
              bid4 = objectModel.createBid(tvAuction, batman, 500);
              objectModel.storeBid(bid4);
              
-             //set auction as closed (testing purposes)
-             computerAuction.setExpiration(new Date());
              
              //reports
              report1 = objectModel.createExperienceReport(batman, superman, 5, "5/5 would buy again", new Date());

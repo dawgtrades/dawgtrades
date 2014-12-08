@@ -125,6 +125,7 @@ public class ItemManager {
             // form the query based on the given Item object instance
             query.append( selectItemSql );
             
+            
             if( modelItem != null ) {
 			     
                 if( modelItem.getId() >= 0 ) // id is unique, so it is sufficient to get a Item
@@ -170,7 +171,8 @@ public class ItemManager {
                 // retrieve the persistent Item object
                 //
                 if( stmt.execute( query.toString() ) ) { // statement returned a result
-                    ResultSet r = stmt.getResultSet();
+                	
+                	ResultSet r = stmt.getResultSet();
                     return new ItemIterator( r, objectModel );
                 }
             }

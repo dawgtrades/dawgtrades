@@ -107,7 +107,8 @@ public class AuctionManager {
 
             // form the query based on the given Auction object instance
             query.append( selectAuctionSql );
-
+            
+            
             if( modelAuction != null ) {
                 if( modelAuction.getId() >= 0 ) // id is unique, so it is sufficient to get a Auction
                     query.append( " where auction_id = " + modelAuction.getId() );
@@ -123,9 +124,11 @@ public class AuctionManager {
                         condition.append( " expiration_dt = '" + sDate + "'" );
                     }
                     
-                    if( condition.length() > 0 )
-                        condition.append( " and" );
-                   condition.append( " min_price = '" + modelAuction.getMinPrice() + "'" );
+                    if(modelAuction.getMinPrice() > 0) {
+                    	if( condition.length() > 0 )
+                    		condition.append( " and" );
+                    	condition.append( " min_price = '" + modelAuction.getMinPrice() + "'" );
+                    }
 
                     if( condition.length() > 0 ) {
                         query.append(  " where " );
@@ -142,6 +145,7 @@ public class AuctionManager {
                 //
                 if( stmt.execute( query.toString() ) ) { // statement returned a result
                     ResultSet r = stmt.getResultSet();
+                 
                     return new AuctionIterator( r, objectModel );
                 }
             }

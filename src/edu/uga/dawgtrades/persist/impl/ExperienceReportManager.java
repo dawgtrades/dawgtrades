@@ -126,7 +126,8 @@ public class ExperienceReportManager {
                     condition.append( " and reviewed_id = '" + modelReport.getReviewed().getId() + "'" );
                 }				
 				
-                condition.append( " and rating = " + modelReport.getRating());
+                if( modelReport.getRating() != 0)
+                	condition.append( " and rating = " + modelReport.getRating());
                 
 				
                 if( modelReport.getReport() != null ) {

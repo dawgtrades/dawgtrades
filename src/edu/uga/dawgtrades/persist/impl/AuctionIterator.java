@@ -71,7 +71,6 @@ public class AuctionIterator implements Iterator<Auction> {
             try {
 				auction = objectModel.createAuction(item, minPrice, expiration);
 				auction.setId(id);
-				auction.setItemId(itemId);
 			} 
             catch (DTException e) {
 				e.printStackTrace();

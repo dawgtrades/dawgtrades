@@ -111,6 +111,7 @@ public class BidIterator implements Iterator<Bid> {
 	            user.setId(userId);
 				bid = objectModel.createBid(auction, user, amount);
 	            bid.setId( id );
+	            bid.setDate(date);
 			} catch (DTException e) {
 				e.printStackTrace();
 			}

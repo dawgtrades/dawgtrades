@@ -112,6 +112,34 @@ public class ObjectModelDelete {
 	    else
 		System.out.println("Failed to retrieve superman obj");
 	    **/
+		//BIDS
+	    Bid modelBid = objMod.createBid();
+	    Iterator<Bid> bidIter = objMod.findBid(modelBid);
+	    while (bidIter.hasNext()) {
+	    	modelBid = bidIter.next();
+	    	System.out.println(modelBid);
+	    	if (modelBid != null) {
+	    		objMod.deleteBid(modelBid);
+	    		System.out.println("Deleted Bid");
+	    	}
+	    	else
+	    		System.out.println("Failed to retrieve bid");
+	    }
+	    
+	  //REPORTS
+	    ExperienceReport modelExperienceReport = objMod.createExperienceReport();
+	    Iterator<ExperienceReport> experienceReportIter = objMod.findExperienceReport(modelExperienceReport);
+	    while (experienceReportIter.hasNext()) {
+	    	modelExperienceReport = experienceReportIter.next();
+	    	System.out.println(modelExperienceReport);
+	    	if (modelExperienceReport != null) {
+	    		objMod.deleteExperienceReport(modelExperienceReport);
+	    		System.out.println("Deleted ExperienceReport");
+	    	}
+	    	else
+	    		System.out.println("Failed to retrieve report");
+	    }
+	    
 	    //USERS
 	    RegisteredUser modelRegisteredUser = objMod.createRegisteredUser();
 	    Iterator<RegisteredUser> userIter = objMod.findRegisteredUser(modelRegisteredUser);
@@ -194,33 +222,6 @@ public class ObjectModelDelete {
 	    		System.out.println("Failed to retrieve auction");
 	    }
 	    
-	    //BIDS
-	    Bid modelBid = objMod.createBid();
-	    Iterator<Bid> bidIter = objMod.findBid(modelBid);
-	    while (bidIter.hasNext()) {
-	    	modelBid = bidIter.next();
-	    	System.out.println(modelBid);
-	    	if (modelBid != null) {
-	    		objMod.deleteBid(modelBid);
-	    		System.out.println("Deleted Bid");
-	    	}
-	    	else
-	    		System.out.println("Failed to retrieve bid");
-	    }
-	    
-	    //REPORTS
-	    ExperienceReport modelExperienceReport = objMod.createExperienceReport();
-	    Iterator<ExperienceReport> experienceReportIter = objMod.findExperienceReport(modelExperienceReport);
-	    while (experienceReportIter.hasNext()) {
-	    	modelExperienceReport = experienceReportIter.next();
-	    	System.out.println(modelExperienceReport);
-	    	if (modelExperienceReport != null) {
-	    		objMod.deleteExperienceReport(modelExperienceReport);
-	    		System.out.println("Deleted ExperienceReport");
-	    	}
-	    	else
-	    		System.out.println("Failed to retrieve report");
-	    }
 	    
 	    //MEMBERSHIP
 	    Membership modelMembership = objMod.findMembership();

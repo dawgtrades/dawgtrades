@@ -12,5 +12,13 @@
     <servlet-name>Login</servlet-name>
     <url-pattern>/Login</url-pattern>
   </servlet-mapping>
-
+  <servlet>
+    <servlet-name>AuctionItem</servlet-name>
+    <servlet-class>edu.uga.dawgtrades.boundary.AuctionItem</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AuctionItem</servlet-name>
+    <url-pattern>/AuctionItem</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

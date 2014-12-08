@@ -25,6 +25,13 @@
 <jar jarfile="${dist}/lib/dawgtrades.jar" basedir="${classes}"/>
 </target>
 
+<target name="deploy">
+<war webxml="WebContent/WEB-INF/web.xml" destfile="DT9.war" basedir=".">
+<lib dir="WebContent/WEB-INF/lib"/>
+</war>
+<copy file="DT9.war" todir="/opt/jboss/standalone"/>
+</target>
+
 <target name="testCreate" depends="dist">
 <java classname="edu.uga.dawgtrades.test.ObjectModelCreate" fork="true">
 <classpath>

@@ -24,6 +24,7 @@ import edu.uga.dawgtrades.model.Category;
 import edu.uga.dawgtrades.model.DTException;
 import edu.uga.dawgtrades.model.ObjectModel;
 import edu.uga.dawgtrades.model.RegisteredUser;
+import edu.uga.dawgtrades.model.impl.ObjectModelImpl;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
@@ -101,6 +102,12 @@ public class AuctionItem
             return;
         }
         
+        objectModel = session.getObjectModel();
+        if( objectModel == null ) {
+            DTError.error( cfg, toClient, "Session expired or illegal; please log in" );
+            return;
+        }
+        
         RegisteredUser user = session.getUser();
         if( user == null ) {
             DTError.error( cfg, toClient, "Session expired or illegal; please log in" );
@@ -114,14 +121,14 @@ public class AuctionItem
 
         // Setup the data-model
         //
+   
         logic = new LogicImpl( objectModel );
      
         Map<String, Object> root = new HashMap<String, Object>();
-        
+ 
     	root.put( "username", username );
         try {
             rv = logic.findAllCategories();
-
             // Build the data-model
             //
             categories = new LinkedList<String>();
@@ -129,6 +136,7 @@ public class AuctionItem
 
             for( int i = 0; i < rv.size(); i++ ) {
                 c = (Category) rv.get( i );
+                System.out.println(c);
                 categoryName = c.getName();
                 categories.add( categoryName );
             }

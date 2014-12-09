@@ -18,7 +18,7 @@ import freemarker.template.Template;
 
 public class DTError
 {
-    static  String   errorTemplateName = "DTError-Result.ftl";
+    static  String   errorTemplateName = "DTError.ftl";
 
     public static void error( Configuration cfg, BufferedWriter toClient, Exception e )
             throws ServletException

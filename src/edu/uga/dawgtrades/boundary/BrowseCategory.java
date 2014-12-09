@@ -25,19 +25,18 @@ public class BrowseCategory extends HttpServlet {
 	cfg.setServletContextForTemplateLoading(getServletContext(), "WEB-INF/templates");
     }
 
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 	Template resultTemplate = null;
 	HttpSession httpSession = null;
 	BufferedWriter toClient = null;
-	String username = null;
-	String password = null;
+	String category = null;
 	String ssid = null;
-	Session session = null;
-	ObjectModel objectModel = null;
-	Logic logic = null;
-	RegisteredUser user = null;
-	List<RegisteredUser> users = null;
-	List<Auction> auctions = null;
-	List<Bid> bids = null;
+	//Session session = null;
+	//ObjectModel objectModel = null;
+	//Logic logic = null;
+	//RegisteredUser user = null;
+	//List<RegisteredUser> users = null;
+	//List<Auction> auctions = null;
+	//List<Bid> bids = null;
     }
 }

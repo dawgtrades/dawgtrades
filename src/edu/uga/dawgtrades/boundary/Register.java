@@ -63,8 +63,8 @@ public class Register
         String         email = null;
         String         username = null;
         String         password = null;
-		boolean		   cantext = null;
-		boolean        isAdmin = null;
+		boolean		   cantext = false;
+		boolean        isAdmin = false;
         String         ssid = null;
         Session        session = null;
         ObjectModel    objectModel = null;
@@ -102,7 +102,7 @@ public class Register
         email = req.getParameter( "email");
         username = req.getParameter( "username" );
         password = req.getParameter( "password" );
-		cantext = req.getParameter( "cantext" );
+		//cantext = req.getParameter( "cantext" );
         // validate the input data
         if( username == null || password == null || lastname == null ||	firstname  == null || email == null ) {
             DTError.error( cfg, toClient, "Last name, first name, user name, email and password cannot be null" );
@@ -113,10 +113,15 @@ public class Register
         Map<String, Object> root = new HashMap<String, Object>();
         logic = new LogicImpl( objectModel );
 
-        // call the create registered user method
-	    if (logic.createRegisteredUser(username, firstname, lastname, password, isAdmin, email, phone, cantext) < 0)  {
-            throw new ServletException( "Error while running createRegisteredUser method from Register servlet", e);
-		}
+		// call the create registered user method
+        try {
+            //resultTemplate = cfg.getTemplate( resultTemplateName );
+			long cr = logic.createRegisteredUser(username, firstname, lastname, password, isAdmin, email, phone, cantext);
+        } 
+        catch (DTException e) {
+            throw new ServletException( "Error attempting to create RegisteredUser method from Register servlet" + e.toString());
+        }  
+		
         // Build the data model
 		root.put( "lastname", lastname );
 		root.put( "firstname", firstname );

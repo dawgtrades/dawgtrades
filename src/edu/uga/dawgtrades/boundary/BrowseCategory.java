@@ -16,7 +16,7 @@ public class BrowseCategory extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     static String templateDir = "WEB-INF/templates";
-    static String resultTemplateName = "CategoryWindow.ftl";
+    static String resultTemplateName = "BrowseCategory-Result.ftl";
 
     private Configuration cfg;
 
@@ -29,13 +29,17 @@ public class BrowseCategory extends HttpServlet {
 	Template resultTemplate = null;
 	HttpSession httpSession = null;
 	BufferedWriter toClient = null;
-	String category = null;
+	String category_name = null;
 	String ssid = null;
 	Session session = null;
 	ObjectModel objectModel = null;
 	Logic logic = null;
+	Category cat = null;
+	Category realCat = null;
 	//RegisteredUser user = null;
-	List<Category> categories = null;
+	List<Category> catBuf = null;
+	List<List<Object>> categories = null;
+	List<Object> category = null;
 	//List<RegisteredUser> users = null;
 	//List<Auction> auctions = null;
 	//List<Bid> bids = null;
@@ -63,7 +67,7 @@ public class BrowseCategory extends HttpServlet {
 
 	res.setContentType("text/html; charset=" + resultTemplate.getEncoding());
 
-	category = req.getParameter("category");
+	category_name = req.getParameter("category");
 
 	if(category == null) {
 	    DTError.error(cfg, toClient, "invalid category");
@@ -76,20 +80,34 @@ public class BrowseCategory extends HttpServlet {
 	    return;
 	}
 
-	HashMap<Integer, Object> root = new HashMap<Integer, Object>();
+	Map<String, Object> root = new HashMap<String, Object>();
 
 	logic = new LogicImpl(objectModel);
 
+	root.put("category_name", category_name);
+
 	try {
-	    categories = logic.findSubcategoriesOfCategory(0);
-	    for(int i = 0; i < categories.size(); i++) {
-		root.put(i, categories.get(i));
-	    }
+	    cat = objectModel.createCategory();
+	    cat.setName(category_name);
+	    Iterator<Category> catIter = objectModel.findCategory(cat);
+	    while(catIter.hasNext())
+		realCat = catIter.next();
+	    catBuf = logic.findSubcategoriesOfCategory(realCat.getId());
 	}
 	catch(DTException e) {
 	    e.printStackTrace();
 	}
 
+	categories = new LinkedList<List<Object>>();
+	root.put("categories", categories);
+	for(int i = 0; i < catBuf.size(); i++) {
+	    cat = (Category)catBuf.get(i);
+	    category = new LinkedList<Object>();
+	    category.add( new Long(cat.getId()));
+	    category.add(cat.getName());
+	    category.add(new Long(cat.getParentId()));
+	    categories.add(category);
+	}
 	try {
 	    resultTemplate.process(root, toClient);
 	    toClient.flush();

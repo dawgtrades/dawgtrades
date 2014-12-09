@@ -16,7 +16,9 @@
 
 <target name="init">
 <tstamp/>
+<mkdir dir="lib"/>
 <mkdir dir="${classes}"/>
+<mkdir dir="WebContent/WEB-INF/classes"/>
 </target>
 
 <target name="compile" depends="init">
@@ -26,15 +28,17 @@
 </target>
 
 <target name="dist" depends="compile">
-<mkdir dir="${dist}/lib"/>
-<jar jarfile="${dist}/lib/dawgtrades.jar" basedir="${classes}"/>
+<jar jarfile="lib/dawgtrades.jar" basedir="${classes}"/>
+<jar jarfile="WebContent/WEB-INF/lib/dawgtrades.jar" basedir="${classes}"/>
 </target>
 
-<target name="deploy">
-<war webxml="WebContent/WEB-INF/web.xml" destfile="DT9.war" basedir="${classes}">
+<target name="deploy" depends="dist">
+<javac srcdir="${src}" destdir="WebContent/WEB-INF/classes">
+<classpath refid="classpath"/>
+</javac>
+<war webxml="WebContent/WEB-INF/web.xml" destfile="team9_dt.war" basedir="WebContent/WEB-INF/classes">
 <lib dir="WebContent/WEB-INF/lib"/>
 </war>
-<copy file="DT9.war" todir="/opt/jboss/standalone/deployments"/>
 </target>
 
 <target name="testCreate" depends="dist">
@@ -75,6 +79,6 @@
 
 <target name="clean">
 <delete dir="${classes}"/>
-<delete dir="${dist}"/>
+<delete dir="WebContent/WEB-INF/classes"/>
 </target>
 </project>

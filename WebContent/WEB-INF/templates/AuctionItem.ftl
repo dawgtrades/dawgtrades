@@ -8,7 +8,7 @@
 
 <h3>You are logged in as ${username}
 
-<form action="Login" method="post">
+<form action="AuctionItem_Result" method="post">
 <p> Name of item: <input name="name"  type="text" size="40"> </p>
 <p> 
 	<div data-role="fieldcontain">

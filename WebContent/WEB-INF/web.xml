@@ -20,5 +20,12 @@
     <servlet-name>AuctionItem</servlet-name>
     <url-pattern>/AuctionItem</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+    <servlet-name>AuctionItemResult</servlet-name>
+    <servlet-class>edu.uga.dawgtrades.boundary.AuctionItemResult</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AuctionItemResult</servlet-name>
+    <url-pattern>/AuctionItemResult</url-pattern>
+  </servlet-mapping>
 </web-app>

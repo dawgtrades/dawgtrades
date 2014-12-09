@@ -7,6 +7,10 @@
 <fileset dir="/opt/classes/">
 <include name="mysql-connector-java-5.1.22-bin.jar"/>
 </fileset>
+<fileset dir="WebContent/WEB-INF/lib">
+<include name="mysql-connector-java.jar"/>
+<include name="freemarker.jar"/>
+</fileset>
 </path>
 
 <target name="init">
@@ -23,6 +27,13 @@
 <target name="dist" depends="compile">
 <mkdir dir="${dist}/lib"/>
 <jar jarfile="${dist}/lib/dawgtrades.jar" basedir="${classes}"/>
+</target>
+
+<target name="deploy">
+<war webxml="WebContent/WEB-INF/web.xml" destfile="DT9.war" basedir=".">
+<lib dir="WebContent/WEB-INF/lib"/>
+</war>
+<copy file="DT9.war" todir="/opt/jboss/standalone"/>
 </target>
 
 <target name="testCreate" depends="dist">

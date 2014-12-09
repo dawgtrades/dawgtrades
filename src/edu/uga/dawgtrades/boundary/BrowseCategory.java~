@@ -1,0 +1,17 @@
+package edu.uga.dawgtrades.boundary;
+
+import java.io.*;
+import java.util.*;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+
+import edu.uga.dawgtrades.authentication.*;
+import edu.uga.dawgtrades.logic.Logic;
+import edu.uga.dawgtrades.logic.impl.LogicImpl;
+import edu.uga.dawgtrades.model.*;
+import freemarker.template.*;
+
+public class BrowseCategory extends HttpServlet {
+
+}

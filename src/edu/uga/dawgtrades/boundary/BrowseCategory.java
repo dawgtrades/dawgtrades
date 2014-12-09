@@ -31,12 +31,72 @@ public class BrowseCategory extends HttpServlet {
 	BufferedWriter toClient = null;
 	String category = null;
 	String ssid = null;
-	//Session session = null;
-	//ObjectModel objectModel = null;
-	//Logic logic = null;
+	Session session = null;
+	ObjectModel objectModel = null;
+	Logic logic = null;
 	//RegisteredUser user = null;
+	List<Category> categories = null;
 	//List<RegisteredUser> users = null;
 	//List<Auction> auctions = null;
 	//List<Bid> bids = null;
+
+	try {
+	    resultTemplate = cfg.getTemplate(resultTemplateName);
+	}
+	catch(IOException e) {
+	    throw new ServletException("BrowseCategory.doGet: can't load template in: " + templateDir + ": " + e.toString());
+	}
+
+	httpSession = req.getSession(false);
+	if(httpSession != null) {
+	    ssid = (String) httpSession.getArribute("ssid");
+	    if(ssid != null) {
+		session = SessionManager.getSessionById(ssid);
+	    }
+	    else
+		System.out.println("ssid is null");
+	}
+	else
+	    System.out.println("no http session");
+
+	toClient = new BufferedWriter(new OutputStreamWriter(res.getOutputStream(), resultTemplate.getEncoding()));
+
+	res.setContentType("text/html; charset=" + resultTemplate.getEncoding());
+
+	category = req.getParameter("category");
+
+	if(category == null) {
+	    DTError.error(cfg, toClient, "invalid category");
+	    return;
+	}
+
+	objectModel = session.getObjectModel();
+	if(objectModel == null) {
+	    DTError.error(cfg, toClient, "Session expired or illegal, please log in");
+	    return;
+	}
+
+	Map<String, Object> root = new HashMap<String, Object>();
+
+	logic = new LogicImpl(objectModel);
+
+	try {
+	    categories = logic.findSubcategoriesofCategory(0);
+	    for(int i = 0; i < categories.size(); i++) {
+		root.put(categories.get(i).getName(), categories.get(i));
+	    }
+	}
+	catch(DTException e) {
+	    e.printStackTrace();
+	}
+
+	try {
+	    resultTemplate.process(root, toClient);
+	    toClient.flush();
+	}
+	catch(TemplateException e) {
+	    throw new ServletException("Error while processing FreeMarker template", e);
+	}
+	toClient.close();
     }
 }

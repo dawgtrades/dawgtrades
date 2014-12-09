@@ -1,0 +1,75 @@
+package edu.uga.dawgtrades.logic;
+
+import java.util.Date;
+import java.util.List;
+
+import edu.uga.dawgtrades.model.Attribute;
+import edu.uga.dawgtrades.model.AttributeType;
+import edu.uga.dawgtrades.model.Auction;
+import edu.uga.dawgtrades.model.Bid;
+import edu.uga.dawgtrades.model.Category;
+import edu.uga.dawgtrades.model.DTException;
+import edu.uga.dawgtrades.model.ExperienceReport;
+import edu.uga.dawgtrades.model.Item;
+import edu.uga.dawgtrades.model.Membership;
+import edu.uga.dawgtrades.model.RegisteredUser;
+
+
+
+public interface Logic
+{
+    //FIND ALL
+	public List<RegisteredUser> findAllRegisteredUsers() throws DTException;
+    public List<Auction> findAllAuctions() throws DTException;
+    public List<Category> findAllCategories() throws DTException;
+    public List<Item> findAllItems() throws DTException;
+    public List<Bid> findAllBids() throws DTException;
+    
+    
+    //CREATE
+    public long createRegisteredUser( String name, String firstName, String lastName, String password,
+    		boolean isAdmin, String email, String phone, boolean canText ) throws DTException;
+    public long createAttribute( long attributeTypeId, long itemId, String value ) throws DTException;
+    public long createCategory( long parentId, String name ) throws DTException;
+    public long createAttributeType( long categoryId, String name ) throws DTException;
+    public long createAuction( long itemId, float minPrice) throws DTException;
+    public long createItem( long categoryId, long userId, String identifier, String name, String description) throws DTException;
+    public long createMembership( float price ) throws DTException; //Not sure on this as not in the UC's
+    public long createExperienceReport(int rating, String report, long reviewerId, long reviewedId) throws DTException;
+    public long createBid(float amount, long auctionId, long registeredUserId) throws DTException;
+    
+    //UPDATE
+    public void updateCategory( long categoryId, long parentId, String name ) throws DTException;
+    public void updateMembershipPrice( float newPrice ) throws DTException;
+    public void updateRegisteredUser( long userId, String name, String firstName, String lastName, String password,
+    		boolean isAdmin, String email, String phone, boolean canText ) throws DTException;
+    public void updateAuction( long auctionId ) throws DTException; // for reauction and close
+    
+    //DELETE
+    public void deleteCategory( long categoryId ) throws DTException;
+    public void deleteItem( long itemId ) throws DTException;
+    public void deleteAuction( long auctionId ) throws DTException;
+    public void deleteRegisteredUser( long userId )throws DTException;
+    public void deleteAttributeTypes( long categoryId ) throws DTException;
+    public void deleteAttributes( long itemId ) throws DTException;
+    
+    //FIND RELATED TO
+    public List<Category> findSubcategoriesOfCategory( long categoryId ) throws DTException;
+    public List<Item> findItemsOfCategory( long categoryId ) throws DTException;
+    public List<Attribute> findAttributesOfItem( long itemId ) throws DTException;
+    public List<Auction> findAuctionsOfUser( long userId ) throws DTException;
+    
+    //TODO: Not sure about singular use cases such us finding the data about a particular auction.
+    //We may or may not be able to do this already without adding to the logic layer.
+    
+    /**TODO: Later if we have time
+    public void resetPassword( long userId, String email);
+    **/
+    
+    
+    //TODO: Not sure about pay membership
+    //TODO: The system timer use cases. HOW are we implementing these?? Chron job to run a deamon might work. Logout already in session.
+    
+    
+}
+

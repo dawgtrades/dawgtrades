@@ -86,15 +86,7 @@ public class AuctionItemResult extends HttpServlet {
 	        catch (IOException e) {
 	            throw new ServletException( "Register.doPost: Can't load template in: " + templateDir + ": " + e.toString());
 	        }
-	        // Prepare the HTTP response:
-	        // - Use the charset of template for the output
-	        // - Use text/html MIME-type
-	        //
-	        toClient = new BufferedWriter(
-	                new OutputStreamWriter( res.getOutputStream(), resultTemplate.getEncoding() )
-	                );
-
-	        res.setContentType("text/html; charset=" + resultTemplate.getEncoding());
+	        
 
 	        httpSession = req.getSession();
 	        if( httpSession == null ) {       // assume not logged in!
@@ -117,14 +109,23 @@ public class AuctionItemResult extends HttpServlet {
 	        RegisteredUser user = session.getUser();
 	        if( user == null ) {
 	            DTError.error( cfg, toClient, "Session expired or illegal; please log in" );
-	            return;   
-	        }
-	        
+	            return;    
+	        } 
+	       // Prepare the HTTP response:
+	        // - Use the charset of template for the output
+	        // - Use text/html MIME-type
+	        //
+	        toClient = new BufferedWriter(
+	                new OutputStreamWriter( res.getOutputStream(), resultTemplate.getEncoding() )
+	                );
+
+	        res.setContentType("text/html; charset=" + resultTemplate.getEncoding());
+	         
 	        logic = new LogicImpl( objectModel );
 	       
 	        name = req.getParameter("name");
 	        categoryName = req.getParameter("category");
-	        identifier = req.getParameter("ifentifer");
+	        identifier = req.getParameter("identifier");
 	        description = req.getParameter("description");
 	    	minPrice = Float.parseFloat(req.getParameter("minprice"));
 	    	
@@ -171,7 +172,7 @@ public class AuctionItemResult extends HttpServlet {
 	            throw new ServletException( "Error while processing FreeMarker template", e);
 	        }
 
-	        toClient.close();
+	        toClient.close(); 
 
 	    	
 	}

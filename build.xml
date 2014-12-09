@@ -4,13 +4,11 @@
 <property name="dist" location="dist"/>
 
 <path id="classpath">
-<fileset dir="/opt/classes/">
+<fileset dir="/opt/classes">
 <include name="mysql-connector-java-5.1.22-bin.jar"/>
+<include name="servlet-api.jar"/>
 </fileset>
-<fileset dir="WebContent/WEB-INF/lib">
-<include name="mysql-connector-java.jar"/>
-<include name="freemarker.jar"/>
-</fileset>
+<fileset dir="WebContent/WEB-INF/lib" includes="*.jar"/>
 </path>
 
 <target name="init">

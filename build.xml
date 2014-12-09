@@ -8,6 +8,9 @@
 <include name="mysql-connector-java-5.1.22-bin.jar"/>
 <include name="servlet-api.jar"/>
 </fileset>
+<fileset dir="/opt/jboss">
+<include name="jboss-modules.jar"/>
+</fileset>
 <fileset dir="WebContent/WEB-INF/lib" includes="*.jar"/>
 </path>
 
@@ -28,7 +31,7 @@
 </target>
 
 <target name="deploy">
-<war webxml="WebContent/WEB-INF/web.xml" destfile="DT9.war" basedir=".">
+<war webxml="WebContent/WEB-INF/web.xml" destfile="DT9.war" basedir="${classes}">
 <lib dir="WebContent/WEB-INF/lib"/>
 </war>
 <copy file="DT9.war" todir="/opt/jboss/standalone/deployments"/>

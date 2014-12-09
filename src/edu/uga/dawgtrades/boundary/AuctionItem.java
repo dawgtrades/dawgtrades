@@ -125,11 +125,10 @@ public class AuctionItem
         logic = new LogicImpl( objectModel );
      
         Map<String, Object> root = new HashMap<String, Object>();
-        System.out.println(username);
+ 
     	root.put( "username", username );
         try {
             rv = logic.findAllCategories();
-            System.out.println(rv.get(0));
             // Build the data-model
             //
             categories = new LinkedList<String>();

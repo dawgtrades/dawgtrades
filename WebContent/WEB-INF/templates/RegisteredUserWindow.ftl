@@ -1,9 +1,5 @@
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
-	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
 <title>RegisteredUserWindow</title>
 </head>
 <body>
@@ -13,16 +9,17 @@
 <h3>You are logged in as ${username}
 
 <p>
-<ol>
-<li>
-<#if experienceReports??>
+
+<#if users??>
+
 	Please leave feedback on your recent transactions!
 	<#list users as user>
+		<div class="boxed">
 		<form action="CreateExperienceReport" method="Post">
 		    <p>You are reviewing: ${user.name}</p>
 		    <p> 
 		    	<div data-role="fieldcontain">
-				<label for="select-1">Select</label>
+				<label for="select-1">Select Rating</label>
 				<select name="select-1" id="select-1" data-mini="true">
 				<option value="1">1</option>
 				<option value="2">2</option>
@@ -33,28 +30,29 @@
 				</div> 
 			</p>
 			<p> Comments: <input name="report"  type="text" size="20"> </p>
-			<p> <input type=submit> <input type=reset> </p>
+			<p> <input type=submit> <input type=reset> </>
 		</form>
+		</div>
 	</#list>
 </#if>
+<ol>
+<li>
+<a href="BrowseItems">Browse Items</a>
 </li>
 <li>
-<a href="BrowseItems" data-role="button">Browse Items</a>
+<a href="AuctionItem">Auction an Item</a>
 </li>
 <li>
-<a href="AuctionItem" data-role="button">Auction an Item</a>
+<a href="Profile">View Profile</a>
 </li>
 <li>
-<a href="Profile" data-role="button">View Profile</a>
+<a href="UserAuctions">View Your Auctions</a>
 </li>
 <li>
-<a href="UserAuctions" data-role="button">View Your Auctions</a>
+<a href="Login">Unregister</a>
 </li>
 <li>
-<a href="Login" data-role="button">Unregister</a>
-</li>
-<li>
-<a href="Logout" data-role="button"> Logout</a>
+<a href="Logout"> Logout</a>
 </li>
 </ol>
 

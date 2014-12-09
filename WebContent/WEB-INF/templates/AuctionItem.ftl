@@ -18,7 +18,7 @@
 	    <label for="select-1">Select Category</label>
 	    <select name="select-1" id="select-1" data-mini="true">
 		<#list categories as category>
-			<option value="${category.id}">${category.name}</option>		
+			<option value="category">${category}</option>		
 		</#list>
 		</select>
 	</div> 

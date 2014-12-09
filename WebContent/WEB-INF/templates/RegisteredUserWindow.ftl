@@ -6,7 +6,7 @@
 
 <h1>DawgTrades</h1>
 
-<h3>You are logged in as ${username}
+<h3>You are logged in as ${username}</h3>
 
 <p>
 

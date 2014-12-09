@@ -31,7 +31,7 @@
 <war webxml="WebContent/WEB-INF/web.xml" destfile="DT9.war" basedir=".">
 <lib dir="WebContent/WEB-INF/lib"/>
 </war>
-<copy file="DT9.war" todir="/opt/jboss/standalone"/>
+<copy file="DT9.war" todir="/opt/jboss/standalone/deployments"/>
 </target>
 
 <target name="testCreate" depends="dist">

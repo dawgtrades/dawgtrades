@@ -49,7 +49,7 @@ public class BrowseCategory extends HttpServlet {
 
 	httpSession = req.getSession(false);
 	if(httpSession != null) {
-	    ssid = (String) httpSession.getArribute("ssid");
+	    ssid = (String) httpSession.getAttribute("ssid");
 	    if(ssid != null) {
 		session = SessionManager.getSessionById(ssid);
 	    }
@@ -76,14 +76,14 @@ public class BrowseCategory extends HttpServlet {
 	    return;
 	}
 
-	Map<String, Object> root = new HashMap<String, Object>();
+	HashMap<Integer, Object> root = new HashMap<Integer, Object>();
 
 	logic = new LogicImpl(objectModel);
 
 	try {
-	    categories = logic.findSubcategoriesofCategory(0);
+	    categories = logic.findSubcategoriesOfCategory(0);
 	    for(int i = 0; i < categories.size(); i++) {
-		root.put(categories.get(i).getName(), categories.get(i));
+		root.put(i, categories.get(i));
 	    }
 	}
 	catch(DTException e) {
